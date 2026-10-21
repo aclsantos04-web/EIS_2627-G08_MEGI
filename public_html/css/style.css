@@ -1,50 +1,66 @@
+/*coisas reutilizadas em todo o projeto ex: fonte, cores, botões, inputs, tabelas...*/
+
+/* Remove margens e espaçamentos automáticos do browser */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
-
+/* Cores do projeto */
 :root {
-    --primary: #c9e4f7;
+    --blue: #c9e4f7;
     --sidebar: #eeeeee;
+    
     --background: #ffffff;
+    --surface: #ffffff;    /* Cards, formulários, etc. caso queiramos por outra cor*/
+    
     --text: #222222;
-    --success: #75c77d;
-    --danger: #f28b8b;
+    --green: #75c77d;
+    --red: #f28b8b;
 }
 
+/* Principal estrutura */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
     background-color: var(--background);
     color: var(--text);
+    /*cada página define o seu próprio espaçamento, ou padding: 30px; */
 }
 
+/* Texto secundário */
+p {
+    line-height: 1.5;
+}
+
+/* Links e/ou Hiperligações  */
 a {
     text-decoration: none;
     color: inherit;
 }
 
+/* Mostrar a "mãozinha" quando passamos o rato por cima do botão */
 button {
     font-family: inherit;
     cursor: pointer;
 }
 
-.btn-primary {
-    background-color: var(--primary);
+.btn-blue {
+    background-color: var(--blue);
     border: none;
     border-radius: 5px;
     padding: 10px 18px;
 }
 
-.btn-success {
-    background-color: var(--success);
+/*Botão verde approve para Staff/Admin */
+.btn-green {
+    background-color: var(--green);
     border: none;
     border-radius: 4px;
     padding: 7px 12px;
 }
-
-.btn-danger {
-    background-color: var(--danger);
+/*Botão vermelho - ação negativa, cancelamento*/
+.btn-red {
+    background-color: var(--red);
     border: none;
     border-radius: 4px;
     padding: 7px 12px;
@@ -56,11 +72,13 @@ button {
     padding: 20px;
 }
 
+/*Tabelas */
 table {
     width: 100%;
     border-collapse: collapse;
 }
 
+/* Cabeçalhos e células das tabelas */
 th,
 td {
     padding: 10px;
