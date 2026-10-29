@@ -1,0 +1,92 @@
+/* =========================================================
+   admin.css — STYLES ONLY FOR admin.html
+   Cards, colours and the sidebar come from style.css.
+   This file only arranges the dashboard into rows.
+   ========================================================= */
+
+
+/* ---------- Rows of number cards ----------
+   Row 1 has 5 cards, row 3 has 4 cards (class kpi-row-4). */
+.kpi-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.kpi-row-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.kpi-row .card {
+    margin-bottom: 0;
+}
+
+/* Centre everything inside the number cards */
+.kpi-row .stat-card {
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.stat-note {                     /* small grey line under a number */
+    font-size: 13px;
+    font-style: italic;
+    color: var(--muted);
+}
+
+a.stat-note {                   
+    color: var(--danger);
+    font-style: normal;
+    font-weight: 600;
+}
+
+
+/* ---------- Row of two charts ---------- */
+.chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.chart-row .card {
+    margin-bottom: 0;
+}
+
+.chart-row h2 {
+    font-size: 18px;
+    text-align: center;
+}
+
+/* Chart.js fills its parent, so the parent needs a fixed height.
+   position: relative is required by Chart.js for resizing. */
+.chart-box {
+    position: relative;
+    height: 280px;
+}
+
+.chart-error {                   /* shown if Chart.js could not load */
+    text-align: center;
+    color: var(--muted);
+    padding-top: 100px;
+}
+
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1100px) {             /* small laptops / tablets */
+    .kpi-row,
+    .kpi-row-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 760px) {              /* phones */
+    .chart-row {
+        grid-template-columns: 1fr;      /* charts stacked */
+    }
+    .chart-box {
+        height: 240px;
+    }
+}
