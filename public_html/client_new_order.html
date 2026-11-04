@@ -8,6 +8,15 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- Estilos específicos da área de cliente -->
     <link rel="stylesheet" href="css/client.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Client</title>
+    
+    <!-- Folha de estilos do Leaflet (obrigatória para os azulejos do mapa) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/client.css">
 </head>
 <body>
 
@@ -110,17 +119,25 @@
                     </div>
                 </section>
 
-                <!-- Map Container (Área reservada para o Leaflet.js) -->
-                <section class="card map-card">
-                    <div class="map-placeholder">
-                        <p class="map-legend">Click on the map to select location</p>
+                <!-- Contentor do Mapa -->
+                <section class="card map-container-card">
+                    <div id="map"></div>
+                    <div class="map-footer-hint">
+                        <p>Click on the map to select location</p>
                     </div>
                 </section>
-
             </form>
         </main>
     </div>
 
+    <script src="js/client_order.js"></script>
+    <!-- Biblioteca Leaflet.js (tem de vir antes do map.js) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Script do mapa criado pela tua colega -->
+    <script src="js/map.js"></script>
+
+    <!-- O teu script de validações/encomendas -->
     <script src="js/client_order.js"></script>
 </body>
 </html>
