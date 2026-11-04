@@ -18,6 +18,27 @@
     border-right: 1px solid #e0e0e0;
 }
 
+/* Contentor do Mapa */
+.map-container-card {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+}
+
+#map {
+    width: 100%;
+    height: 260px; /* Altura obrigatória para o Leaflet renderizar */
+    border-radius: 6px;
+    z-index: 1; /* Garante que controlos de zoom não sobreponham menus */
+}
+
+.map-footer-hint {
+    text-align: center;
+    padding-top: 8px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
 .brand h1 {
     font-size: 2.2rem;
     font-weight: 800;
@@ -220,4 +241,184 @@
 .map-legend {
     font-size: 0.95rem;
     font-weight: 500;
+}
+/* PARTE DO CLIENT ORDERS ADICIONADO DEPOIS */
+
+/* ===================================================
+   PROGRESS TRACKER (Sem a seta cinzenta)
+   =================================================== */
+.status-tracker-container {
+    background-color: var(--surface);
+    padding: 24px 32px;
+    border-radius: 12px;
+    margin-bottom: 28px;
+    max-width: 980px;
+    border: 1px solid #e5e5e5;
+}
+
+.status-tracker {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Linha cinzenta base de fundo */
+.status-tracker::before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #e0e0e0;
+    z-index: 1;
+}
+
+/* Linha colorida de progresso ativo */
+.tracker-progress-line {
+    position: absolute;
+    top: 18px;
+    left: 0;
+    height: 4px;
+    background-color: var(--green);
+    z-index: 2;
+    transition: width 0.3s ease;
+}
+
+.step {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.step-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: 3px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #999;
+    transition: all 0.2s ease;
+}
+
+.step-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #888;
+}
+
+/* Estado de passo completado */
+.step.completed .step-circle {
+    background-color: var(--green);
+    border-color: var(--green);
+    color: #ffffff;
+}
+
+.step.completed .step-label {
+    color: #2e7d32;
+}
+
+/* ===================================================
+   DETALHES DA ENCOMENDA
+   =================================================== */
+.order-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 980px;
+}
+
+.order-info-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.info-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.info-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.info-value {
+    font-size: 0.95rem;
+    color: #444;
+}
+
+.products-bullet-list {
+    list-style-type: disc;
+    padding-left: 20px;
+    color: #444;
+    font-size: 0.95rem;
+}
+
+.products-bullet-list li {
+    margin-bottom: 4px;
+}
+
+/* Coluna Direita (Mapa + Botão) */
+.map-action-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.pod-action-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Modal e-POD */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal-overlay.open {
+    display: flex;
+}
+
+.modal-box {
+    width: 420px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+.signature-placeholder {
+    height: 120px;
+    border: 2px dashed #ccc;
+    border-radius: 6px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+    background: #fafafa;
 }
