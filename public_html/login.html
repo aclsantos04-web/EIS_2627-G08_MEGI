@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CMS - Login</title>
+
+   
+<link rel="stylesheet" href="css/cms-lara.css">
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Poppins:wght@500;600;700&amp;display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header class="topbar">
+
+        <a href="index.html" class="logo">CMS</a>
+
+        <nav class="main-nav">
+            <a href="index.html">Home</a>
+            <a href="team.html">Meet the Team</a>
+        </nav>
+
+        <div class="auth-links">
+            <a href="login.html">Login</a>
+            <a href="register.html" class="nav-button">
+                Get Started
+            </a>
+        </div>
+
+    </header>
+
+    <main class="login-page">
+
+        <section class="login-container">
+
+            <h1>Welcome Back!</h1>
+
+            <form id="login-form" novalidate=>
+
+                <label for="username">Email or username</label>
+                <input type="text" id="username"
+                       name="username"
+                       placeholder="name@example.com"
+                       autocomplete="username"
+                       required>
+                
+                <small id="username-error" class="field-error"></small>
+
+                <label for="password">Password</label>
+                <input type="password" id="password"
+                       name="password"
+                       placeholder="Enter your password"
+                       autocomplete="current-password"
+                       required>
+                <small id="password-error" class="field-error"></small>
+
+                <p>Forgot password?</p>
+                <div id="login-message" role="alert"></div>
+
+                <button type="submit">Login</button>
+
+            </form>
+
+        </section>
+
+    </main>
+<script src="js/login.js"></script>
+</body>
+</html>

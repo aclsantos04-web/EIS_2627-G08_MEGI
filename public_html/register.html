@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CMS - Register</title>
+
+   
+<link rel="stylesheet" href="css/cms-lara.css">
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Poppins:wght@500;600;700&amp;display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="topbar">
+
+        <a href="index.html" class="logo">CMS</a>
+
+        <nav class="main-nav">
+            <a href="index.html">Home</a>
+            <a href="team.html">Meet the Team</a>
+        </nav>
+
+        <div class="auth-links">
+            <a href="login.html">Login</a>
+            <a href="register.html" class="nav-button">
+                Get Started
+            </a>
+        </div>
+
+    </header>
+
+    <!-- REGISTER PAGE -->
+
+    <main class="register-page">
+
+        <section class="register-container">
+
+            <h1>Welcome in!</h1>
+
+            <form id="register-form" novalidate>
+
+                <div class="register-fields">
+
+                    <!-- USERNAME -->
+
+                    <div class="form-group">
+                        <label for="reg-username">Username</label>
+
+                        <input type="text"
+                               id="reg-username"
+                               name="username"
+                               placeholder="Choose a username"
+                               required>
+                        <small id="reg-username-error" class="field-error"></small>
+                    </div>
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+                        <label for="reg-email">E-Mail</label>
+
+                        <input type="email"
+                               id="reg-email"
+                               name="email"
+                               placeholder="name@example.com"
+                               required>
+                    </div>
+
+                    <!-- NIF -->
+
+                    <div class="form-group">
+                        <label for="reg-nif">NIF</label>
+
+                        <input type="text"
+                               id="reg-nif"
+                               name="nif"
+                               placeholder="e.g.: 222222222"
+                               maxlength="9"
+                               inputmode="numeric"
+                               required>
+                    </div>
+
+                    <!-- ROLE -->
+
+                    <div class="form-group">
+                        <label for="reg-role">Role Choice</label>
+
+                        <select id="reg-role" name="role" required>
+                            <option value="">Select a type</option>
+                            <option value="client">Client</option>
+                            <option value="courier">Courier</option>
+                            <option value="staff">Staff</option>
+                        </select>
+                    </div>
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+                        <label for="reg-password">Password</label>
+
+                        <input type="password"
+                               id="reg-password"
+                               name="password"
+                               placeholder="Enter your password"
+                               autocomplete="new-password"
+                               required>
+                    </div>
+
+                    <!-- CONFIRM PASSWORD -->
+
+                    <div class="form-group">
+                        <label for="reg-confirm">Confirm Password</label>
+
+                        <input type="password"
+                               id="reg-confirm"
+                               name="confirm-password"
+                               placeholder="Confirm your password"
+                               autocomplete="new-password"
+                               required>
+                    </div>
+
+                </div>
+                <div id="register-message" role="status" aria-live="polite"></div>
+
+                <!-- CREATE ACCOUNT BUTTON -->
+
+                <button type="submit" class="register-button">
+                    Create Account
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+    <script src="js/register.js"></script>
+</body>
+</html>
