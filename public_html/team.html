@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<!-- =========================================================
+     team.html — TEAM PAGE (public)
+     Required by the spec: academic identification of all group
+     members (name, student ID, institutional email, course,
+     team number).
+     ========================================================= -->
+<html lang="en">
+<head>
+    <!-- Character set: lets the page show accents (ç, ã, é...) correctly -->
+    <meta charset="UTF-8">
+
+    <!-- Makes the page fit phone screens instead of showing a tiny desktop version -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Text shown on the browser tab -->
+    <title>CMS – Meet the Team</title>
+
+    <!-- Shared styles first (header, buttons, colours), then this page's styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/team.css">
+</head>
+
+<body>
+
+    <!-- ================= HEADER (same on every public page) =================
+         <header> and <nav> are "semantic" tags: they tell the browser and
+         screen readers what each part is, which counts for good HTML5. -->
+    <header class="site-header">
+
+        <!-- Logo: a small truck drawn in SVG + the word CMS. Clicking it goes Home. -->
+        <a href="index.html" class="logo" aria-label="CMS home">
+            <svg viewBox="0 0 64 40" aria-hidden="true">
+                <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+            </svg>
+            CMS
+        </a>
+
+        <nav class="main-nav" aria-label="Main menu">
+            <a href="home.html">Home</a>
+            <!-- aria-current="page" marks the page we're on (styled in style.css) -->
+            <a href="team.html" aria-current="page">Meet the Team</a>
+        </nav>
+
+        <div class="header-actions">
+            <a href="login.html" class="btn btn-primary">Login</a>
+            <a href="register.html" class="btn btn-outline">Register</a>
+        </div>
+    </header>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main>
+        <section class="team-hero">
+
+            <!-- id="teamNumber" lets the JavaScript below find this element -->
+            <h1>Team <span id="teamNumber"></span></h1>
+            <p class="subtitle">Enterprise Information Systems<br>Courier Management System</p>
+
+            <!-- The member cards are created by JavaScript from the list in
+                 the <script> below, so the HTML structure is written only once.
+                 <ul> is used because it's a list of people. -->
+            <ul class="team-grid" id="teamGrid">
+                <!-- cards are inserted here -->
+            </ul>
+
+            <p class="course">Course: <span id="courseName"></span></p>
+        </section>
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="site-footer">
+        <!-- &copy; prints the © symbol -->
+        &copy; 2026 CMS · FEUP – Enterprise Information Systems
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT =================
+         Placed at the END of <body> so all the HTML above already
+         exists when the script runs. -->
+    <script>
+        /* ---------------------------------------------------------
+           1. TEAM DATA 
+           Each member is an "object" { key: value, ... }.
+           The four objects are stored in an "array" [ ... ].
+           photo: path to the picture in the img folder. If the
+           file doesn't exist yet, the light-blue circle is shown.
+           --------------------------------------------------------- */
+        const TEAM_NUMBER = "G08";   
+        const COURSE = "Master in Industrial Engineering and Management";
+
+        const members = [
+            { name: "Ana Santos", studentId: "up202206735", email: "up202206735@up.pt", role: "COO", photo: "img/member1.jpg" },
+            { name: "António Ribeiro", studentId: "up202208824", email: "up202208824@up.pt", role: "CFO",            photo: "img/member2.jpg" },
+            { name: "Lara Rego", studentId: "up202503296", email: "up202503296@up.pt", role: "CMO",            photo: "img/member3.jpg" },
+            { name: "Sofia Monteiro", studentId: "up202502534", email: "up202502534@up.pt", role: "CEO",            photo: "img/member4.jpg" }
+        ];
+
+
+        /* Takes "Name Surname" and returns "NS":
+           split(" ") breaks the name into words, then we take the
+           first letter of the first and last word. */
+        function getInitials(fullName) {
+            const words = fullName.trim().split(" ");
+            const first = words[0].charAt(0);
+            const last = words[words.length - 1].charAt(0);
+            return first.concat(last).toUpperCase();
+        }
+
+
+        /* ---------------------------------------------------------
+           2. BUILD ONE CARD
+           Instead of writing HTML as text, we create each element
+           with document.createElement() and fill it with
+           textContent. This is safer (no HTML can be injected) and
+           easier to read step by step.
+           --------------------------------------------------------- */
+        function createMemberCard(member) {
+            // <li class="member-card">
+            const card = document.createElement("li");
+            card.classList.add("member-card");
+
+            // <img class="member-photo" src="..." alt="Photo of ...">
+            const photo = document.createElement("img");
+            photo.classList.add("member-photo");
+            photo.setAttribute("src", member.photo);
+            photo.setAttribute("alt", "Photo of " + member.name);
+            // If the image file is missing, swap the <img> for a blue
+            // circle with the member's initials (e.g. "Ana Santos" -> "AS").
+            photo.addEventListener("error", function () {
+                const placeholder = document.createElement("div");
+                placeholder.classList.add("member-photo", "member-initials");
+                placeholder.textContent = getInitials(member.name);
+                placeholder.setAttribute("aria-hidden", "true");
+                photo.replaceWith(placeholder);
+            });
+
+            // <h2 class="member-name">Name Surname</h2>
+            const name = document.createElement("h2");
+            name.classList.add("member-name");
+            name.textContent = member.name;
+
+            // <p class="member-info">Student ID<br><a href="mailto:...">email</a></p>
+            const info = document.createElement("p");
+            info.classList.add("member-info");
+            info.append(member.studentId);
+            info.append(document.createElement("br"));
+
+            const emailLink = document.createElement("a");
+            emailLink.setAttribute("href", "mailto:" + member.email);   // opens the email app
+            emailLink.textContent = member.email;
+            info.append(emailLink);
+
+            // Put the pieces inside the card, in order
+            card.append(photo, name, info);
+
+            // Only add the role badge if this member has a role
+            if (member.role.trim().length > 0) {
+                const role = document.createElement("span");
+                role.classList.add("member-role");
+                role.textContent = member.role;
+                card.append(role);
+            }
+
+            return card;
+        }
+
+
+        /* ---------------------------------------------------------
+           3. FILL THE PAGE
+           --------------------------------------------------------- */
+        function renderTeam() {
+            document.getElementById("teamNumber").textContent = TEAM_NUMBER;
+            document.getElementById("courseName").textContent = COURSE;
+
+            const grid = document.getElementById("teamGrid");
+            members.forEach(function (member) {
+                grid.append(createMemberCard(member));
+            });
+        }
+
+        // Run it once when the page loads
+        renderTeam();
+    </script>
+</body>
+</html>

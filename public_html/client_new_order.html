@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Create New Order</title>
+    <!-- CSS base partilhado pelo grupo -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Estilos específicos da área de cliente -->
+    <link rel="stylesheet" href="css/client.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Client</title>
+    
+    <!-- Folha de estilos do Leaflet (obrigatória para os azulejos do mapa) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/client.css">
+</head>
+<body>
+
+    <div class="layout-container">
+        <!-- Sidebar do Cliente -->
+        <aside class="sidebar">
+            <div class="brand">
+                <h1>CMS</h1>
+            </div>
+
+            <div class="user-role-badge">
+                <span class="role-icon">👤</span>
+                <span class="role-name">Client</span>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="client_new_order.html" class="nav-item active">New Order</a>
+                <a href="client_orders.html" class="nav-item">My Orders</a>
+                <a href="client_profile.html" class="nav-item">Profile</a>
+            </nav>
+        </aside>
+
+        <!-- Área Principal -->
+        <main class="main-content">
+            <header class="content-header">
+                <h2>Create new order</h2>
+            </header>
+
+            <form id="orderForm" class="order-grid" novalidate>
+                
+                <!-- Package Information -->
+                <section class="card package-card">
+                    <h3>Package Information</h3>
+                    
+                    <div class="product-input-row">
+                        <select id="productSelect" class="form-input">
+                            <option value="" disabled selected>Select Products</option>
+                            <option value="Product A" data-weight="5kg" data-vol="0.02 m²">Product A</option>
+                            <option value="Product B" data-weight="12kg" data-vol="0.05 m²">Product B</option>
+                            <option value="Product C" data-weight="1.5kg" data-vol="0.005 m²">Product C</option>
+                        </select>
+
+                        <input type="number" id="productQty" class="form-input qty-input" placeholder="Qt" min="1" value="1">
+                        
+                        <!-- Botão com classe .btn-blue do grupo -->
+                        <button type="button" id="btnAddProduct" class="btn-blue">Add</button>
+                    </div>
+
+                    <!-- Lista dinâmica de produtos adicionados -->
+                    <div id="selectedProductsList" class="product-list">
+                        <!-- Exemplo inicial espelhado do protótipo -->
+                        <div class="product-chip">
+                            <span>Product A | 5kg | 0.02 m²</span>
+                            <span class="product-qty-badge">2</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Additional Information -->
+                <section class="card notes-card">
+                    <h3>Additional Information</h3>
+                    <textarea id="orderNotes" class="form-textarea" placeholder="Notes (optional)"></textarea>
+                </section>
+
+                <!-- Select Location -->
+                <section class="card location-card">
+                    <h3>Select Location</h3>
+                    
+                    <div class="coords-section">
+                        <div class="coords-subtitle">Origin</div>
+                        <div class="coords-row">
+                            <div class="input-block">
+                                <label for="originLat">Latitude</label>
+                                <input type="number" step="any" id="originLat" class="form-input" placeholder="41.23">
+                            </div>
+                            <div class="input-block">
+                                <label for="originLong">Longitude</label>
+                                <input type="number" step="any" id="originLong" class="form-input" placeholder="41.23">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="coords-section">
+                        <div class="coords-subtitle">Destination</div>
+                        <div class="coords-row">
+                            <div class="input-block">
+                                <label for="destLat">Latitude</label>
+                                <input type="number" step="any" id="destLat" class="form-input" placeholder="41.23">
+                            </div>
+                            <div class="input-block">
+                                <label for="destLong">Longitude</label>
+                                <input type="number" step="any" id="destLong" class="form-input" placeholder="41.23">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-footer">
+                        <!-- Submissão com classe .btn-blue do grupo -->
+                        <button type="submit" class="btn-blue">Submit Order</button>
+                    </div>
+                </section>
+
+                <!-- Contentor do Mapa -->
+                <section class="card map-container-card">
+                    <div id="map"></div>
+                    <div class="map-footer-hint">
+                        <p>Click on the map to select location</p>
+                    </div>
+                </section>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/client_order.js"></script>
+    <!-- Biblioteca Leaflet.js (tem de vir antes do map.js) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Script do mapa criado pela tua colega -->
+    <script src="js/map.js"></script>
+
+    <!-- O teu script de validações/encomendas -->
+    <script src="js/client_order.js"></script>
+</body>
+</html>
