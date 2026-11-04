@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CMS - My Products</title>
+
+  
+<link rel="stylesheet" href="css/cms-lara.css">
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Poppins:wght@500;600;700&amp;display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="client-layout">
+
+        <!-- CLIENT SIDEBAR -->
+
+        <aside class="client-sidebar">
+
+            <a href="index.html" class="client-logo">
+                CMS
+            </a>
+
+            <div class="client-role">
+                <img src="images/users.svg" alt="Client">
+                <span>Client</span>
+            </div>
+
+            <nav class="client-nav">
+
+               
+<a href="client_new_order.html">New Order</a>
+
+
+                <a href="my-orders.html">
+                    My Orders
+                </a>
+
+                <a href="new-product.html">
+                    New Product
+                </a>
+
+                <a href="my-products.html" class="active">
+                    My Products
+                </a>
+
+                <a href="profile.html">
+                    Profile
+                </a>
+
+            </nav>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+
+        <main class="products-content">
+
+            <h1>My Products</h1>
+
+            <div class="products-table-container">
+
+                <table class="products-table">
+
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Weight</th>
+                            <th>Volume</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    
+<tbody id="products-table-body">
+
+    <!-- Products will be added with JavaScript -->
+
+</tbody>
+
+
+                </table>
+
+            </div>
+
+            <p id="no-products" hidden>
+                No products registered yet.
+            </p>
+            
+<!-- PRODUCT DETAILS -->
+
+<section id="product-details" class="product-details" hidden>
+
+    <h2>Product Details</h2>
+
+    <p>
+        <strong>Name:</strong>
+        <span id="detail-name"></span>
+    </p>
+
+    <p>
+        <strong>Category:</strong>
+        <span id="detail-category"></span>
+    </p>
+
+    <p>
+        <strong>Description:</strong>
+        <span id="detail-description"></span>
+    </p>
+
+    <p>
+        <strong>Weight:</strong>
+        <span id="detail-weight"></span>
+    </p>
+
+    <p>
+        <strong>Volume:</strong>
+        <span id="detail-volume"></span>
+    </p>
+
+    <button type="button" id="close-details">
+        Close
+    </button>
+
+</section>
+
+
+        </main>
+
+    </div>
+<script src="js/my-products.js"></script>
+</body>
+</html>

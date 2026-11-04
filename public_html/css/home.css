@@ -1,0 +1,611 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : 04/11/2026, 21:53:27
+    Author     : laras
+*/
+
+/* ============================= */
+/*       HOMEPAGE REDESIGN       */
+/* ============================= */
+
+/* MAIN LAYOUT */
+
+.home-page main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 25px 80px;
+}
+
+/* HERO SECTION */
+
+.home-page .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+
+    background: linear-gradient(
+        125deg,
+        #12365e,
+        #215394
+    );
+
+    padding: 65px 55px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* HERO TEXT */
+
+.home-page .hero-text {
+    flex: 1;
+}
+
+.home-page .hero h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #ffffff;
+}
+
+.home-page .hero h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(30px, 3.5vw, 52px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -1.5px;
+    color: #ffffff;
+    margin: 20px 0;
+    max-width: 550px;
+}
+
+.home-page .hero p {
+    font-size: 15px;
+    line-height: 1.9;
+    color: #ffffff;
+    max-width: 480px;
+}
+
+/* HERO BUTTONS */
+
+.home-page .hero-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 35px;
+}
+
+.home-page .hero-buttons a {
+    padding: 15px 30px;
+    border-radius: 9px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.home-page .btn-login {
+    background-color: #ffffff;
+    color: #215394;
+}
+
+.home-page .btn-start {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+.home-page .hero-buttons a:hover {
+    opacity: 1;
+    transform: translateY(-3px);
+}
+
+/* COURIER IMAGE */
+
+.home-page .hero-image {
+    width: 46%;
+    flex-shrink: 0;
+}
+
+.home-page .hero-image img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 16px;
+
+    box-shadow: 0 15px 35px #09274770;
+}
+
+/* STATISTICS CARDS */
+
+.home-page .stats {
+    display: flex;
+    gap: 22px;
+    margin: -25px 25px 50px;
+    position: relative;
+    z-index: 2;
+}
+
+.home-page .stat-card {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+    background-color: #ffffff;
+    padding: 30px 20px;
+    border-radius: 14px;
+    border: 1px solid #c5e0f0;
+
+    box-shadow: 0 10px 25px #163d601c;
+
+    transition: transform 0.3s;
+}
+
+.home-page .stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.home-page .stat-card h2 {
+    color: #111111;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.home-page .stat-card p {
+    color: #111111;
+    font-size: 13px;
+}
+
+.home-page .stat-icon {
+    width: 42px;
+    height: 42px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 850px) {
+
+    .home-page .hero {
+        flex-direction: column;
+        padding: 40px 25px;
+    }
+
+    .home-page .hero-image {
+        width: 100%;
+    }
+
+    .home-page .hero-image img {
+        height: 300px;
+    }
+
+    .home-page .stats {
+        flex-direction: column;
+        margin: 25px 0 40px;
+    }
+}
+
+
+/* ============================= */
+/*       SERVICE HIGHLIGHTS      */
+/* ============================= */
+
+.home-page .services {
+    margin-top: 75px;
+    margin-bottom: 75px;
+}
+
+/* Section title */
+
+.home-page .services h2 {
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #111111;
+    margin-bottom: 40px;
+}
+
+/* Cards layout */
+
+.home-page .services-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+/* Individual card */
+
+.home-page .service-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 15px;
+
+    background-color: #ffffff;
+    border: 1px solid #c5e0f0;
+    border-radius: 16px;
+    padding: 35px 30px;
+
+    box-shadow: 0 8px 25px rgba(21, 62, 114, 0.08);
+
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.home-page .service-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 15px 35px rgba(21, 62, 114, 0.15);
+}
+
+/* Icon container */
+
+.home-page .service-icon {
+    width: 65px;
+    height: 65px;
+    background-color: #eaf4fb;
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-page .service-icon img {
+    width: 32px;
+    height: 32px;
+}
+
+/* Card text */
+
+.home-page .service-card h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 19px;
+    font-weight: 600;
+    color: #111111;
+    margin: 0 0 10px;
+}
+
+.home-page .service-card p {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #111111;
+    line-height: 1.8;
+    margin: 0;
+}
+
+/* ============================= */
+/*          PARTNERS             */
+/* ============================= */
+
+.home-page .partners {
+    background-color: #eaf4fb;
+    padding: 55px 35px;
+    border-radius: 20px;
+
+    text-align: center;
+    margin-top: 70px;
+    margin-bottom: 70px;
+}
+
+.home-page .partners h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #111111;
+    margin-bottom: 35px;
+}
+
+/* Logos layout */
+
+.home-page .partners-logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.home-page .partners-logos img {
+    width: 160px;
+    height: 95px;
+    object-fit: contain;
+
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-sizing: border-box;
+
+    transition: transform 0.3s;
+}
+
+.home-page .partners-logos img:hover {
+    transform: scale(1.05);
+}
+
+/* Mockup disclaimer */
+
+.home-page .partners-note {
+    display: block;
+    background-color: transparent;
+    color: #111111;
+
+    font-size: 12px;
+    font-style: italic;
+    line-height: 1.8;
+
+    margin: 30px auto 0;
+    padding: 0;
+
+    max-width: 650px;
+}
+
+/* ============================= */
+/*            REVIEWS            */
+/* ============================= */
+
+.home-page .reviews {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    flex-wrap: wrap;
+
+    background-color: #ffffff;
+    border: 1px solid #c5e0f0;
+    border-radius: 16px;
+
+    padding: 25px 35px;
+    margin-bottom: 65px;
+
+    box-shadow: 0 8px 25px rgba(21, 62, 114, 0.08);
+}
+
+.home-page .trustpilot {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #111111;
+}
+
+.home-page .stars {
+    background-color: #215394;
+    color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 7px;
+    letter-spacing: 3px;
+}
+
+.home-page .reviews p {
+    color: #111111;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.home-page .reviews-details {
+    margin-left: auto;
+}
+
+.home-page .reviews-details summary {
+    color: #215394;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* ============================= */
+/*          RESPONSIVE           */
+/* ============================= */
+
+@media (max-width: 850px) {
+
+    .home-page .services-container {
+        grid-template-columns: 1fr;
+    }
+
+    .home-page .service-card {
+        padding: 25px;
+    }
+
+    .home-page .partners {
+        padding: 35px 20px;
+    }
+
+    .home-page .partners-logos {
+        gap: 15px;
+    }
+
+    .home-page .reviews {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .home-page .reviews-details {
+        margin-left: 0;
+    }
+}
+
+
+/* NEW CMS LOOK - WARM 3D STYLE */
+
+/* Main hero */
+.home-page .hero,
+.public-hero {
+    background: linear-gradient(
+        120deg,
+        #fff8f3 0%,
+        #f8e7dd 55%,
+        #f1ddd5 100%
+    );
+    border-radius: 26px;
+    box-shadow: 0 15px 40px rgba(45, 26, 15, 0.08);
+}
+
+/* Main title */
+.home-page .hero h2,
+.public-hero h1 {
+    color: #101b30;
+}
+
+/* Orange highlight */
+.home-page .hero h2 span,
+.public-hero h1 span {
+    color: #ff7100;
+}
+
+/* Supporting text */
+.home-page .hero p,
+.public-hero p {
+    color: #263344;
+}
+
+/* 3D illustration */
+.home-page .hero-image img,
+.public-hero .hero-image {
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(50, 30, 25, 0.13);
+    object-fit: cover;
+}
+
+/* Colorful statistics */
+.home-page .stat-card:nth-child(1),
+.metrics .metric:nth-child(1) {
+    background: #fff0d5;
+}
+
+.home-page .stat-card:nth-child(2),
+.metrics .metric:nth-child(2) {
+    background: #ddf4e6;
+}
+
+.home-page .stat-card:nth-child(3),
+.metrics .metric:nth-child(3) {
+    background: #ffe4d8;
+}
+
+/* Keep the numbers black */
+.home-page .stat-card h2,
+.metrics .metric strong {
+    color: #111111;
+}
+
+/* HERO - ORANGE DETAILS */
+
+/* Small title above the main heading */
+.home-page .hero h1 {
+    color: #d95f10;
+}
+
+/* Get Started button */
+.home-page .hero-buttons .btn-start {
+    background-color: #ff7100;
+    color: #ffffff;
+    border: 1px solid #ff7100;
+    box-shadow: 0 8px 20px rgba(255, 113, 0, 0.20);
+}
+
+/* Get Started hover */
+.home-page .hero-buttons .btn-start:hover {
+    background-color: #e65f00;
+    border-color: #e65f00;
+}
+
+/* Keep the van visible inside the 3D scene */
+
+.home-page .hero-image img {
+    object-position: center bottom;
+}
+
+/* ============================= */
+/*      ANIMATED DELIVERY VAN    */
+/* ============================= */
+
+.home-page .hero-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+/* Stationary warehouse */
+
+.home-page .hero-image .hero-scene {
+    display: block;
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    object-position: center bottom;
+    border-radius: 0;
+    box-shadow: none;
+    animation: none;
+}
+
+/* Moving van */
+
+.home-page .hero-image .moving-van {
+    position: absolute;
+    width: 66%;
+    max-width: none;
+    height: auto;
+    bottom: 1%;
+    left: -70%;
+
+    object-fit: contain;
+    border-radius: 0;
+    box-shadow: none;
+
+    animation: driveCMS 9s linear infinite;
+    pointer-events: none;
+}
+
+/* Movement from left to right */
+
+@keyframes driveCMS {
+    0% {
+        left: -70%;
+    }
+
+    100% {
+        left: 110%;
+    }
+}
+
+/* Smaller screens */
+
+@media (max-width: 850px) {
+    .home-page .hero-image .hero-scene {
+        height: 300px;
+    }
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+    .home-page .hero-image .moving-van {
+        animation: none;
+        left: 12%;
+    }
+}
+
+
+/* BLUE ACCENTS - CMS HOMEPAGE */
+
+/* BUSINESS COURIER SERVICES */
+.home-page .hero h1 {
+    color: #215394;
+}
+
+/* GET STARTED BUTTON */
+.home-page .hero-buttons .btn-start {
+    background-color: #215394;
+    color: #ffffff;
+    border: 1px solid #215394;
+    box-shadow: 0 8px 20px rgba(33, 83, 148, 0.20);
+}
+
+/* BUTTON HOVER */
+.home-page .hero-buttons .btn-start:hover {
+    background-color: #153c68;
+    border-color: #153c68;
+}
