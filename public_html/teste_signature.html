@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Assinatura - CMS</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .test-card {
+            background-color: #e5e5e5;
+            border-radius: 16px;
+            padding: 30px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        .canvas-container {
+            background-color: #ffffff;
+            border: 2px dashed #bbb;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 180px;
+            cursor: crosshair;
+            touch-action: none;
+        }
+
+        .actions-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 9px 18px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-clear {
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        .btn-clear:hover {
+            background-color: #f7f7f7;
+        }
+
+        .btn-save {
+            background-color: #c9e4f7;
+            border-color: #a4ceea;
+            color: #0b3954;
+        }
+
+        .btn-save:hover {
+            background-color: #b2d8f2;
+        }
+
+        /* Área de resultado */
+        .preview-area {
+            margin-top: 25px;
+            border-top: 1px solid #ccc;
+            padding-top: 15px;
+            display: none;
+        }
+
+        .preview-area h3 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: #444;
+        }
+
+        .preview-box {
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .preview-box img {
+            max-width: 100%;
+            height: auto;
+            max-height: 120px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="test-card">
+        <h2>Teste da Assinatura Digital</h2>
+
+        <div class="canvas-container">
+            <!-- Dimensões nativas do desenho -->
+            <canvas id="signatureCanvas" width="460" height="180"></canvas>
+        </div>
+
+        <div class="actions-row">
+            <button type="button" id="btnClear" class="btn-clear">Limpar</button>
+            <button type="button" id="btnExport" class="btn-save">Testar / Guardar</button>
+        </div>
+
+        <div id="previewContainer" class="preview-area">
+            <h3>Resultado Gerado (Imagem exportada):</h3>
+            <div class="preview-box">
+                <img id="previewImg" src="" alt="Assinatura">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('signatureCanvas');
+            const ctx = canvas.getContext('2d');
+            const btnClear = document.getElementById('btnClear');
+            const btnExport = document.getElementById('btnExport');
+            const previewContainer = document.getElementById('previewContainer');
+            const previewImg = document.getElementById('previewImg');
+
+            let isDrawing = false;
+            let hasDrawn = false;
+
+            // Configuração do traço
+            ctx.strokeStyle = '#111111';
+            ctx.lineWidth = 2.5;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            // Ajuste exato das coordenadas com escala do elemento
+            function getCoords(e) {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+
+                const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+                const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+                return {
+                    x: (clientX - rect.left) * scaleX,
+                    y: (clientY - rect.top) * scaleY
+                };
+            }
+
+            function startDraw(e) {
+                isDrawing = true;
+                hasDrawn = true;
+                const { x, y } = getCoords(e);
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                if (e.type.startsWith('touch')) e.preventDefault();
+            }
+
+            function draw(e) {
+                if (!isDrawing) return;
+                const { x, y } = getCoords(e);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                if (e.type.startsWith('touch')) e.preventDefault();
+            }
+
+            function stopDraw() {
+                if (isDrawing) {
+                    ctx.closePath();
+                    isDrawing = false;
+                }
+            }
+
+            // Ouvintes para Rato
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDraw);
+            canvas.addEventListener('mouseleave', stopDraw);
+
+            // Ouvintes para Ecrã Tátil
+            canvas.addEventListener('touchstart', startDraw, { passive: false });
+            canvas.addEventListener('touchmove', draw, { passive: false });
+            canvas.addEventListener('touchend', stopDraw);
+
+            // Limpar Canvas
+            btnClear.addEventListener('click', () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                previewContainer.style.display = 'none';
+                previewImg.src = '';
+                hasDrawn = false;
+            });
+
+            // Gerar Imagem e Guardar
+            btnExport.addEventListener('click', () => {
+                if (!hasDrawn) {
+                    alert('Por favor, desenha algo antes de testar.');
+                    return;
+                }
+
+                // 1. Converte o desenho em string Base64 PNG
+                const dataUrl = canvas.toDataURL('image/png');
+
+                // 2. Mostra na pré-visualização abaixo
+                previewImg.src = dataUrl;
+                previewContainer.style.display = 'block';
+
+                // 3. Guarda no localStorage (o mesmo usado pelo client_orders.html)
+                localStorage.setItem('savedSignature', dataUrl);
+            });
+        });
+    </script>
+</body>
+</html>
