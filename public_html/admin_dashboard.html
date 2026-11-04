@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!-- =========================================================
+     admin_dashboard.html — ADMIN DASHBOARD
+     Spec: "Admin ... having access also to a dashboard. This
+     dashboard is responsible for showing statistic information,
+     such as number of couriers, staff, clients, routes status
+     and other operational analytics."
+
+     Files used by this page:
+       css/style.css  -> shared styles (sidebar, cards, buttons)
+       css/admin_dashboard.css  -> layout of the KPI cards and charts
+       js/admin_dashboard.js    -> sample data + fills the numbers + draws charts
+     ========================================================= -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS – Admin Dashboard</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin_dashboard.css">
+</head>
+
+<body>
+<div class="app-layout">
+
+    <!-- ===== SIDEBAR (same on every Admin page) =====
+         class="active" marks the page we are on. -->
+    <nav class="sidebar" aria-label="Admin menu">
+        <a href="home.html" class="sidebar-logo" aria-label="CMS – go to homepage">
+            <svg viewBox="0 0 64 40" aria-hidden="true">
+                <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+            </svg>
+            CMS
+        </a>
+        <p class="sidebar-role">Admin</p>
+        <a href="admin-staff.html">Staff Approvals</a>
+        <a href="admin-users.html">Users</a>
+        <a href="admin_dashboard.html" class="active">Dashboard</a>
+        <a href="profile.html">Profile</a>
+        <a href="index.html" class="logout">Log out</a>
+    </nav>
+
+    <!-- ===== PAGE CONTENT ===== -->
+    <main class="app-content">
+
+        <div class="page-header">
+            <h1>Dashboard</h1>
+            <!-- Filled by admin_dashboard.js with the month name -->
+            <p class="text-muted" id="periodLabel"></p>
+        </div>
+
+        <!-- ---------- Row 1: who uses the system ----------
+             Each number has an id so admin_dashboard.js can write into it.
+             The "—" is shown until the script fills the value. -->
+        <section class="kpi-row" aria-label="Key numbers">
+            <div class="card stat-card">
+                <span class="stat-value" id="kpiClients">—</span>
+                <span class="stat-label">Clients</span>
+            </div>
+            <div class="card stat-card">
+                <span class="stat-value" id="kpiCouriers">—</span>
+                <span class="stat-label">Couriers</span>
+            </div>
+            <div class="card stat-card">
+                <span class="stat-value" id="kpiStaff">—</span>
+                <span class="stat-label">Staff</span>
+                <!-- Links to the Staff Approvals page when someone is waiting -->
+                <a class="stat-note" id="kpiPendingStaff" href="admin-staff.html"></a>
+            </div>
+            <div class="card stat-card">
+                <span class="stat-value" id="kpiActiveRoutes">—</span>
+                <span class="stat-label">Active routes</span>
+                <span class="stat-note" id="kpiCompletedRoutes"></span>
+            </div>
+            <div class="card stat-card">
+                <span class="stat-value" id="kpiDeliveryTime">—</span>
+                <span class="stat-label">Average delivery time (days)</span>
+            </div>
+        </section>
+
+        <!-- ---------- Row 2: charts ----------
+             <canvas> is an empty drawing area. Chart.js draws inside it. -->
+        <section class="chart-row" aria-label="Charts">
+            <div class="card">
+                <h2>Orders by status</h2>
+                <div class="chart-box">
+                    <canvas id="statusChart" aria-label="Doughnut chart of orders by status" role="img"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h2>Orders per week</h2>
+                <div class="chart-box">
+                    <canvas id="weeklyChart" aria-label="Bar chart of orders per week" role="img"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- ---------- Row 3: operational KPIs ---------- -->
+        <section class="kpi-row kpi-row-4" aria-label="Operational indicators">
+            <div class="card stat-card">
+                <span class="stat-label">Active orders</span>
+                <span class="stat-value" id="kpiActiveOrders">—</span>
+                <span class="stat-note" id="kpiActiveOrdersNote"></span>
+            </div>
+            <div class="card stat-card">
+                <span class="stat-label">Completion rate</span>
+                <span class="stat-value" id="kpiCompletion">—</span>
+                <span class="stat-note" id="kpiCompletionNote"></span>
+            </div>
+            <div class="card stat-card">
+                <span class="stat-label">Expiring documents</span>
+                <span class="stat-value" id="kpiExpiring">—</span>
+                <span class="stat-note" id="kpiExpiringNote"></span>
+            </div>
+            <div class="card stat-card">
+                <span class="stat-label">Average load utilization</span>
+                <span class="stat-value" id="kpiLoad">—</span>
+                <span class="stat-note" id="kpiLoadNote"></span>
+            </div>
+        </section>
+
+        <p class="text-muted">Sample test data. In Sprint 2 these values will come from the database.</p>
+    </main>
+</div>
+
+<!-- ===== SCRIPTS =====
+     1) Chart.js library (draws the charts), loaded from a CDN.
+     2) Our own script. It must come AFTER Chart.js because it uses it. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="js/admin_dashboard.js"></script>
+</body>
+</html>
