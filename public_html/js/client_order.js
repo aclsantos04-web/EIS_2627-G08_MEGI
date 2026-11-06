@@ -1,11 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. INICIALIZAR O MAPA COM A NOVA FUNÇÃO DA EQUIPA
+    const originCoords = [41.1780, -8.5980];        // FEUP
+    const destCoords = [41.1496, -8.6109];          // Porto Centro
+
+    if (typeof createRouteMap === 'function' && document.getElementById('map')) {
+        createRouteMap('map', originCoords, destCoords, 'Origem (FEUP)', 'Destino (Porto)');
+    }
+
+    // 2. GESTÃO DOS PRODUTOS DA ENCOMENDA
     const btnAddProduct = document.getElementById('btnAddProduct');
     const productSelect = document.getElementById('productSelect');
     const productQty = document.getElementById('productQty');
     const selectedProductsList = document.getElementById('selectedProductsList');
     const orderForm = document.getElementById('orderForm');
 
-    // Array com os itens da encomenda
     let orderItems = [
         { name: 'Product A', weight: '5kg', vol: '0.02 m²', quantity: 2 }
     ];
@@ -26,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedProductsList.appendChild(chip);
         });
 
-        // Configurar botões de eliminação
         document.querySelectorAll('.btn-remove-item').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const idx = e.target.getAttribute('data-index');
@@ -36,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Adicionar novo produto à lista
     btnAddProduct.addEventListener('click', () => {
         const selectedOption = productSelect.options[productSelect.selectedIndex];
         const productName = selectedOption.value;
@@ -52,23 +58,19 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const weight = selectedOption.getAttribute('data-weight');
-        const vol = selectedOption.getAttribute('data-vol');
-
         orderItems.push({
             name: productName,
-            weight: weight,
-            vol: vol,
+            weight: selectedOption.getAttribute('data-weight'),
+            vol: selectedOption.getAttribute('data-vol'),
             quantity: qty
         });
 
         renderProductList();
-
         productSelect.selectedIndex = 0;
         productQty.value = 1;
     });
 
-    // Submissão com Validações do Enunciado
+    // 3. SUBMISSÃO COM AS VALIDAÇÕES OBRIGATÓRIAS DO SPRINT 1
     orderForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -77,19 +79,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const destLat = document.getElementById('destLat').value.trim();
         const destLong = document.getElementById('destLong').value.trim();
 
-        // 1. Validar se há produtos associados
         if (orderItems.length === 0) {
             alert('Erro: Deve adicionar pelo menos um produto à encomenda.');
             return;
         }
 
-        // 2. Validar preenchimento dos campos de coordenadas
         if (!originLat || !originLong || !destLat || !destLong) {
-            alert('Erro: Todas as coordenadas de Latitude e Longitude (Origem e Destino) são obrigatórias.');
+            alert('Erro: Todas as coordenadas de Latitude e Longitude devem ser preenchidas.');
             return;
         }
 
-        // 3. Validação numérica das coordenadas GPS
         const latRegex = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$/;
         const longRegex = /^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/;
 
@@ -103,13 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Sucesso na submissão
-        alert('Encomenda submetida com sucesso! Estado atribuído: Initiated.');
-        orderForm.reset();
-        orderItems = [];
-        renderProductList();
+        alert('Encomenda submetida com sucesso! (Estado: Initiated)');
+        window.location.href = 'client_orders.html';
     });
 
-    // Renderizar o estado inicial
     renderProductList();
 });

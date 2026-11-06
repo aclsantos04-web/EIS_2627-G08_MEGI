@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Staff Panel | Document Alerts</title>
+    <!-- Estilos globais da equipa -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Estilos complementares de Staff -->
+    <link rel="stylesheet" href="css/staff.css">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- Sidebar oficial do projeto -->
+        <nav class="sidebar">
+            <a href="index.html" class="sidebar-logo">CMS</a>
+            <div class="sidebar-role">Staff</div>
+
+            <a href="staff_courier_approvals.html">Courier Approvals</a>
+            <a href="staff_vehicle_approvals.html">Vehicle Approvals</a>
+            <a href="staff_alerts.html" class="active">Document Alerts</a>
+            <a href="staff_profile.html">Profile</a>
+            <a href="login.html" class="logout">Log out</a>
+        </nav>
+
+        <!-- Área Principal de Conteúdo -->
+        <main class="app-content">
+            <header class="page-header">
+                <h1>Document Alerts</h1>
+            </header>
+
+            <!-- Caixa de Alerta Global (Secção 10 do style.css) -->
+            <div class="alert alert-warning">
+                <h2>Pending Document Reviews</h2>
+                <p>Existem veículos com documentação caducada ou a expirar brevemente que requerem auditoria do Staff.</p>
+            </div>
+
+            <!-- Tabela de Alertas de Documentos -->
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Vehicle Registration</th>
+                            <th>Courier Name</th>
+                            <th>Document</th>
+                            <th>Expiry Date</th>
+                            <th>Status</th>
+                            <th class="actions-header">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="alertsTableBody">
+                        <tr data-id="1">
+                            <td><strong>55-RT-90</strong></td>
+                            <td>Tiago Ferreira</td>
+                            <td>Inspection Certificate</td>
+                            <td><span class="text-danger">2026-11-20</span></td>
+                            <td><span class="badge badge-danger">Expired</span></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="btn btn-small btn-primary btn-review">Review</button>
+                                    <button type="button" class="btn btn-small btn-outline btn-notify">Notify</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-id="2">
+                            <td><strong>AA-12-BC</strong></td>
+                            <td>Diogo Silva</td>
+                            <td>Insurance Policy</td>
+                            <td>2026-11-28</td>
+                            <td><span class="badge badge-warning">Expiring</span></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="btn btn-small btn-primary btn-review">Review</button>
+                                    <button type="button" class="btn btn-small btn-outline btn-notify">Notify</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-id="3">
+                            <td><strong>78-LM-33</strong></td>
+                            <td>Inês Santos</td>
+                            <td>Inspection Certificate</td>
+                            <td>2026-12-05</td>
+                            <td><span class="badge badge-warning">Expiring</span></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="btn btn-small btn-primary btn-review">Review</button>
+                                    <button type="button" class="btn btn-small btn-outline btn-notify">Notify</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-id="4">
+                            <td><strong>94-XF-21</strong></td>
+                            <td>Beatriz Costa</td>
+                            <td>Insurance Policy (Updated)</td>
+                            <td>2027-08-20</td>
+                            <td><span class="badge badge-info">New Upload</span></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="btn btn-small btn-success btn-approve-doc">Validate</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Pop-up de Pré-visualização do Documento (<dialog>) -->
+    <dialog id="docDialog">
+        <h3>Document Audit</h3>
+        <p id="docDialogDetails" class="text-muted"></p>
+        
+        <div class="doc-preview-container">
+            <span class="doc-icon">📄</span>
+            <p><strong>Certificado de Inspeção / Seguro Válido</strong></p>
+            <small class="text-muted">(Simulador de ficheiro PDF/Imagem anexado pelo Courier)</small>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" id="btnCloseDoc" class="btn btn-outline">Close</button>
+            <button type="button" id="btnValidateDoc" class="btn btn-success">Validate Document</button>
+        </div>
+    </dialog>
+
+    <script src="js/staff_alerts.js"></script>
+</body>
+</html>

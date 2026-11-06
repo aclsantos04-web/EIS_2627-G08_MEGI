@@ -1,42 +1,82 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const btnViewPod = document.getElementById('btnViewPod');
-    const btnClosePod = document.getElementById('btnClosePod');
-    const podModal = document.getElementById('podModal');
-    const signatureContainer = document.querySelector('.signature-placeholder');
+    /* =========================================================
+       1. INICIALIZAÇÃO DO MAPA COM A ROTA REAL (OSRM / Leaflet)
+       ========================================================= */
+    const mapElement = document.getElementById('map');
 
-    if (!btnViewPod || !podModal) {
-        return;
+    if (mapElement && typeof createRouteMap === 'function') {
+        const originCoords = [41.1780, -8.5980];       // FEUP
+        const destCoords = [41.1496, -8.6109];         // Baixa / Porto Centro
+
+        createRouteMap(
+            'map',
+            originCoords,
+            destCoords,
+            'Location 1 (FEUP)',
+            'Location 2 (Porto)'
+        );
     }
 
-    // Abre o pop-up e carrega a assinatura se existir no localStorage
-    btnViewPod.addEventListener('click', () => {
-        const savedSignature = localStorage.getItem('savedSignature');
+    /* =========================================================
+       2. CONTROLO DO POP-UP DE PROOF OF DELIVERY (<dialog>)
+       ========================================================= */
+    const btnViewPod = document.getElementById('btnViewPod');
+    const btnClosePod = document.getElementById('btnClosePod');
+    const podDialog = document.getElementById('podDialog');
+    const signatureContainer = document.getElementById('signaturePlaceholder');
 
-        if (savedSignature && signatureContainer) {
-            signatureContainer.innerHTML = `
-                <img src="${savedSignature}" 
-                     alt="Proof of Delivery Signature" 
-                     style="max-width: 100%; max-height: 110px; object-fit: contain;" />
-            `;
-        } else if (signatureContainer) {
-            signatureContainer.innerHTML = '<span>✍️ Assinatura Digital / Foto de Entrega</span>';
-        }
+    if (btnViewPod && podDialog) {
+        btnViewPod.addEventListener('click', () => {
+            const savedSignature = localStorage.getItem('savedSignature');
 
-        podModal.classList.add('open');
-    });
+            if (savedSignature && signatureContainer) {
+                signatureContainer.innerHTML = `
+                    <img src="${savedSignature}" 
+                         alt="Proof of Delivery" 
+                         style="max-width: 100%; max-height: 140px; object-fit: contain;" />
+                `;
+            } else if (signatureContainer) {
+                signatureContainer.innerHTML = `
+                    <span class="text-muted">✍️ Nenhuma assinatura ou foto registada ainda.</span>
+                `;
+            }
 
-    // Fecha ao carregar no botão Fechar
-    if (btnClosePod) {
-        btnClosePod.addEventListener('click', () => {
-            podModal.classList.remove('open');
+            if (typeof podDialog.showModal === 'function') {
+                podDialog.showModal();
+            } else {
+                podDialog.setAttribute('open', '');
+            }
         });
     }
 
-    // Fecha ao carregar fora da caixa (no overlay escuro)
-    podModal.addEventListener('click', (e) => {
-        if (e.target === podModal) {
-            podModal.classList.remove('open');
-        }
-    });
-});
+    if (btnClosePod && podDialog) {
+        btnClosePod.addEventListener('click', () => {
+            if (typeof podDialog.close === 'function') {
+                podDialog.close();
+            } else {
+                podDialog.removeAttribute('open');
+            }
+        });
+    }
 
+    // Fechar ao clicar fora da caixa do modal (<dialog>)
+    if (podDialog) {
+        podDialog.addEventListener('click', (event) => {
+            const rect = podDialog.getBoundingClientRect();
+            const isInDialog = (
+                rect.top <= event.clientY &&
+                event.clientY <= rect.top + rect.height &&
+                rect.left <= event.clientX &&
+                event.clientX <= rect.left + rect.width
+            );
+
+            if (!isInDialog) {
+                if (typeof podDialog.close === 'function') {
+                    podDialog.close();
+                } else {
+                    podDialog.removeAttribute('open');
+                }
+            }
+        });
+    }
+});
