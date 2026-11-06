@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Staff Panel | Vehicle Approvals</title>
+    <!-- Estilos globais da equipa -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Estilos complementares de Staff -->
+    <link rel="stylesheet" href="css/staff.css">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- Sidebar oficial do projeto -->
+        <nav class="sidebar">
+            <a href="index.html" class="sidebar-logo">CMS</a>
+            <div class="sidebar-role">Staff</div>
+
+            <a href="staff_courier_approvals.html">Courier Approvals</a>
+            <a href="staff_vehicle_approvals.html" class="active">Vehicle Approvals</a>
+            <a href="staff_alerts.html">Document Alerts</a>
+            <a href="staff_profile.html">Profile</a>
+            <a href="login.html" class="logout">Log out</a>
+        </nav>
+
+        <!-- Área Principal de Conteúdo -->
+        <main class="app-content">
+            <header class="page-header">
+                <h1>Vehicle Approvals</h1>
+            </header>
+
+            <!-- Tabela com a classe padrão .table-wrap do style.css -->
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>License Plate</th>
+                            <th>Courier</th>
+                            <th>Vehicle Type</th>
+                            <th>Insurance Expiry</th>
+                            <th>Inspection Expiry</th>
+                            <th class="actions-header">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vehicleTableBody">
+                        <tr data-id="1">
+                            <td><strong>AA-12-BC</strong></td>
+                            <td>Diogo Silva</td>
+                            <td>Van</td>
+                            <td>2027-05-15</td>
+                            <td>2027-04-10</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="btn btn-small btn-success btn-approve">Approve</button>
+                                    <button type="button" class="btn btn-small btn-danger btn-reject">Reject</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-id="2">
+                            <td><strong>94-XF-21</strong></td>
+                            <td>Beatriz Costa</td>
+                            <td>Moto</td>
+                            <td>2027-08-20</td>
+                            <td>2027-08-15</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="btn btn-small btn-success btn-approve">Approve</button>
+                                    <button type="button" class="btn btn-small btn-danger btn-reject">Reject</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-id="3">
+                            <td><strong>55-RT-90</strong></td>
+                            <td>Tiago Ferreira</td>
+                            <td>Truck</td>
+                            <td>2026-12-01</td>
+                            <td>2026-11-20</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="btn btn-small btn-success btn-approve">Approve</button>
+                                    <button type="button" class="btn btn-small btn-danger btn-reject">Reject</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-id="4">
+                            <td><strong>78-LM-33</strong></td>
+                            <td>Inês Santos</td>
+                            <td>Van</td>
+                            <td>2027-02-28</td>
+                            <td>2027-01-15</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="btn btn-small btn-success btn-approve">Approve</button>
+                                    <button type="button" class="btn btn-small btn-danger btn-reject">Reject</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-id="5">
+                            <td><strong>10-ZZ-44</strong></td>
+                            <td>Miguel Rocha</td>
+                            <td>Bike</td>
+                            <td>2027-09-10</td>
+                            <td>2027-09-10</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="btn btn-small btn-success btn-approve">Approve</button>
+                                    <button type="button" class="btn btn-small btn-danger btn-reject">Reject</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/staff_vehicles.js"></script>
+</body>
+</html>

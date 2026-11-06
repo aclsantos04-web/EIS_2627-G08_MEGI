@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Staff Panel | Courier Approvals</title>
+    <!-- Estilos partilhados da equipa -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Estilos específicos do Staff -->
+    <link rel="stylesheet" href="css/staff.css">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- Sidebar oficial do projeto -->
+        <nav class="sidebar">
+            <a href="index.html" class="sidebar-logo">CMS</a>
+            <div class="sidebar-role">Staff</div>
+
+            <a href="staff_courier_approvals.html" class="active">Courier Approvals</a>
+            <a href="staff_vehicle_approvals.html">Vehicle Approvals</a>
+            <a href="staff_alerts.html">Document Alerts</a>
+            <a href="staff_profile.html">Profile</a>
+            <a href="login.html" class="logout">Log out</a>
+        </nav>
+
+        <!-- Área Principal de Conteúdo -->
+        <main class="app-content">
+            <header class="page-header">
+                <h1>Courier Approvals</h1>
+            </header>
+
+            <!-- Tabela com a classe padrão .table-wrap do style.css -->
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Registration Date</th>
+                            <th class="actions-header">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="courierTableBody">
+                        <tr data-id="1">
+                            <td><strong>Diogo Silva</strong></td>
+                            <td>diogo.silva@feup.pt</td>
+                            <td>2026-10-12</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="btn btn-small btn-success btn-approve">Approve</button>
+                                    <button type="button" class="btn btn-small btn-danger btn-reject">Reject</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-id="2">
+                            <td><strong>Tiago Ferreira</strong></td>
+                            <td>tiago.ferreira@hotmail.com</td>
+                            <td>2026-10-18</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="btn btn-small btn-success btn-approve">Approve</button>
+                                    <button type="button" class="btn btn-small btn-danger btn-reject">Reject</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-id="3">
+                            <td><strong>Inês Santos</strong></td>
+                            <td>ines.santos@outlook.com</td>
+                            <td>2026-10-22</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="btn btn-small btn-success btn-approve">Approve</button>
+                                    <button type="button" class="btn btn-small btn-danger btn-reject">Reject</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-id="4">
+                            <td><strong>Miguel Rocha</strong></td>
+                            <td>miguel.rocha@yahoo.com</td>
+                            <td>2026-10-25</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="btn btn-small btn-success btn-approve">Approve</button>
+                                    <button type="button" class="btn btn-small btn-danger btn-reject">Reject</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/staff_approvals.js"></script>
+</body>
+</html>

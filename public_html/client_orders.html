@@ -8,41 +8,35 @@
     <!-- Folha de estilos do Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-    <!-- Estilos do projeto -->
+    <!-- Estilos partilhados da equipa -->
     <link rel="stylesheet" href="css/style.css">
+    <!-- Estilos específicos do cliente -->
     <link rel="stylesheet" href="css/client.css">
 </head>
 <body>
 
-    <div class="layout-container">
-        <!-- Sidebar do Cliente -->
-        <aside class="sidebar">
-            <div class="brand">
-                <h1>CMS</h1>
-            </div>
+    <div class="app-layout">
+        <!-- Sidebar oficial da equipa -->
+        <nav class="sidebar">
+            <a href="index.html" class="sidebar-logo">CMS</a>
+            <div class="sidebar-role">Client</div>
 
-            <div class="user-role-badge">
-                <span class="role-icon">👤</span>
-                <span class="role-name">Client</span>
-            </div>
+            <a href="client_new_order.html">New Order</a>
+            <a href="client_orders.html" class="active">My Orders</a>
+            <a href="client_profile.html">Profile</a>
+            <a href="login.html" class="logout">Log out</a>
+        </nav>
 
-            <nav class="nav-menu">
-                <a href="client_new_order.html" class="nav-item">New Order</a>
-                <a href="client_orders.html" class="nav-item active">My Orders</a>
-                <a href="client_profile.html" class="nav-item">Profile</a>
-            </nav>
-        </aside>
-
-        <!-- Conteúdo Principal -->
-        <main class="main-content">
-            <header class="content-header">
-                <h2>Order #1001</h2>
+        <!-- Área Principal de Conteúdo -->
+        <main class="app-content">
+            <header class="page-header">
+                <h1>Order #1001</h1>
             </header>
 
-            <!-- Barra de Progresso Moderna (Sem a seta cinzenta) -->
-            <section class="status-tracker-container">
+            <!-- Barra de Progresso Moderna -->
+            <section class="card status-tracker-container">
                 <div class="status-tracker">
-                    <div class="tracker-progress-line" style="width: 100%;"></div>
+                    <div class="tracker-progress-line"></div>
 
                     <div class="step completed">
                         <div class="step-circle">✓</div>
@@ -54,14 +48,14 @@
                         <span class="step-label">In progress</span>
                     </div>
 
-                    <div class="step active completed">
+                    <div class="step completed">
                         <div class="step-circle">✓</div>
                         <span class="step-label">Completed</span>
                     </div>
                 </div>
             </section>
 
-            <!-- Grelha com Detalhes da Encomenda e Mapa -->
+            <!-- Grelha com Detalhes da Encomenda à esquerda e Mapa à direita -->
             <div class="order-details-grid">
                 
                 <!-- Order Information Card -->
@@ -70,12 +64,12 @@
                     
                     <div class="info-group">
                         <span class="info-label">Origin</span>
-                        <p class="info-value">Location 1 (41.23 ; 23.3432)</p>
+                        <p class="info-value">Location 1 (41.1780 ; -8.5980)</p>
                     </div>
 
                     <div class="info-group">
                         <span class="info-label">Destination</span>
-                        <p class="info-value">Location 2 (41.23 ; 23.3432)</p>
+                        <p class="info-value">Location 2 (41.1496 ; -8.6109)</p>
                     </div>
 
                     <div class="info-group">
@@ -92,17 +86,17 @@
                     </div>
                 </section>
 
-                <!-- Coluna Direita: Mapa Leaflet e Ação de Comprovativo -->
+                <!-- Coluna Direita: Mapa Leaflet e Ação do Comprovativo -->
                 <div class="map-action-column">
                     <section class="card map-container-card">
                         <div id="map"></div>
                         <div class="map-footer-hint">
-                            <p>Click on the map to select location</p>
+                            <p class="text-muted">Route between Origin and Destination</p>
                         </div>
                     </section>
 
                     <div class="pod-action-container">
-                        <button type="button" id="btnViewPod" class="btn-blue">See Proof of Delivery</button>
+                        <button type="button" id="btnViewPod" class="btn btn-secondary">See Proof of Delivery</button>
                     </div>
                 </div>
 
@@ -110,22 +104,24 @@
         </main>
     </div>
 
-    <!-- Modal para o Proof of Delivery (e-POD) -->
-    <div id="podModal" class="modal-overlay">
-        <div class="modal-box card">
-            <h3>Electronic Proof of Delivery (e-POD)</h3>
-            <p style="margin-top: 10px;"><strong>Order:</strong> #1001</p>
-            <p><strong>Courier:</strong> Diogo Silva</p>
-            <div class="pod-preview">
-                <div class="signature-placeholder">
-                    <span>✍️ Assinatura Digital / Foto de Entrega</span>
-                </div>
+    <!-- Pop-up nativo <dialog> conforme a secção 12 do style.css -->
+    <dialog id="podDialog">
+        <h3>Electronic Proof of Delivery (e-POD)</h3>
+        <p><strong>Order:</strong> #1001</p>
+        <p><strong>Courier:</strong> Diogo Silva</p>
+        
+        <div class="pod-preview-box">
+            <div id="signaturePlaceholder" class="signature-placeholder">
+                <span class="text-muted">✍️ Nenhuma assinatura ou foto registada ainda.</span>
             </div>
-            <button type="button" id="btnClosePod" class="btn-blue" style="margin-top: 15px;">Fechar</button>
         </div>
-    </div>
 
-    <!-- Scripts essenciais do Leaflet e da Aplicação -->
+        <div class="form-actions" style="margin-top: 20px;">
+            <button type="button" id="btnClosePod" class="btn btn-outline">Close</button>
+        </div>
+    </dialog>
+
+    <!-- Scripts essenciais -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="js/map.js"></script>
     <script src="js/client_orders.js"></script>

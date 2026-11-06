@@ -1,131 +1,26 @@
-* {
-    box-sizing: border-box;
-}
+/* =========================================================
+   CLIENT.CSS — Estilos específicos da Área de Cliente
+   ========================================================= */
 
-/* Layout Geral */
-.layout-container {
-    display: flex;
-    min-height: 100vh;
-}
-
-/* Sidebar */
-.sidebar {
-    width: 240px;
-    background-color: var(--sidebar);
-    padding: 24px 16px;
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid #e0e0e0;
-}
-
-/* Contentor do Mapa */
-.map-container-card {
-    display: flex;
-    flex-direction: column;
-    padding: 12px;
-}
-
-#map {
-    width: 100%;
-    height: 260px; /* Altura obrigatória para o Leaflet renderizar */
-    border-radius: 6px;
-    z-index: 1; /* Garante que controlos de zoom não sobreponham menus */
-}
-
-.map-footer-hint {
-    text-align: center;
-    padding-top: 8px;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.brand h1 {
-    font-size: 2.2rem;
-    font-weight: 800;
-    margin-bottom: 28px;
-    letter-spacing: -1px;
-}
-
-.user-role-badge {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.15rem;
-    font-weight: 700;
-    margin-bottom: 24px;
-    padding-left: 6px;
-}
-
-.nav-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.nav-item {
-    padding: 12px 18px;
-    border-radius: 8px;
-    font-weight: 600;
-    color: var(--text);
-    transition: background-color 0.2s ease;
-}
-
-.nav-item:hover {
-    background-color: #e2e2e2;
-}
-
-/* Item ativo segue a cor azul padrão do grupo */
-.nav-item.active {
-    background-color: var(--blue);
-}
-
-/* Conteúdo Principal */
-.main-content {
-    flex: 1;
-    padding: 40px 48px;
-    background-color: var(--background);
-}
-
-.content-header h2 {
-    font-size: 2.2rem;
-    font-weight: 800;
-    margin-bottom: 28px;
-}
-
-/* Grid de Formulários */
+/* ---------------------------------------------------------
+   1. CREATE NEW ORDER (client_new_order.html)
+   --------------------------------------------------------- */
 .order-grid {
     display: grid;
     grid-template-columns: 1.15fr 1fr;
     gap: 20px;
-    max-width: 980px;
+    max-width: 1050px;
 }
 
-/* Campos de Input e Textarea */
-.form-input {
-    border: 1px solid #dedede;
-    background-color: var(--surface);
-    border-radius: 6px;
-    padding: 9px 12px;
-    font-size: 0.95rem;
-    color: var(--text);
-    font-family: inherit;
-    outline: none;
+.order-grid .card {
+    margin-bottom: 0;
 }
 
-.form-input:focus, .form-textarea:focus {
-    border-color: #90b8db;
-}
-
-/* Package Card */
-.package-card h3, .notes-card h3, .location-card h3 {
-    margin-bottom: 16px;
-    font-size: 1.1rem;
-    font-weight: 700;
-}
-
+/* Secção de Produtos */
 .product-input-row {
     display: flex;
     gap: 10px;
+    align-items: center;
     margin-bottom: 16px;
 }
 
@@ -134,7 +29,7 @@
 }
 
 .qty-input {
-    width: 65px;
+    width: 70px;
     text-align: center;
 }
 
@@ -146,59 +41,54 @@
 
 .product-chip {
     background-color: #ffffff;
-    border: 1px solid #e3e3e3;
-    border-radius: 6px;
-    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.9rem;
+    font-size: 14px;
 }
 
 .product-qty-badge {
-    background-color: #ededed;
-    padding: 2px 10px;
-    border-radius: 4px;
-    font-weight: 600;
+    background-color: var(--surface);
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-weight: 700;
 }
 
 .btn-remove-item {
     background: none;
     border: none;
-    color: var(--red);
+    color: var(--danger);
     font-weight: bold;
-    margin-left: 8px;
+    margin-left: 10px;
     cursor: pointer;
+    font-size: 15px;
+    line-height: 1;
 }
 
-/* Notes Card */
-.notes-card {
-    display: flex;
-    flex-direction: column;
+.btn-remove-item:hover {
+    opacity: 0.7;
 }
 
-.form-textarea {
-    flex: 1;
-    min-height: 120px;
-    border: 1px solid #dedede;
-    background-color: var(--surface);
-    border-radius: 6px;
-    padding: 12px;
-    font-size: 0.95rem;
-    font-family: inherit;
+/* Secção de Notas */
+.notes-card textarea {
+    min-height: 140px;
+    height: 100%;
     resize: none;
-    outline: none;
 }
 
-/* Location Card */
+/* Secção de Coordenadas */
 .coords-section {
     margin-bottom: 14px;
 }
 
 .coords-subtitle {
-    font-weight: 600;
-    font-size: 0.95rem;
+    font-weight: 700;
+    font-size: 14px;
     margin-bottom: 6px;
+    color: var(--text);
 }
 
 .coords-row {
@@ -207,53 +97,58 @@
 }
 
 .input-block {
-    display: flex;
-    flex-direction: column;
     flex: 1;
 }
 
 .input-block label {
-    font-size: 0.8rem;
-    color: #666;
+    font-size: 13px;
+    color: var(--muted);
     margin-bottom: 4px;
 }
 
 .action-footer {
     display: flex;
     justify-content: flex-end;
-    margin-top: 18px;
+    margin-top: 14px;
 }
 
-/* Map Card Placeholder */
-.map-card {
+
+/* ---------------------------------------------------------
+   2. MAP CONTAINER (Comum a ambas as páginas)
+   --------------------------------------------------------- */
+.map-container-card {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 240px;
-    border: 1px dashed #c0c0c0;
+    flex-direction: column;
+    padding: 12px;
+    margin-bottom: 0;
 }
 
-.map-placeholder {
+#map {
+    width: 100%;
+    height: 270px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    z-index: 1;
+}
+
+.map-footer-hint {
     text-align: center;
-    color: #666;
+    padding-top: 8px;
 }
 
-.map-legend {
-    font-size: 0.95rem;
-    font-weight: 500;
+.map-footer-hint p {
+    margin: 0;
 }
-/* PARTE DO CLIENT ORDERS ADICIONADO DEPOIS */
 
-/* ===================================================
-   PROGRESS TRACKER (Sem a seta cinzenta)
-   =================================================== */
+
+/* ---------------------------------------------------------
+   3. MY ORDERS (client_orders.html)
+   --------------------------------------------------------- */
+/* Barra de Progresso / Status Tracker */
 .status-tracker-container {
-    background-color: var(--surface);
+    background-color: var(--card);
     padding: 24px 32px;
-    border-radius: 12px;
-    margin-bottom: 28px;
-    max-width: 980px;
-    border: 1px solid #e5e5e5;
+    margin-bottom: 24px;
 }
 
 .status-tracker {
@@ -261,11 +156,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 600px;
+    max-width: 650px;
     margin: 0 auto;
 }
 
-/* Linha cinzenta base de fundo */
 .status-tracker::before {
     content: '';
     position: absolute;
@@ -273,19 +167,18 @@
     left: 0;
     width: 100%;
     height: 4px;
-    background-color: #e0e0e0;
+    background-color: var(--border);
     z-index: 1;
 }
 
-/* Linha colorida de progresso ativo */
 .tracker-progress-line {
     position: absolute;
     top: 18px;
     left: 0;
+    width: 100%;
     height: 4px;
-    background-color: var(--green);
+    background-color: var(--success);
     z-index: 2;
-    transition: width 0.3s ease;
 }
 
 .step {
@@ -301,48 +194,45 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background-color: #ffffff;
-    border: 3px solid #ccc;
+    background-color: var(--bg);
+    border: 3px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.9rem;
+    font-size: 14px;
     font-weight: 700;
-    color: #999;
-    transition: all 0.2s ease;
+    color: var(--muted);
 }
 
 .step-label {
-    font-size: 0.95rem;
+    font-size: 14px;
     font-weight: 600;
-    color: #888;
+    color: var(--muted);
 }
 
-/* Estado de passo completado */
 .step.completed .step-circle {
-    background-color: var(--green);
-    border-color: var(--green);
+    background-color: var(--success);
+    border-color: var(--success);
     color: #ffffff;
 }
 
 .step.completed .step-label {
-    color: #2e7d32;
+    color: var(--success);
 }
 
-/* ===================================================
-   DETALHES DA ENCOMENDA
-   =================================================== */
+/* Grelha de Detalhes da Encomenda */
 .order-details-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1.15fr;
     gap: 24px;
-    max-width: 980px;
+    max-width: 1050px;
 }
 
 .order-info-card {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    margin-bottom: 0;
 }
 
 .info-group {
@@ -352,28 +242,28 @@
 }
 
 .info-label {
-    font-size: 0.9rem;
+    font-size: 13px;
     font-weight: 700;
-    color: var(--text);
+    color: var(--muted);
 }
 
 .info-value {
-    font-size: 0.95rem;
-    color: #444;
+    font-size: 15px;
+    color: var(--text);
+    margin: 0;
 }
 
 .products-bullet-list {
-    list-style-type: disc;
+    margin: 0;
     padding-left: 20px;
-    color: #444;
-    font-size: 0.95rem;
 }
 
 .products-bullet-list li {
+    font-size: 14px;
     margin-bottom: 4px;
 }
 
-/* Coluna Direita (Mapa + Botão) */
+/* Coluna Direita e Botão de Comprovativo */
 .map-action-column {
     display: flex;
     flex-direction: column;
@@ -385,40 +275,33 @@
     justify-content: flex-end;
 }
 
-/* Modal e-POD */
-.modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.4);
+/* Modal / Preview do e-POD */
+.pod-preview-box {
+    margin: 16px 0;
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    min-height: 140px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 999;
-}
-
-.modal-overlay.open {
-    display: flex;
-}
-
-.modal-box {
-    width: 420px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    text-align: center;
+    background-color: var(--bg);
 }
 
 .signature-placeholder {
-    height: 120px;
-    border: 2px dashed #ccc;
-    border-radius: 6px;
-    margin-top: 12px;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #777;
-    background: #fafafa;
+}
+
+
+/* ---------------------------------------------------------
+   4. RESPONSIVIDADE (Tablets e Smartphones)
+   --------------------------------------------------------- */
+@media (max-width: 760px) {
+    .order-grid,
+    .order-details-grid {
+        grid-template-columns: 1fr;
+    }
 }
