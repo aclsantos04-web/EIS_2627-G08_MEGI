@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!-- =========================================================
+     courier-vehicles.html — COURIER: MY VEHICLES
+     Spec: couriers register vehicles with insurance and
+     inspection documents; Staff approve them.
+     Forum Q2: couriers are also warned when a document has
+     expired or is about to expire.
+
+     Files used by this page:
+       css/style.css           -> layout + original sidebar (shared)
+       css/courier.css         -> look of the courier pages
+       js/vehicles.js          -> vehicle data + date helpers (shared)
+       js/validation.js        -> form checks (shared)
+       js/courier-vehicles.js  -> this page's logic
+     ========================================================= -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - My Vehicles</title>
+
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/courier.css">
+</head>
+
+<body class="cms-page">
+<div class="app-layout">
+
+    <!-- ===== SIDEBAR=====
+         class="active" marks the page we are on. -->
+    <nav class="sidebar" aria-label="Courier menu">
+        <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
+            <svg viewBox="0 0 64 40" aria-hidden="true">
+                <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+            </svg>
+            CMS
+        </a>
+        <p class="sidebar-role">Courier</p>
+        <a href="courier-available-orders.html">Available Orders</a>
+        <a href="courier-active-route.html">Active Route</a>
+        <a href="courier-proof-delivery.html">Proof of Delivery</a>
+        <a href="courier-vehicles.html" class="active">Vehicles</a>
+        <a href="courier-completed-orders.html">Completed Orders</a>
+        <a href="courier_profile.html">Profile</a>
+        <a href="login.html" class="logout">Log out</a>
+    </nav>
+
+    <!-- ===== PAGE CONTENT ===== -->
+    <main class="app-content">
+
+        <div class="page-header">
+            <h1>My Vehicles</h1>
+            <a href="courier-add-vehicle.html" class="btn btn-primary">+ Add Vehicle</a>
+        </div>
+
+        <!-- Blue confirmation after uploading a document (hidden until then) -->
+        <p class="success-message" id="successMessage" role="status" hidden></p>
+
+        <!-- Yellow box with document warnings. The <ul> is filled by
+             JavaScript; the box stays hidden when there is nothing to say. -->
+        <section class="alert alert-warning" id="documentAlerts" hidden>
+            <h2>⚠ Documents that need your attention</h2>
+            <ul id="documentAlertList"></ul>
+        </section>
+
+        <!-- Vehicle table. The rows are created by JavaScript. -->
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Vehicle</th>
+                        <th>Type</th>
+                        <th>Maximum capacity</th>
+                        <th>Insurance expiry</th>
+                        <th>Inspection expiry</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="vehicleRows"></tbody>
+            </table>
+        </div>
+
+        <p class="text-muted">
+            A vehicle can only be used for orders once Staff approve it and both
+            documents are valid. You are warned 3 days before a document expires.
+        </p>
+    </main>
+</div>
+
+
+<!-- ===== POP-UP: UPDATE DOCUMENTS =====
+     <dialog> stays hidden until JavaScript calls showModal().
+     novalidate turns off the browser's own checks, so our
+     error messages are the ones shown. -->
+<dialog id="documentDialog" aria-labelledby="documentDialogTitle">
+    <h2 id="documentDialogTitle">Update documents</h2>
+    <p class="text-muted" id="documentDialogVehicle"></p>
+
+    <form id="documentForm" novalidate>
+        <div class="form-group">
+            <label for="documentType">Document *</label>
+            <select id="documentType">
+                <option value="">Select a document</option>
+                <option value="insurance">Insurance certificate</option>
+                <option value="inspection">Inspection certificate</option>
+            </select>
+            <span class="error-message" id="documentType-error"></span>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="newExpiryDate">New expiry date *</label>
+                <input id="newExpiryDate" type="date">
+                <span class="error-message" id="newExpiryDate-error"></span>
+            </div>
+            <div class="form-group">
+                <label for="newCertificate">Certificate (PDF, JPG, PNG) *</label>
+                <input id="newCertificate" type="file" accept=".pdf,.jpg,.jpeg,.png">
+                <span class="error-message" id="newCertificate-error"></span>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn btn-outline" id="cancelDocumentButton">Cancel</button>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </div>
+    </form>
+</dialog>
+
+
+<!-- ===== SCRIPTS =====-->
+<script src="js/vehicles.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/courier-vehicles.js"></script>
+</body>
+</html>

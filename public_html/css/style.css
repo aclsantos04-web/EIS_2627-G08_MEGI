@@ -246,12 +246,12 @@ img {
    ========================================================= */
 .app-layout {
     display: flex;               /* sidebar on the left, content on the right */
-    min-height: 100vh;           /* at least the full screen height */
+    min-height: 100vh;          
 }
 
 .sidebar {
     width: 230px;
-    flex-shrink: 0;              /* the sidebar never gets squeezed */
+    flex-shrink: 0;             
     background-color: var(--surface);
     padding: 24px 16px;
     display: flex;
@@ -259,10 +259,7 @@ img {
     gap: 6px;
 }
 
-/* The logo is a link to the homepage (index.html).
-   ".sidebar a.sidebar-logo" is more specific than ".sidebar a",
-   so these rules win over the menu-link styles below:
-   no grey box, no padding, no hover background. */
+/* The logo is a link to the homepage (index.html). */
 .sidebar a.sidebar-logo {
     display: flex;
     align-items: center;
@@ -336,14 +333,6 @@ img {
 
 /* =========================================================
    6. CARDS
-   <div class="card"> ... </div>
-   For dashboard numbers use a grid of stat cards:
-   <div class="card-grid">
-       <div class="card stat-card">
-           <span class="stat-value">128</span>
-           <span class="stat-label">Active orders</span>
-       </div>
-   </div>
    ========================================================= */
 .card {
     background-color: var(--card);
@@ -510,7 +499,7 @@ textarea.invalid {
     border-radius: 999px;        /* pill shape */
     font-size: 12px;
     font-weight: 600;
-    white-space: nowrap;         /* "In Progress" never splits into two lines */
+    white-space: nowrap;         /* "In Progress" doesn't' splits into two lines */
 }
 
 .badge-success { background-color: var(--success-bg); color: var(--success); }

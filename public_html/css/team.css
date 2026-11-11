@@ -1,12 +1,10 @@
 /* =========================================================
    team.css — STYLES ONLY FOR team.html
-   Loaded AFTER style.css, so it can reuse its variables.
+
    ========================================================= */
 
 
-/* ---------- Blue hero area behind the title and cards ----------
-   linear-gradient goes from light blue (top) to light grey (bottom),
-   like the mockup. */
+
 .team-hero {
     background: linear-gradient(to bottom, #94BDDB, #ECECEF);
     padding: 56px 32px 40px;
@@ -25,11 +23,9 @@
 }
 
 
-/* ---------- Grid of member cards ----------
-   "grid" with repeat(4, 1fr) = 4 columns of equal width.
-   On smaller screens the media queries below change it to 2, then 1. */
+/* ---------- Grid of member cards ---------- */
 .team-grid {
-    list-style: none;          /* the cards are an <ul>; remove bullets */
+    list-style: none;         
     padding: 0;
     margin: 40px auto 0;
     max-width: 1100px;
@@ -44,7 +40,7 @@
     background: var(--card);
     border-radius: var(--radius);
     padding: 28px 16px;
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);   /* soft shadow like the mockup */
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);   
     display: flex;
     flex-direction: column;    /* stack photo, name, details vertically */
     align-items: center;
@@ -62,13 +58,12 @@
     height: 120px;
     border-radius: 50%;
     border: 4px solid var(--primary);
-    background: var(--primary-light);   /* shown while there is no photo yet */
+    background: var(--primary-light);  
     object-fit: cover;
     margin-bottom: 16px;
 }
 
-/* Placeholder circle with initials, used when a photo is missing.
-   flex + center puts the letters in the middle of the circle. */
+/* Placeholder circle */
 .member-initials {
     display: flex;
     align-items: center;
@@ -92,7 +87,7 @@
 
 .member-info a {
     color: var(--text);
-    word-break: break-all;     /* long emails wrap instead of overflowing */
+    word-break: break-all;    
 }
 
 .member-info a:hover {
@@ -103,7 +98,7 @@
     display: inline-block;
     margin-top: 10px;
     padding: 2px 12px;
-    border-radius: 999px;      /* pill shape */
+    border-radius: 999px;     
     background: var(--primary-light);
     color: var(--primary);
     font-size: 13px;
