@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!-- =========================================================
+     courier-completed-orders.html — COURIER: COMPLETED ORDERS
+     Required page: list of the courier's completed deliveries,
+     each with its Proof of Delivery (signature or photo).
+
+     Files used by this page:
+       css/style.css                    -> layout + original sidebar (shared)
+       css/courier.css                  -> look of the courier pages
+       js/vehicles.js                   -> date helpers (shared)
+       js/courier-completed-orders.js   -> sample orders + this page's logic
+     ========================================================= -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Completed Orders</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/courier.css">
+</head>
+
+<body class="cms-page">
+<div class="app-layout">
+
+    <!-- ===== SIDEBAR ===== -->
+    <nav class="sidebar" aria-label="Courier menu">
+        <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
+            <svg viewBox="0 0 64 40" aria-hidden="true">
+                <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+            </svg>
+            CMS
+        </a>
+        <p class="sidebar-role">Courier</p>
+        <a href="courier-available-orders.html">Available Orders</a>
+        <a href="courier-active-route.html">Active Route</a>
+        <a href="courier-proof-delivery.html">Proof of Delivery</a>
+        <a href="courier-vehicles.html">Vehicles</a>
+        <a href="courier-completed-orders.html" class="active">Completed Orders</a>
+        <a href="courier_profile.html">Profile</a>
+        <a href="login.html" class="logout">Log out</a>
+    </nav>
+
+    <!-- ===== PAGE CONTENT ===== -->
+    <main class="app-content">
+
+        <h1>Completed Orders</h1>
+
+        <!-- Summary numbers, filled by JavaScript -->
+        <section class="card-grid" aria-label="Summary">
+            <div class="card stat-card">
+                <span class="stat-value" id="totalDeliveries">—</span>
+                <span class="stat-label">Deliveries completed</span>
+            </div>
+            <div class="card stat-card">
+                <span class="stat-value" id="totalWeight">—</span>
+                <span class="stat-label">Total weight delivered</span>
+            </div>
+            <div class="card stat-card">
+                <span class="stat-value" id="lastDelivery">—</span>
+                <span class="stat-label">Last delivery</span>
+            </div>
+        </section>
+
+        <!-- Search: filters the table while you type -->
+        <div class="toolbar">
+            <label for="orderSearch" class="sr-only">Search orders</label>
+            <input id="orderSearch" type="search" placeholder="Search by order number or city">
+            <span class="text-muted" id="resultCount"></span>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Origin</th>
+                        <th>Destination</th>
+                        <th>Delivered on</th>
+                        <th>Vehicle</th>
+                        <th>Load</th>
+                        <th>Proof of Delivery</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="orderRows"></tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+
+<!-- ===== POP-UP: PROOF OF DELIVERY ===== -->
+<dialog id="podDialog" aria-labelledby="podTitle">
+    <h2 id="podTitle">Proof of Delivery</h2>
+
+    <div class="pod-details">
+        <p><strong>Order:</strong><span id="podOrder"></span></p>
+        <p><strong>Route:</strong><span id="podRoute"></span></p>
+        <p><strong>Delivered on:</strong><span id="podDate"></span></p>
+        <p><strong>Vehicle:</strong><span id="podVehicle"></span></p>
+        <p><strong>Type:</strong><span id="podType"></span></p>
+    </div>
+
+    <!-- Signature image or a message, filled by JavaScript -->
+    <div class="pod-preview" id="podPreview"></div>
+
+    <div class="form-actions">
+        <button type="button" class="btn btn-primary" id="closePodButton">Close</button>
+    </div>
+</dialog>
+
+
+<script src="js/vehicles.js"></script>
+<script src="js/courier-completed-orders.js"></script>
+</body>
+</html>

@@ -5,11 +5,6 @@
      dashboard is responsible for showing statistic information,
      such as number of couriers, staff, clients, routes status
      and other operational analytics."
-
-     Files used by this page:
-       css/style.css  -> shared styles (sidebar, cards, buttons)
-       css/admin_dashboard.css  -> layout of the KPI cards and charts
-       js/admin_dashboard.js    -> sample data + fills the numbers + draws charts
      ========================================================= -->
 <html lang="en">
 <head>
@@ -40,7 +35,7 @@
         <a href="admin-staff.html">Staff Approvals</a>
         <a href="admin-users.html">Users</a>
         <a href="admin_dashboard.html" class="active">Dashboard</a>
-        <a href="profile.html">Profile</a>
+        <a href="admin_profile.html">Profile</a>
         <a href="index.html" class="logout">Log out</a>
     </nav>
 
@@ -53,9 +48,7 @@
             <p class="text-muted" id="periodLabel"></p>
         </div>
 
-        <!-- ---------- Row 1: who uses the system ----------
-             Each number has an id so admin_dashboard.js can write into it.
-             The "—" is shown until the script fills the value. -->
+
         <section class="kpi-row" aria-label="Key numbers">
             <div class="card stat-card">
                 <span class="stat-value" id="kpiClients">—</span>
@@ -82,7 +75,7 @@
             </div>
         </section>
 
-        <!-- ---------- Row 2: charts ----------
+        <!-- ---------- charts ----------
              <canvas> is an empty drawing area. Chart.js draws inside it. -->
         <section class="chart-row" aria-label="Charts">
             <div class="card">
@@ -99,7 +92,7 @@
             </div>
         </section>
 
-        <!-- ---------- Row 3: operational KPIs ---------- -->
+        <!-- ---------- operational KPIs ---------- -->
         <section class="kpi-row kpi-row-4" aria-label="Operational indicators">
             <div class="card stat-card">
                 <span class="stat-label">Active orders</span>
@@ -128,8 +121,6 @@
 </div>
 
 <!-- ===== SCRIPTS =====
-     1) Chart.js library (draws the charts), loaded from a CDN.
-     2) Our own script. It must come AFTER Chart.js because it uses it. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="js/admin_dashboard.js"></script>
 </body>
