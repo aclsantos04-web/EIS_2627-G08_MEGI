@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CMS - My Orders</title>
+
+  
+<link rel="stylesheet" href="css/cms-lara.css">
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Poppins:wght@500;600;700&amp;display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="client-layout">
+
+        <!-- SIDEBAR -->
+
+        <aside class="client-sidebar">
+
+            <a href="index.html" class="client-logo">
+                CMS
+            </a>
+
+            <div class="client-role">
+                <img src="images/users.svg" alt="Client">
+                <span>Client</span>
+            </div>
+
+            <nav class="client-nav">
+
+           
+<a href="client_new_order.html">New Order</a>
+
+                <a href="my-orders.html" class="active">
+                    My Orders
+                </a>
+
+                <a href="new-product.html">
+                    New Product
+                </a>
+
+                <a href="my-products.html">
+                    My Products
+                </a>
+
+                <a href="client_profile.html">
+                    Profile
+                </a>
+
+            </nav>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+
+        <main class="orders-content">
+
+            <h1>My Orders</h1>
+
+            <div class="orders-table-container">
+
+                <table class="orders-table">
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Origin</th>
+                            <th>Destination</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>#1001</td>
+                            <td>Porto</td>
+                            <td>Aveiro</td>
+                            <td>Completed</td>
+                            <td>15/10/2026</td>
+                            <td>
+                                <button type="button" class="view-order" data-order-id="1001">
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>#1002</td>
+                            <td>Braga</td>
+                            <td>Porto</td>
+                            <td>In Progress</td>
+                            <td>18/10/2026</td>
+                            <td>
+                                <button type="button" class="view-order" data-order-id="1002">
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>#1003</td>
+                            <td>Lisboa</td>
+                            <td>Coimbra</td>
+                            <td>Initiated</td>
+                            <td>20/10/2026</td>
+                            <td>
+                                <button type="button" class="view-order" data-order-id="1003">
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>#1004</td>
+                            <td>Viana do Castelo</td>
+                            <td>Braga</td>
+                            <td>Cancelled</td>
+                            <td>21/10/2026</td>
+                            <td>
+                                <button type="button" class="view-order" data-order-id="1004">
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+</html>

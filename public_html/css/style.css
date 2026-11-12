@@ -370,14 +370,14 @@ img {
 /* The page you are on: add class="active" to its link */
 .sidebar a.active {
     background: linear-gradient(135deg, var(--primary), var(--accent-blue));
-    color: #FFFFFF !important;
+    color: #FFFFFF;
     transform: translateX(4px);
     box-shadow: 0 8px 20px rgba(27, 75, 145, 0.25);
 }
 
 .sidebar a.active:hover {
     background: linear-gradient(135deg, var(--primary-hover), var(--primary));
-    color: #FFFFFF !important;
+    color: #FFFFFF;
 }
 
 .sidebar a.active::before {      /* small glowing bar on the left */
@@ -415,6 +415,13 @@ img {
         radial-gradient(circle at 88% 5%, rgba(255, 255, 255, 0.36), transparent 28%),
         radial-gradient(circle at 70% 18%, rgba(47, 115, 184, 0.08), transparent 23%),
         linear-gradient(180deg, var(--primary-light) 0%, var(--page-soft) 300px, #FFFFFF 620px);
+}
+
+/* Some page stylesheets limit every <main> to 1100px and centre it.
+   The page area of the logged-in pages always fills the space. */
+main.app-content {
+    max-width: none;
+    margin: 0;
 }
 
 /* Soft round shape in the top-right corner of the page */
@@ -737,10 +744,11 @@ dialog::backdrop {               /* the dark layer behind the pop-up */
 
 /* =========================================================
    13. TOP BAR
-   Built by js/topbar.js at the top of <main class="app-content">:
+   Built by js/topbar.js at the top of <main class="app-content">
+   (class "app-topbar"):
    a bell with notifications and a menu with the user's initials.
    ========================================================= */
-.topbar {
+.app-topbar {
     display: flex;
     justify-content: flex-end;   /* everything on the right */
     align-items: center;
@@ -750,7 +758,7 @@ dialog::backdrop {               /* the dark layer behind the pop-up */
 
 /* The top bar sits on a higher layer than the rest of the page,
    so its drop-down menus open OVER the cards and buttons below. */
-.app-content > .topbar {
+.app-content > .app-topbar {
     z-index: 30;
 }
 
@@ -1057,7 +1065,7 @@ dialog::backdrop {               /* the dark layer behind the pop-up */
     }
 
     /* Top bar: only the initials, no name */
-    .topbar {
+    .app-topbar {
         margin: 0 0 16px;
     }
 

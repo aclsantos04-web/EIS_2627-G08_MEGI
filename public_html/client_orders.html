@@ -17,26 +17,41 @@
 
     <div class="app-layout">
         <!-- Sidebar oficial da equipa -->
-        <nav class="sidebar">
-            <a href="index.html" class="sidebar-logo">CMS</a>
-            <div class="sidebar-role">Client</div>
-
-            <a href="client_new_order.html">New Order</a>
-            <a href="client_orders.html" class="active">My Orders</a>
-            <a href="client_profile.html">Profile</a>
-            <a href="login.html" class="logout">Log out</a>
+        <!-- ===== SIDEBAR (the same on every Client page) =====
+             class="active" marks the page you are on. -->
+        <nav class="sidebar" aria-label="Client menu">
+            <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
+                <svg viewBox="0 0 64 40" aria-hidden="true">
+                    <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                    <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                    <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                    <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                </svg>
+                CMS
+            </a>
+            <div class="sidebar-role"><span class="role-icon" aria-hidden="true">📦</span> Client Panel</div>
+            <a href="client_new_order.html"><i class="ti ti-square-plus" aria-hidden="true"></i> New Order</a>
+            <a href="my-orders.html" class="active"><i class="ti ti-list-details" aria-hidden="true"></i> My Orders</a>
+            <a href="new-product.html"><i class="ti ti-box" aria-hidden="true"></i> New Product</a>
+            <a href="my-products.html"><i class="ti ti-packages" aria-hidden="true"></i> My Products</a>
+            <a href="client_profile.html"><i class="ti ti-user" aria-hidden="true"></i> Profile</a>
+            <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
         </nav>
 
         <!-- Área Principal de Conteúdo -->
         <main class="app-content">
+            <!-- Back to the list. The order shown here comes from the link:
+                 client_orders.html?order=1002 (filled in by js/client_orders.js) -->
+            <a href="my-orders.html" class="back-to-list"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back to My Orders</a>
+
             <header class="page-header">
-                <h1>Order #1001</h1>
+                <h1 id="orderTitle">Order #1001</h1>
             </header>
 
             <!-- Barra de Progresso Moderna -->
             <section class="card status-tracker-container">
-                <div class="status-tracker">
-                    <div class="tracker-progress-line"></div>
+                <div class="status-tracker" id="statusTracker">
+                    <div class="tracker-progress-line" id="trackerLine"></div>
 
                     <div class="step completed">
                         <div class="step-circle">✓</div>
@@ -56,7 +71,7 @@
             </section>
 
             <!-- Grelha com Detalhes da Encomenda à esquerda e Mapa à direita -->
-            <div class="order-details-grid">
+            <div class="order-details-grid" id="orderDetails">
                 
                 <!-- Order Information Card -->
                 <section class="card order-info-card">
@@ -64,22 +79,22 @@
                     
                     <div class="info-group">
                         <span class="info-label">Origin</span>
-                        <p class="info-value">Location 1 (41.1780 ; -8.5980)</p>
+                        <p class="info-value" id="originValue">Location 1 (41.1780 ; -8.5980)</p>
                     </div>
 
                     <div class="info-group">
                         <span class="info-label">Destination</span>
-                        <p class="info-value">Location 2 (41.1496 ; -8.6109)</p>
+                        <p class="info-value" id="destinationValue">Location 2 (41.1496 ; -8.6109)</p>
                     </div>
 
                     <div class="info-group">
                         <span class="info-label">Courier</span>
-                        <p class="info-value">Diogo Silva</p>
+                        <p class="info-value" id="courierValue">Diogo Silva</p>
                     </div>
 
                     <div class="info-group">
                         <span class="info-label">Products</span>
-                        <ul class="products-bullet-list">
+                        <ul class="products-bullet-list" id="productsList">
                             <li>Product 1 (Qt: 2; 5kg)</li>
                             <li>Product 2 (Qt: 3; 10kg)</li>
                         </ul>
@@ -95,7 +110,7 @@
                         </div>
                     </section>
 
-                    <div class="pod-action-container">
+                    <div class="pod-action-container" id="podAction">
                         <button type="button" id="btnViewPod" class="btn btn-secondary">See Proof of Delivery</button>
                     </div>
                 </div>
@@ -107,12 +122,12 @@
     <!-- Pop-up nativo <dialog> conforme a secção 12 do style.css -->
     <dialog id="podDialog">
         <h3>Electronic Proof of Delivery (e-POD)</h3>
-        <p><strong>Order:</strong> #1001</p>
-        <p><strong>Courier:</strong> Diogo Silva</p>
+        <p><strong>Order:</strong> <span id="podOrder">#1001</span></p>
+        <p><strong>Courier:</strong> <span id="podCourier">Diogo Silva</span></p>
         
         <div class="pod-preview-box">
             <div id="signaturePlaceholder" class="signature-placeholder">
-                <span class="text-muted">✍️ Nenhuma assinatura ou foto registada ainda.</span>
+                <span class="text-muted">✍️ No signature or photo saved yet.</span>
             </div>
         </div>
 
@@ -125,5 +140,11 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="js/map.js"></script>
     <script src="js/client_orders.js"></script>
+<!-- Top bar (notifications + user menu), built by js/topbar.js -->
+<script src="js/topbar.js"
+        data-name="Marta Ferreira"
+        data-role="Client"
+        data-username="marta.ferreira"
+        data-profile="client_profile.html"></script>
 </body>
 </html>

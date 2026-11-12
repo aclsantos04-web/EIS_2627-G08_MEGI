@@ -674,21 +674,25 @@
     <div class="app-layout">
 
         <!-- Sidebar -->
-        <aside class="sidebar">
-            <a href="index.html" class="sidebar-logo">CMS</a>
-
-            <div class="sidebar-role">
-                <span class="role-icon">💼</span>
-                Admin Panel
-            </div>
-
-            <a href="admin-staff.html" class="active">Staff Approvals</a>
-            <a href="admin-users.html">Users</a>
-            <a href="admin_dashboard.html">Dashboard</a>
-            <a href="admin_profile.html">Profile</a>
-
-            <a href="login.html" class="logout">↪ Log out</a>
-        </aside>
+        <!-- ===== SIDEBAR (the same on every Admin page) =====
+             class="active" marks the page you are on. -->
+        <nav class="sidebar" aria-label="Admin menu">
+            <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
+                <svg viewBox="0 0 64 40" aria-hidden="true">
+                    <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                    <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                    <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                    <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                </svg>
+                CMS
+            </a>
+            <div class="sidebar-role"><span class="role-icon" aria-hidden="true">💼</span> Admin Panel</div>
+            <a href="admin-staff.html" class="active"><i class="ti ti-user-check" aria-hidden="true"></i> Staff Approvals</a>
+            <a href="admin-users.html"><i class="ti ti-users" aria-hidden="true"></i> Users</a>
+            <a href="admin_dashboard.html"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Dashboard</a>
+            <a href="admin_profile.html"><i class="ti ti-user" aria-hidden="true"></i> Profile</a>
+            <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
+        </nav>
 
         <!-- Conteúdo -->
         <main class="app-content admin-content">
@@ -1162,5 +1166,11 @@
 
         updateStatistics();
     </script>
+<!-- Top bar (notifications + user menu), built by js/topbar.js -->
+<script src="js/topbar.js"
+        data-name="Carlos Pinto"
+        data-role="Admin"
+        data-username="admin"
+        data-profile="admin_profile.html"></script>
 </body>
 </html>

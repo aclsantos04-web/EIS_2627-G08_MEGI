@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Active Route</title>
+
+    <!-- CSS comum do projeto -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- CSS do Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <!-- Estilos específicos desta página -->
+    <style>
+        .route-layout {
+            display: grid;
+            grid-template-columns: minmax(500px, 1fr) 300px;
+            gap: 20px;
+            align-items: start;
+        }
+
+        #map {
+            width: 100%;
+            height: 460px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+
+        .route-details {
+            background-color: var(--card);
+            border-radius: var(--radius);
+            padding: 20px;
+        }
+
+        .route-details h2 {
+            margin-bottom: 5px;
+        }
+
+        .route-details h3 {
+            margin-bottom: 20px;
+        }
+
+        .route-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0 25px;
+        }
+
+        .route-summary-item {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .route-summary-item strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .route-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .route-actions .btn {
+            width: 100%;
+        }
+
+        .route-actions button:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 1000px) {
+            .route-layout {
+                grid-template-columns: 1fr;
+            }
+
+            #map {
+                height: 380px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+
+        <!-- Menu lateral -->
+        <aside class="sidebar">
+            <a href="index.html" class="sidebar-logo">CMS</a>
+
+            <div class="sidebar-role">🚚 Courier</div>
+
+            <a href="courier-available-orders.html">Available Orders</a>
+            <a href="courier-active-route.html" class="active">Active Route</a>
+            <a href="courier-proof-delivery.html">Proof of Delivery</a>
+            <a href="courier-vehicles.html">Vehicles</a>
+            <a href="courier-completed-orders.html">Completed Orders</a>
+            <a href="courier_profile.html">Profile</a>
+
+            <!-- Logout fica no fim da sidebar -->
+            <a href="login.html" class="logout">Log out</a>
+        </aside>
+
+        <!-- Conteúdo principal -->
+        <main class="app-content">
+            <div class="page-header">
+                <h1>Active Route</h1>
+            </div>
+
+            <h2 id="activeOrderTitle">Active Order #1001</h2>
+
+            <div class="route-layout">
+
+                <!-- Mapa -->
+                <div id="map"></div>
+
+                <!-- Informação da encomenda -->
+                <section class="route-details">
+                    <h2>Order Information</h2>
+                    <h3 id="routeName">Porto → Aveiro</h3>
+
+                    <p class="text-muted">2 packages · 8 kg</p>
+
+                    <!-- Informação calculada através da rota -->
+                    <div class="route-summary">
+                        <div class="route-summary-item">
+                            <strong>Distance</strong>
+                            <span id="routeDistance">Calculating...</span>
+                        </div>
+
+                        <div class="route-summary-item">
+                            <strong>Estimated time</strong>
+                            <span id="routeDuration">Calculating...</span>
+                        </div>
+                    </div>
+
+                    <!-- Escolha do veículo -->
+                    <div class="form-group">
+                        <label for="vehicle">Vehicle:</label>
+
+                        <select id="vehicle">
+                            <option value="" selected>Select Vehicle</option>
+                            <option value="van01">Van - AA-12-BC</option>
+                            <option value="van02">Van - CD-34-EF</option>
+                            <option value="truck01">Truck - GH-56-IJ</option>
+                        </select>
+                    </div>
+
+                    <!-- Estado da entrega -->
+                    <div class="form-group">
+                        <label for="status">Status:</label>
+
+                        <input
+                            type="text"
+                            id="status"
+                            value="Initiated"
+                            readonly>
+                    </div>
+
+                    <!-- Mensagens de erro -->
+                    <span id="routeError" class="error-message"></span>
+
+                    <!-- Ações -->
+                    <div class="route-actions">
+                        <button
+                            type="button"
+                            id="startDelivery"
+                            class="btn btn-primary">
+                            Start Delivery
+                        </button>
+
+                        <button
+                            type="button"
+                            id="completeDelivery"
+                            class="btn btn-success"
+                            disabled>
+                            Complete Delivery
+                        </button>
+
+                        <button
+                            type="button"
+                            id="cancelOrder"
+                            class="btn btn-danger">
+                            Cancel Order
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Ficheiro comum dos mapas -->
+    <script src="js/map.js"></script>
+
+    <!-- JavaScript desta página -->
+    <script>
+        /* Dados de exemplo das encomendas */
+        const orders = {
+            "1001": {
+                origin: "Porto",
+                destination: "Aveiro",
+                originCoords: [41.1579, -8.6291],
+                destinationCoords: [40.6405, -8.6538],
+                packages: "2 packages · 8 kg"
+            },
+
+            "1002": {
+                origin: "Aveiro",
+                destination: "Coimbra",
+                originCoords: [40.6405, -8.6538],
+                destinationCoords: [40.2033, -8.4103],
+                packages: "2 packages · 8 kg"
+            }
+        };
+
+        /* Obter a encomenda através do URL */
+        const urlParameters = new URLSearchParams(window.location.search);
+        let orderId = urlParameters.get("order");
+
+        /* Usar a encomenda 1001 se a página for aberta diretamente */
+        if (!orders[orderId]) {
+            orderId = "1001";
+        }
+
+        const currentOrder = orders[orderId];
+
+        /* Atualizar informação da página */
+        document.getElementById("activeOrderTitle").textContent =
+                "Active Order #" + orderId;
+
+        document.getElementById("routeName").textContent =
+                currentOrder.origin + " → " + currentOrder.destination;
+
+        /* Criar mapa e rota */
+        createRouteMap(
+            "map",
+            currentOrder.originCoords,
+            currentOrder.destinationCoords,
+            currentOrder.origin,
+            currentOrder.destination
+        );
+
+        /* Elementos de controlo */
+        const vehicle = document.getElementById("vehicle");
+        const status = document.getElementById("status");
+        const error = document.getElementById("routeError");
+        const startButton = document.getElementById("startDelivery");
+        const completeButton = document.getElementById("completeDelivery");
+        const cancelButton = document.getElementById("cancelOrder");
+
+        /* Iniciar entrega */
+        startButton.addEventListener("click", function () {
+            if (vehicle.value === "") {
+                error.textContent = "Please select a vehicle first.";
+                return;
+            }
+
+            error.textContent = "";
+            status.value = "In Progress";
+
+            startButton.disabled = true;
+            completeButton.disabled = false;
+            vehicle.disabled = true;
+        });
+
+        /* Ir para Proof of Delivery antes de concluir */
+        completeButton.addEventListener("click", function () {
+            window.location.href =
+                    "courier-proof-delivery.html?order=" + orderId;
+        });
+
+        /* Cancelar encomenda */
+        cancelButton.addEventListener("click", function () {
+            const confirmation = confirm(
+                "Are you sure you want to cancel this order?"
+            );
+
+            if (!confirmation) {
+                return;
+            }
+
+            status.value = "Cancelled";
+
+            alert(
+                "Order #" + orderId + " has been cancelled."
+            );
+
+            window.location.href =
+                    "courier-available-orders.html";
+        });
+    </script>
+</body>
+</html>

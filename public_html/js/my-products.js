@@ -12,7 +12,9 @@ let details = document.getElementById("product-details");
 // Check if there are products
 if (products.length === 0) {
 
+    // Show the "No products yet" message instead of an empty table
     noProducts.hidden = false;
+    document.querySelector(".products-table-container").hidden = true;
 
 } else {
 
@@ -43,7 +45,7 @@ if (products.length === 0) {
 
         let button = document.createElement("button");
         button.type = "button";
-        button.className = "view-product";
+        button.className = "btn btn-primary btn-small";   // shared button style (style.css)
         button.textContent = "View";
 
         // View product details

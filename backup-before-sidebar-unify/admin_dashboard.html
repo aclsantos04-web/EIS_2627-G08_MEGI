@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<!-- =========================================================
+     admin_dashboard.html — ADMIN DASHBOARD
+     Spec: "Admin ... having access also to a dashboard. This
+     dashboard is responsible for showing statistic information,
+     such as number of couriers, staff, clients, routes status
+     and other operational analytics."
+     ========================================================= -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS – Admin Dashboard</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin_dashboard.css">
+</head>
+
+<body>
+<div class="app-layout">
+
+    <!-- ===== SIDEBAR (same on every Admin page) =====
+         class="active" marks the page we are on. -->
+    <nav class="sidebar" aria-label="Admin menu">
+        <a href="home.html" class="sidebar-logo" aria-label="CMS – go to homepage">
+            <svg viewBox="0 0 64 40" aria-hidden="true">
+                <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+            </svg>
+            CMS
+        </a>
+        <p class="sidebar-role">Admin</p>
+        <a href="admin-staff.html"><i class="ti ti-user-check" aria-hidden="true"></i> Staff Approvals</a>
+        <a href="admin-users.html"><i class="ti ti-users" aria-hidden="true"></i> Users</a>
+        <a href="admin_dashboard.html" class="active"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Dashboard</a>
+        <a href="admin_profile.html"><i class="ti ti-user" aria-hidden="true"></i> Profile</a>
+        <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
+    </nav>
+
+    <!-- ===== PAGE CONTENT ===== -->
+    <main class="app-content">
+
+        <div class="page-header">
+            <h1>Dashboard</h1>
+            <!-- Filled by admin_dashboard.js with the month name -->
+            <p class="text-muted" id="periodLabel"></p>
+        </div>
+
+
+        <section class="kpi-row" aria-label="Key numbers">
+            <div class="card stat-card">
+                <span class="stat-value" id="kpiClients">—</span>
+                <span class="stat-label">Clients</span>
+            </div>
+            <div class="card stat-card">
+                <span class="stat-value" id="kpiCouriers">—</span>
+                <span class="stat-label">Couriers</span>
+            </div>
+            <div class="card stat-card">
+                <span class="stat-value" id="kpiStaff">—</span>
+                <span class="stat-label">Staff</span>
+                <!-- Links to the Staff Approvals page when someone is waiting -->
+                <a class="stat-note" id="kpiPendingStaff" href="admin-staff.html"></a>
+            </div>
+            <div class="card stat-card">
+                <span class="stat-value" id="kpiActiveRoutes">—</span>
+                <span class="stat-label">Active routes</span>
+                <span class="stat-note" id="kpiCompletedRoutes"></span>
+            </div>
+            <div class="card stat-card">
+                <span class="stat-value" id="kpiDeliveryTime">—</span>
+                <span class="stat-label">Average delivery time (days)</span>
+            </div>
+        </section>
+
+        <!-- ---------- charts ----------
+             <canvas> is an empty drawing area. Chart.js draws inside it. -->
+        <section class="chart-row" aria-label="Charts">
+            <div class="card">
+                <h2>Orders by status</h2>
+                <div class="chart-box">
+                    <canvas id="statusChart" aria-label="Doughnut chart of orders by status" role="img"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h2>Orders per week</h2>
+                <div class="chart-box">
+                    <canvas id="weeklyChart" aria-label="Bar chart of orders per week" role="img"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- ---------- operational KPIs ---------- -->
+        <section class="kpi-row kpi-row-4" aria-label="Operational indicators">
+            <div class="card stat-card">
+                <span class="stat-label">Active orders</span>
+                <span class="stat-value" id="kpiActiveOrders">—</span>
+                <span class="stat-note" id="kpiActiveOrdersNote"></span>
+            </div>
+            <div class="card stat-card">
+                <span class="stat-label">Completion rate</span>
+                <span class="stat-value" id="kpiCompletion">—</span>
+                <span class="stat-note" id="kpiCompletionNote"></span>
+            </div>
+            <div class="card stat-card">
+                <span class="stat-label">Expiring documents</span>
+                <span class="stat-value" id="kpiExpiring">—</span>
+                <span class="stat-note" id="kpiExpiringNote"></span>
+            </div>
+            <div class="card stat-card">
+                <span class="stat-label">Average load utilization</span>
+                <span class="stat-value" id="kpiLoad">—</span>
+                <span class="stat-note" id="kpiLoadNote"></span>
+            </div>
+        </section>
+
+        <p class="text-muted">Sample test data. In Sprint 2 these values will come from the database.</p>
+    </main>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="js/admin_dashboard.js"></script>
+<!-- Top bar (notifications + user menu), built by js/topbar.js -->
+<script src="js/topbar.js"
+        data-name="Carlos Pinto"
+        data-role="Admin"
+        data-username="admin"
+        data-profile="admin_profile.html"></script>
+</body>
+</html>

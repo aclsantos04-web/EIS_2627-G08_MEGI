@@ -31,7 +31,8 @@
 <body class="cms-page">
 <div class="app-layout">
 
-    <!-- ===== SIDEBAR (Courier menu) ===== -->
+    <!-- ===== SIDEBAR (the same on every Courier page) =====
+         class="active" marks the page you are on. -->
     <nav class="sidebar" aria-label="Courier menu">
         <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
             <svg viewBox="0 0 64 40" aria-hidden="true">
@@ -42,7 +43,7 @@
             </svg>
             CMS
         </a>
-        <p class="sidebar-role">Courier</p>
+        <div class="sidebar-role"><span class="role-icon" aria-hidden="true">🚚</span> Courier Panel</div>
         <a href="courier-available-orders.html"><i class="ti ti-package" aria-hidden="true"></i> Available Orders</a>
         <a href="courier-active-route.html"><i class="ti ti-route" aria-hidden="true"></i> Active Route</a>
         <a href="courier-proof-delivery.html"><i class="ti ti-signature" aria-hidden="true"></i> Proof of Delivery</a>

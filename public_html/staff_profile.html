@@ -31,7 +31,8 @@
 <body class="cms-page">
 <div class="app-layout">
 
-    <!-- ===== SIDEBAR (Staff menu) ===== -->
+    <!-- ===== SIDEBAR (the same on every Staff page) =====
+         class="active" marks the page you are on. -->
     <nav class="sidebar" aria-label="Staff menu">
         <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
             <svg viewBox="0 0 64 40" aria-hidden="true">
@@ -42,7 +43,7 @@
             </svg>
             CMS
         </a>
-        <p class="sidebar-role">Staff</p>
+        <div class="sidebar-role"><span class="role-icon" aria-hidden="true">📋</span> Staff Panel</div>
         <a href="staff_courier_approvals.html"><i class="ti ti-user-check" aria-hidden="true"></i> Courier Approvals</a>
         <a href="staff_vehicle_approvals.html"><i class="ti ti-truck" aria-hidden="true"></i> Vehicle Approvals</a>
         <a href="staff_alerts.html"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Document Alerts</a>
