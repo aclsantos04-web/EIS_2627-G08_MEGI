@@ -32,11 +32,11 @@
             CMS
         </a>
         <p class="sidebar-role">Admin</p>
-        <a href="admin-staff.html">Staff Approvals</a>
-        <a href="admin-users.html">Users</a>
-        <a href="admin_dashboard.html" class="active">Dashboard</a>
-        <a href="admin_profile.html">Profile</a>
-        <a href="index.html" class="logout">Log out</a>
+        <a href="admin-staff.html"><i class="ti ti-user-check" aria-hidden="true"></i> Staff Approvals</a>
+        <a href="admin-users.html"><i class="ti ti-users" aria-hidden="true"></i> Users</a>
+        <a href="admin_dashboard.html" class="active"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Dashboard</a>
+        <a href="admin_profile.html"><i class="ti ti-user" aria-hidden="true"></i> Profile</a>
+        <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
     </nav>
 
     <!-- ===== PAGE CONTENT ===== -->
@@ -123,5 +123,11 @@
 <!-- ===== SCRIPTS ===== -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="js/admin_dashboard.js"></script>
+<!-- Top bar (notifications + user menu), built by js/topbar.js -->
+<script src="js/topbar.js"
+        data-name="Carlos Pinto"
+        data-role="Admin"
+        data-username="admin"
+        data-profile="admin_profile.html"></script>
 </body>
 </html>

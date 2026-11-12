@@ -1,0 +1,397 @@
+/* =========================================================
+   courier.css — LOOK OF THE COURIER AND PROFILE PAGES
+   Used by: courier-vehicles.html, courier-add-vehicle.html,
+            courier-completed-orders.html and the four
+            profile pages (client_, courier_, staff_, admin_profile.html)
+
+   Link it AFTER style.css:
+       <link rel="stylesheet" href="css/style.css">
+       <link rel="stylesheet" href="css/courier.css">
+   and give the <body> the class "cms-page".
+
+   style.css gives the layout and the original sidebar.
+   This file makes the content look like the team's
+   Client pages (My Orders, New Product): Inter/Poppins
+   fonts, #215394 blue, light-blue tables and forms.
+   Every rule starts with .cms-page, so it can't
+   change any other page by accident.
+   ========================================================= */
+
+
+/* ---------- 1. Colours ----------*/
+.cms-page {
+    --primary: #215394;
+    --primary-hover: #173d70;
+    --primary-light: #c5e0f0;
+    --primary-softer: #eaf4fb;   /* table header, success message */
+    --border: #c5e0f0;
+    --field-border: #b8d7ec;
+    --error: #d62828;
+    --text: #111111;
+
+    font-family: 'Inter', Arial, sans-serif;
+    color: var(--text);
+}
+
+.cms-page h1,
+.cms-page h2,
+.cms-page h3,
+.cms-page .sidebar-logo {
+    font-family: 'Poppins', Arial, sans-serif;
+}
+
+
+/* ---------- 2. Page area ---------- */
+.cms-page .app-content {
+    background-color: #ffffff;
+    padding: 50px 45px;
+}
+
+.cms-page h1 {
+    font-size: 30px;
+    font-weight: 600;
+    margin: 0 0 35px;
+}
+
+.cms-page .page-header {
+    margin-bottom: 35px;
+}
+
+.cms-page .page-header h1 {
+    margin: 0;
+}
+
+/* Title with a back arrow in front of it */
+.cms-page .title-with-back {
+    display: flex;               /* arrow and title side by side */
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 35px;
+}
+
+.cms-page .title-with-back h1 {
+    margin: 0;
+}
+
+.cms-page .back-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 50%;          /* round button */
+    color: var(--primary);
+    transition: background-color 0.2s;
+}
+
+.cms-page .back-link:hover {
+    background-color: var(--primary-softer);   /* light-blue circle on hover */
+}
+
+.cms-page .back-link svg {
+    width: 24px;
+    height: 24px;
+}
+
+.cms-page .page-intro {      /* grey sentence under a title */
+    margin: -25px 0 30px;
+    color: #555555;
+    font-size: 14px;
+}
+
+
+/* ---------- 3. Buttons ---------- */
+.cms-page .btn {
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.cms-page .btn-small {
+    padding: 8px 16px;
+    font-size: 13px;
+    white-space: nowrap;         /* "Update documents" stays on one line */
+}
+
+.cms-page .btn-secondary {
+    background-color: var(--primary-light);
+    color: var(--primary);
+}
+
+.cms-page .btn-secondary:hover {
+    background-color: #b3d4ea;
+}
+
+
+/* ---------- 4. Tables (same as My Orders) ---------- */
+.cms-page .table-wrap {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.cms-page th {
+    background-color: var(--primary-softer);
+    padding: 18px;
+    font-size: 14px;
+}
+
+.cms-page td {
+    padding: 18px;
+    font-size: 14px;
+    border-bottom: none;
+    border-top: 1px solid var(--border);
+}
+
+.cms-page tbody tr:hover {
+    background-color: #f0f8ff;
+}
+
+.cms-page .empty-row {       /* "no vehicles / no orders" message */
+    text-align: center;
+    color: #555555;
+    padding: 30px;
+}
+
+
+/* ---------- 5. Cards with numbers ---------- */
+.cms-page .card {
+    background-color: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.cms-page .stat-value {
+    font-family: 'Poppins', Arial, sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+
+/* ---------- 6. Forms (same as New Product) ---------- */
+.cms-page .form-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 35px;
+    max-width: 850px;
+}
+
+.cms-page .form-card h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 25px;
+}
+
+.cms-page .form-card h2.section-title {   /* second, third... section */
+    margin-top: 20px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border);
+}
+
+.cms-page label {
+    margin-bottom: 10px;
+}
+
+.cms-page input,
+.cms-page select {
+    padding: 14px;
+    border: 1px solid var(--field-border);
+    border-radius: 7px;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 14px;
+}
+
+.cms-page input::placeholder {
+    color: var(--primary);
+    opacity: 0.7;
+}
+
+.cms-page input:focus,
+.cms-page select:focus {
+    outline: none;
+    border: 2px solid var(--primary);
+}
+
+/* Field with an error: red border (like .product-invalid) */
+.cms-page input.invalid,
+.cms-page select.invalid {
+    border: 2px solid var(--error);
+    background-color: #ffffff;
+}
+
+/* Red text under the field (like .product-field-error) */
+.cms-page .error-message {
+    color: var(--error);
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 7px;
+}
+
+.cms-page .form-grid {
+    gap: 0 25px;
+}
+
+.cms-page .hint {            /* small grey help text under a field */
+    display: block;
+    font-size: 12px;
+    color: #555555;
+    margin-top: 6px;
+}
+
+.cms-page .submit-button {   /* full-width button (like .product-button) */
+    display: block;
+    width: 100%;
+    margin-top: 30px;
+    padding: 15px;
+    font-size: 15px;
+}
+
+
+/* ---------- 7. Messages ---------- */
+/* Blue confirmation box (like #product-message) */
+.cms-page .success-message {
+    margin: 0 0 25px;
+    padding: 15px;
+    background-color: var(--primary-softer);
+    border-left: 4px solid var(--primary);
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 500;
+    max-width: 850px;
+}
+
+.cms-page .success-message a {
+    font-weight: 600;
+}
+
+.cms-page .alert {
+    border-radius: 10px;
+}
+
+
+/* ---------- 8. Search box (Completed Orders) ---------- */
+.cms-page .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.cms-page .toolbar input {
+    max-width: 320px;
+}
+
+/* Text only screen readers hear (e.g. a label we don't want to show) */
+.cms-page .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+
+/* ---------- 9. Proof of delivery pop-up ---------- */
+.cms-page dialog h2 {
+    font-size: 22px;
+}
+
+.cms-page .pod-details p {
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.cms-page .pod-details strong {
+    color: var(--primary);
+    margin-right: 6px;
+}
+
+.cms-page .pod-preview {
+    margin-top: 18px;
+    min-height: 150px;
+    border: 1px dashed var(--field-border);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    text-align: center;
+    color: #555555;
+    font-size: 14px;
+}
+
+.cms-page .pod-preview img {
+    max-width: 100%;
+    max-height: 160px;
+    object-fit: contain;
+}
+
+
+/* ---------- 10. Profile pages ---------- */
+/* Account summary: name and badges at the top of the profile */
+.cms-page .profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    max-width: 850px;
+    margin-bottom: 25px;
+}
+
+.cms-page .profile-avatar {      /* round circle with the initials */
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: var(--primary-light);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins', Arial, sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.cms-page .profile-header h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+}
+
+.cms-page .profile-header .badge {
+    margin-right: 6px;
+}
+
+/* Fields that can't be edited (username, role) */
+.cms-page input[readonly] {
+    background-color: var(--primary-softer);
+    border-color: var(--border);
+    color: #555555;
+    cursor: not-allowed;
+}
+
+.cms-page .form-card + .form-card {   /* space between two cards */
+    margin-top: 25px;
+}
+
+
+/* ---------- 11. Phones ---------- */
+@media (max-width: 760px) {
+    .cms-page .app-content {
+        padding: 25px 15px;
+    }
+
+    .cms-page h1 {
+        font-size: 24px;
+    }
+
+    .cms-page .form-card {
+        padding: 25px 20px;
+    }
+
+    .cms-page .toolbar input {
+        max-width: none;
+    }
+}

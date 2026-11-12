@@ -43,12 +43,12 @@
             CMS
         </a>
         <p class="sidebar-role">Client</p>
-        <a href="client_new_order.html">New Order</a>
-        <a href="my-orders.html">My Orders</a>
-        <a href="new-product.html">New Product</a>
-        <a href="my-products.html">My Products</a>
-        <a href="client_profile.html" class="active">Profile</a>
-        <a href="login.html" class="logout">Log out</a>
+        <a href="client_new_order.html"><i class="ti ti-square-plus" aria-hidden="true"></i> New Order</a>
+        <a href="my-orders.html"><i class="ti ti-list-details" aria-hidden="true"></i> My Orders</a>
+        <a href="new-product.html"><i class="ti ti-box" aria-hidden="true"></i> New Product</a>
+        <a href="my-products.html"><i class="ti ti-packages" aria-hidden="true"></i> My Products</a>
+        <a href="client_profile.html" class="active"><i class="ti ti-user" aria-hidden="true"></i> Profile</a>
+        <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
     </nav>
 
     <!-- ===== PAGE CONTENT ===== -->
@@ -148,5 +148,11 @@
 <!-- Shared checks first, then the shared profile logic -->
 <script src="js/validation.js"></script>
 <script src="js/profile.js"></script>
+<!-- Top bar (notifications + user menu), built by js/topbar.js -->
+<script src="js/topbar.js"
+        data-name="Marta Ferreira"
+        data-role="Client"
+        data-username="marta.ferreira"
+        data-profile="client_profile.html"></script>
 </body>
 </html>

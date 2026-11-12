@@ -42,13 +42,13 @@
             CMS
         </a>
         <p class="sidebar-role">Courier</p>
-        <a href="courier-available-orders.html">Available Orders</a>
-        <a href="courier-active-route.html">Active Route</a>
-        <a href="courier-proof-delivery.html">Proof of Delivery</a>
-        <a href="courier-vehicles.html" class="active">Vehicles</a>
-        <a href="courier-completed-orders.html">Completed Orders</a>
-        <a href="courier_profile.html">Profile</a>
-        <a href="login.html" class="logout">Log out</a>
+        <a href="courier-available-orders.html"><i class="ti ti-package" aria-hidden="true"></i> Available Orders</a>
+        <a href="courier-active-route.html"><i class="ti ti-route" aria-hidden="true"></i> Active Route</a>
+        <a href="courier-proof-delivery.html"><i class="ti ti-signature" aria-hidden="true"></i> Proof of Delivery</a>
+        <a href="courier-vehicles.html" class="active"><i class="ti ti-truck" aria-hidden="true"></i> Vehicles</a>
+        <a href="courier-completed-orders.html"><i class="ti ti-circle-check" aria-hidden="true"></i> Completed Orders</a>
+        <a href="courier_profile.html"><i class="ti ti-user" aria-hidden="true"></i> Profile</a>
+        <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
     </nav>
 
     <!-- ===== PAGE CONTENT ===== -->
@@ -66,7 +66,7 @@
 
         <!-- Confirmation shown after a successful submit -->
         <p class="success-message" id="successMessage" role="status" hidden>
-            <span id="successText"></span>
+            <span class="success-text"></span>
             <a href="courier-vehicles.html">See My Vehicles</a>
         </p>
 
@@ -161,5 +161,11 @@
 <script src="js/vehicles.js"></script>
 <script src="js/validation.js"></script>
 <script src="js/courier-add-vehicle.js"></script>
+<!-- Top bar (notifications + user menu), built by js/topbar.js -->
+<script src="js/topbar.js"
+        data-name="Diogo Silva"
+        data-role="Courier"
+        data-username="diogo.silva"
+        data-profile="courier_profile.html"></script>
 </body>
 </html>

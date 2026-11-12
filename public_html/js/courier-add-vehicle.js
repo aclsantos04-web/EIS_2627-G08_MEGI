@@ -110,9 +110,8 @@ vehicleForm.addEventListener("submit", function (event) {
     vehicles.push(newVehicle);
     saveVehicles(vehicles);
 
-    document.getElementById("successText").textContent =
-        "Vehicle " + newVehicle.plate + " submitted. It will be available once Staff approve it.";
-    message.hidden = false;
+    showSuccessMessage("successMessage",                  // validation.js
+        "Vehicle " + newVehicle.plate + " submitted. It will be available once Staff approve it.");
     message.scrollIntoView({ behavior: "smooth", block: "center" });
 
     vehicleForm.reset();
