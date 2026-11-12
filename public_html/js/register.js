@@ -1,6 +1,36 @@
 
 /* REGISTER FORM VALIDATION */
 
+/* NIF - ONLY NUMBERS */
+
+const nifInput = document.getElementById("reg-nif");
+
+nifInput.addEventListener("input", function () {
+    this.value = this.value.replace(/\D/g, "").slice(0, 9);
+});
+
+/* Check Portuguese NIF */
+
+function isValidNIF(nif) {
+
+    if (!/^[1-9][0-9]{8}$/.test(nif)) {
+        return false;
+    }
+
+    let sum = 0;
+
+    for (let i = 0; i < 8; i++) {
+        sum += Number(nif[i]) * (9 - i);
+    }
+
+    const remainder = sum % 11;
+
+    const checkDigit =
+        remainder < 2 ? 0 : 11 - remainder;
+
+    return checkDigit === Number(nif[8]);
+}
+
 document.getElementById("register-form").addEventListener("submit", function(event) {
 
     event.preventDefault();
@@ -66,10 +96,20 @@ document.getElementById("register-form").addEventListener("submit", function(eve
         showError(email, "Please enter a valid email address.");
     }
 
-    // NIF validation
-    if (!/^[0-9]{9}$/.test(nif.value.trim())) {
-        showError(nif, "NIF must contain exactly 9 digits.");
-    }
+   
+// NIF validation
+const nifValue = nif.value.trim();
+
+if (!/^[0-9]{9}$/.test(nifValue)) {
+
+    showError(nif, "NIF must contain exactly 9 digits.");
+
+} else if (!isValidNIF(nifValue)) {
+
+    showError(nif, "Please enter a valid Portuguese NIF.");
+
+}
+
 
     // Role validation
     if (role.value === "") {

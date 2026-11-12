@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="css/cms-lara.css">
 
 
-<link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/home.css">  
 
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,10 +27,10 @@
 <header class="topbar">
 
     
-<a href="cms-home.html.html" class="logo">CMS</a>
+<a href="cms-home.html" class="logo">CMS</a>
 
     <nav class="main-nav">
-        <a href="cms-home.html.html">Home</a>
+        <a href="cms-home.html">Home</a>
         <a href="team.html">Meet the Team</a>
     </nav>
 
@@ -132,38 +132,158 @@
 
 </section>
         
+   
+<!-- DELIVERY COST ESTIMATOR -->
+
+<section class="quote-estimator" id="quote-estimator">
+
+    <div class="quote-heading">
+        <span></span>
+        <h2>How much will your delivery cost?</h2>
+        <p>Enter your delivery details and get an instant estimate.</p>
+    </div>
+
+    <form id="quote-form">
+
+        <div class="quote-fields">
+
+            <div class="quote-field">
+                <label for="quote-origin">Origin</label>
+                
+<select id="quote-origin" required>
+    <option value="">Select a city</option>
+</select>
+
+            </div>
+
+            <div class="quote-field">
+                <label for="quote-destination">Destination</label>
+                
+<select id="quote-destination" required>
+    <option value="">Select a city</option>
+</select>
+
+            </div>
+
+            <div class="quote-field">
+                <label for="quote-weight">Package weight (kg)</label>
+                <input
+                    type="number"
+                    id="quote-weight"
+                    min="0.1"
+                    step="0.1"
+                    placeholder="e.g. 2"
+                    required
+                >
+            </div>
+
+        </div>
+
+        <button type="submit" class="quote-button">
+            Calculate Estimate
+        </button>
+
+        <div id="quote-result"
+             class="quote-result"
+             aria-live="polite"></div>
+
         
+
+    </form>
+
+</section>
+     
         
+
+
+<!-- ILLUSTRATIVE PARTNERS -->
 
 <section class="partners">
 
-    <h2>Illustrative Partners</h2>
+    <div class="partners-heading">
+        <span>OUR NETWORK</span>
+        <h2> Our Partners</h2>
+        <p>
+            Exploring possibilities for a more
+            connected delivery experience.
+        </p>
+    </div>
 
     <div class="partners-logos">
 
-        <img src="images/worten.svg"
-             alt="Worten Logo">
+        <div class="partners-track">
 
-        <img src="images/lidl.svg"
-             alt="Lidl Logo"
-             class="lidl-logo">
+            <div class="partners-group">
+                <img src="images/worten.svg" alt="Worten">
+                <img src="images/lidl.svg" alt="Lidl">
+                <img src="images/sephora.svg" alt="Sephora">
+            </div>
 
-        <img src="images/sephora.svg"
-             alt="Sephora Logo"
-             class="sephora-logo">
+            <!-- Duplicate for continuous animation -->
+            <div class="partners-group" aria-hidden="true">
+                <img src="images/worten.svg" alt="">
+                <img src="images/lidl.svg" alt="">
+                <img src="images/sephora.svg" alt="">
+            </div>
+
+        </div>
 
     </div>
 
-    <p class="partners-note">
-        The brands displayed are
-        illustrative examples and do not represent
-        real partnerships or endorsements.
-    </p>
+
 
 </section>
 
 
 
+<!-- HOW CMS WORKS -->
+
+<section class="how-it-works" id="how-it-works">
+
+    <div class="how-heading">
+        <span>SIMPLE. FAST. RELIABLE.</span>
+        <h2>How CMS Works</h2>
+        <p>Your delivery journey, made simple.</p>
+    </div>
+
+    <div class="how-steps">
+
+        <div class="how-card">
+            <span class="how-number">01</span>
+
+            <div class="how-icon">
+                <img src="images/package.svg" alt="">
+            </div>
+
+            <h3>Book</h3>
+            <p>Create your delivery order in just a few steps.</p>
+        </div>
+
+        <div class="how-card">
+            <span class="how-number">02</span>
+
+            <div class="how-icon">
+                <img src="images/truck.svg" alt="">
+            </div>
+
+            <h3>Deliver</h3>
+            <p>A courier handles your package and delivery.</p>
+        </div>
+
+        <div class="how-card">
+            <span class="how-number">03</span>
+
+            <div class="how-icon">
+                <img src="images/map-pin.svg" alt="">
+            </div>
+
+            <h3>Track</h3>
+            <p>Follow your order status until completion.</p>
+        </div>
+
+    </div>
+
+</section>
 
         
 
@@ -247,6 +367,10 @@
 
 
     </main>
+    
+    
+<script src="js/quote-calculator.js"></script>
+
 
 </body>
 </html>

@@ -609,3 +609,873 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     background-color: #153c68;
     border-color: #153c68;
 }
+
+
+/* ============================== */
+/*    HOMEPAGE - SOFT BLUE GLOW   */
+/* ============================== */
+
+/* Background of the homepage */
+
+.home-page {
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(170, 208, 255, 0.40),
+            transparent 35%
+        ),
+        linear-gradient(
+            180deg,
+            #f7fbff 0%,
+            #edf5ff 55%,
+            #ffffff 100%
+        );
+}
+
+/* Hero with a soft colorful gradient */
+
+.home-page .hero {
+    background:
+        radial-gradient(
+            circle at 85% 25%,
+            rgba(165, 205, 255, 0.65),
+            transparent 45%
+        ),
+        linear-gradient(
+            120deg,
+            #fff8f4 0%,
+            #f3effa 48%,
+            #dcecff 100%
+        );
+
+    box-shadow: 0 20px 50px rgba(22, 55, 105, 0.13);
+}
+
+/* Glow around the 3D illustration */
+
+.home-page .hero-image {
+    box-shadow:
+        0 0 40px rgba(116, 173, 247, 0.30),
+        0 15px 35px rgba(10, 30, 70, 0.12);
+    border-radius: 20px;
+}
+
+/* Softer, more elegant statistic cards */
+
+.home-page .stat-card {
+    box-shadow: 0 14px 30px rgba(39, 86, 143, 0.15);
+}
+
+/* More prominent Get Started button */
+
+.home-page .hero-buttons .btn-start {
+    box-shadow: 0 10px 24px rgba(33, 83, 148, 0.30);
+}
+
+.home-page .hero-buttons .btn-start:hover {
+    box-shadow: 0 15px 30px rgba(33, 83, 148, 0.42);
+}
+
+
+
+/* ================================ */
+/* CMS HOMEPAGE - CLEAN & ELEGANT  */
+/* ================================ */
+
+/* Background */
+
+body.home-page {
+    background: linear-gradient(
+        180deg,
+        #f7fbff 0%,
+        #ffffff 35%,
+        #f2f8fd 75%,
+        #ffffff 100%
+    );
+    color: #14263d;
+}
+
+/* HERO */
+
+.home-page .hero {
+    background: linear-gradient(
+        120deg,
+        #f1f7ff 0%,
+        #ffffff 45%,
+        #deeeff 100%
+    );
+
+    border: 1px solid #d4e5f5;
+    border-radius: 24px;
+    box-shadow: 0 20px 45px rgba(25, 65, 115, 0.12);
+}
+
+.home-page .hero h1 {
+    color: #245c94;
+}
+
+.home-page .hero h2 {
+    color: #14263d;
+}
+
+.home-page .hero p {
+    color: #263b54;
+}
+
+.home-page .hero-image {
+    border-radius: 20px;
+    box-shadow: 0 0 35px rgba(74, 143, 215, 0.18);
+}
+
+/* HERO BUTTONS */
+
+.home-page .hero-buttons .btn-login {
+    background: #ffffff;
+    color: #215394;
+    border: 1px solid #c5ddf2;
+}
+
+.home-page .hero-buttons .btn-start {
+    background: #215394;
+    color: #ffffff;
+    border: 1px solid #215394;
+    box-shadow: 0 8px 20px rgba(33, 83, 148, 0.22);
+}
+
+.home-page .hero-buttons .btn-start:hover {
+    background: #173b73;
+    border-color: #173b73;
+}
+
+/* STATISTICS */
+
+.home-page .stat-card {
+    border: 1px solid #d8e7f3;
+    border-top: 4px solid #215394;
+    box-shadow: 0 10px 25px rgba(30, 75, 125, 0.09);
+}
+
+.home-page .stat-card:nth-child(1) {
+    background: #ffffff;
+}
+
+.home-page .stat-card:nth-child(2) {
+    background: #edf7ff;
+}
+
+.home-page .stat-card:nth-child(3) {
+    background: #f6fafd;
+}
+
+.home-page .stat-card h2,
+.home-page .stat-card p {
+    color: #111111;
+}
+
+/* PARTNERS */
+
+.home-page .partners {
+    background: #eff6fd;
+    border: 1px solid #d8e7f3;
+    border-radius: 22px;
+    box-shadow: 0 12px 28px rgba(30, 75, 125, 0.07);
+}
+
+.home-page .partners h2 {
+    color: #14263d;
+}
+
+.home-page .partners-logos img {
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(30, 75, 125, 0.09);
+}
+
+.home-page .partners-note {
+    color: #263b54;
+}
+
+/* SERVICE HIGHLIGHTS */
+
+.home-page .services {
+    background: #ffffff;
+    border: 1px solid #d8e7f3;
+    padding: 55px 40px;
+    border-radius: 22px;
+    box-shadow: 0 12px 28px rgba(30, 75, 125, 0.07);
+}
+
+.home-page .services h2 {
+    color: #14263d;
+}
+
+.home-page .service-card {
+    border: 1px solid #d8e7f3;
+}
+
+.home-page .service-card:nth-child(1) {
+    background: #f0f7ff;
+}
+
+.home-page .service-card:nth-child(2) {
+    background: #e6f2fa;
+}
+
+.home-page .service-card:nth-child(3) {
+    background: #edf8f5;
+}
+
+.home-page .service-card h3,
+.home-page .service-card:nth-child(2) h3 {
+    color: #173b73;
+}
+
+.home-page .service-card p,
+.home-page .service-card:nth-child(2) p {
+    color: #111111;
+}
+
+.home-page .service-icon {
+    background: #ffffff;
+}
+
+/* REVIEWS */
+
+.home-page .reviews {
+    background: #173b73;
+    border: 1px solid #173b73;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(23, 59, 115, 0.15);
+}
+
+.home-page .trustpilot,
+.home-page .reviews p,
+.home-page .reviews-details summary,
+.home-page .reviews-details p {
+    color: #ffffff;
+}
+
+.home-page .stars {
+    background: #ffffff;
+    color: #173b73;
+}
+
+/* REMOVE UNWANTED SPARKLES */
+
+.home-page .hero-image::before,
+.home-page .hero-image::after {
+    content: none;
+}
+
+@media (max-width: 850px) {
+    .home-page .services {
+        padding: 35px 20px;
+    }
+}
+
+/* =============================== */
+/*    ANIMATED PARTNERS CAROUSEL   */
+/* =============================== */
+
+.home-page .partners-logos {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Sliding track */
+
+.home-page .partners-track {
+    display: flex;
+    width: 100%;
+    animation: partnersSlide 25s linear infinite;
+}
+
+/* Each complete logo set */
+
+.home-page .partners-group {
+    display: flex;
+    flex: 0 0 100%;
+    justify-content: space-around;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Pause when hovering */
+
+.home-page .partners-logos:hover .partners-track {
+    animation-play-state: paused;
+}
+
+/* Continuous horizontal movement */
+
+@keyframes partnersSlide {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+/* Smaller screens */
+
+@media (max-width: 600px) {
+    .home-page .partners-group {
+        gap: 8px;
+    }
+
+    .home-page .partners-group img {
+        width: 28%;
+        max-width: 120px;
+        height: 70px;
+        padding: 10px;
+    }
+
+    .home-page .partners-group .lidl-logo {
+        width: 20%;
+    }
+
+    .home-page .partners-group .sephora-logo {
+        width: 30%;
+    }
+}
+
+/* Respect reduced-motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+    .home-page .partners-track {
+        animation: none;
+    }
+
+    .home-page .partners-group[aria-hidden="true"] {
+        display: none;
+    }
+}
+
+
+/* ========================================= */
+/*          DELIVERY COST ESTIMATOR          */
+/* ========================================= */
+
+.home-page .quote-estimator {
+    margin: 70px 0;
+    padding: 55px 45px;
+    background: linear-gradient(
+        130deg,
+        #e8f3ff,
+        #f7faff
+    );
+    border: 1px solid #d6e6f5;
+    border-radius: 24px;
+    box-shadow: 0 14px 35px rgba(30, 75, 125, 0.08);
+}
+
+/* Heading */
+
+.home-page .quote-heading {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.home-page .quote-heading span {
+    color: #215394;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.home-page .quote-heading h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 30px;
+    color: #14263d;
+    margin: 12px 0;
+}
+
+.home-page .quote-heading p {
+    color: #405773;
+    font-size: 15px;
+}
+
+/* White form card */
+
+.home-page #quote-form {
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(30, 75, 125, 0.07);
+}
+
+/* Input layout */
+
+.home-page .quote-fields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    margin-bottom: 25px;
+}
+
+.home-page .quote-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.home-page .quote-field label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #14263d;
+}
+
+.home-page .quote-field input,
+.home-page .quote-field select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    border: 1px solid #c6d9ed;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #14263d;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    outline: none;
+}
+
+/* Focus effect */
+
+.home-page .quote-field input:focus,
+.home-page .quote-field select:focus {
+    border-color: #215394;
+    box-shadow: 0 0 0 3px rgba(33, 83, 148, 0.12);
+}
+
+/* Main button */
+
+.home-page .quote-button {
+    width: 100%;
+    padding: 15px 25px;
+    background: #215394;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.home-page .quote-button:hover {
+    background: #173b73;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(33, 83, 148, 0.22);
+}
+
+/* Estimated cost result */
+
+.home-page .quote-result:not(:empty) {
+    margin-top: 25px;
+    padding: 22px;
+    background: #eff7ff;
+    border: 1px solid #c6dff5;
+    border-radius: 12px;
+    color: #14263d;
+    text-align: center;
+}
+
+/* Disclaimer */
+
+.home-page .quote-disclaimer {
+    text-align: center;
+    font-size: 12px;
+    color: #52657b;
+    margin-top: 20px;
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+    .home-page .quote-estimator {
+        padding: 35px 18px;
+    }
+
+    .home-page #quote-form {
+        padding: 22px;
+    }
+
+    .home-page .quote-fields {
+        grid-template-columns: 1fr;
+    }
+
+    .home-page .quote-heading h2 {
+        font-size: 24px;
+    }
+}
+
+
+/* ================================= */
+/*       HOW CMS WORKS - TIMELINE    */
+/* ================================= */
+
+.home-page .how-it-works {
+    margin: 75px 0;
+    padding: 55px 40px;
+    background: #ffffff;
+    border: 1px solid #e0e8f2;
+    border-radius: 24px;
+    box-shadow: 0 12px 30px rgba(30, 75, 125, 0.05);
+}
+
+/* Heading */
+
+.home-page .how-heading {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.home-page .how-heading span {
+    color: #215394;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.home-page .how-heading h2 {
+    color: #14263d;
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    margin: 12px 0;
+}
+
+.home-page .how-heading p {
+    color: #52647a;
+    font-size: 15px;
+}
+
+/* Steps layout */
+
+.home-page .how-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    position: relative;
+    padding-bottom: 45px;
+}
+
+/* Remove individual card appearance */
+
+.home-page .how-card {
+    position: relative;
+    z-index: 1;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 15px;
+    text-align: center;
+    border-radius: 0;
+    transition: transform 0.3s ease;
+}
+
+.home-page .how-card:hover {
+    background: transparent;
+    transform: translateY(-5px);
+}
+
+/* Large step numbers */
+
+.home-page .how-number {
+    display: block;
+    color: #b9d1e8;
+    font-family: 'Poppins', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+/* Icon circles */
+
+.home-page .how-icon {
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: #eff5fb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.home-page .how-icon img {
+    width: 31px;
+    height: 31px;
+}
+
+.home-page .how-card:hover .how-icon {
+    background: #dcecff;
+    transform: scale(1.08);
+}
+
+/* Text */
+
+.home-page .how-card h3 {
+    color: #14263d;
+    font-family: 'Poppins', sans-serif;
+    font-size: 21px;
+    margin-bottom: 10px;
+}
+
+.home-page .how-card p {
+    color: #52647a;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* Timeline line */
+
+.home-page .how-steps::before {
+    content: "";
+    position: absolute;
+    left: 16%;
+    right: 16%;
+    bottom: 12px;
+    border-top: 3px solid #d7e5f2;
+}
+
+/* Moving dot */
+
+
+/* Moving delivery truck */
+
+.home-page .how-steps::after {
+    content: "";
+    position: absolute;
+
+    left: 16%;
+    bottom: 12px;
+
+    width: 42px;
+    height: 36px;
+
+    background: url("../images/truck.svg")
+                center / contain no-repeat;
+
+    border-radius: 0;
+    box-shadow: none;
+
+    transform: translateX(-50%);
+    animation: cmsTimeline 7s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes cmsTimeline {
+    from { left: 16%; }
+    to { left: 84%; }
+}
+
+/* Mobile */
+
+@media (max-width: 750px) {
+    .home-page .how-it-works {
+        padding: 35px 20px;
+    }
+
+    .home-page .how-steps {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding-bottom: 0;
+    }
+
+    .home-page .how-steps::before,
+    .home-page .how-steps::after {
+        display: none;
+    }
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+    .home-page .how-steps::after {
+        animation: none;
+    }
+}
+
+
+/* ================================= */
+/*      ELEGANT PARTNERS CAROUSEL    */
+/* ================================= */
+
+.home-page .partners {
+    background: #f1f7fd;
+    border: 1px solid #dce8f5;
+    border-radius: 24px;
+
+    padding: 40px 35px;
+    margin: 60px 0;
+
+    text-align: center;
+    box-shadow: 0 10px 28px rgba(30, 75, 125, 0.06);
+}
+
+/* Heading */
+
+.home-page .partners-heading {
+    margin-bottom: 27px;
+}
+
+.home-page .partners-heading span {
+    display: block;
+    color: #215394;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.home-page .partners-heading h2 {
+    color: #14263d;
+    font-size: 29px;
+    margin: 0 0 8px;
+}
+
+.home-page .partners-heading p {
+    color: #52647a;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Continuous white logo strip */
+
+.home-page .partners-logos {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 14px 0;
+
+    /* Soft fade at both ends */
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent,
+        black 8%,
+        black 92%,
+        transparent
+    );
+
+    mask-image: linear-gradient(
+        to right,
+        transparent,
+        black 8%,
+        black 92%,
+        transparent
+    );
+}
+
+/* Sliding track */
+
+.home-page .partners-track {
+    display: flex;
+    width: 200%;
+    animation: cmsPartnersMarquee 25s linear infinite;
+}
+
+/* Both logo groups occupy the same space */
+
+.home-page .partners-group {
+    display: flex;
+    flex: 0 0 50%;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: space-around;
+    gap: 20px;
+    padding: 0 12px;
+}
+
+/* Logos without individual cards */
+
+.home-page .partners-logos img {
+    width: 25%;
+    max-width: 170px;
+    min-width: 0;
+    height: 74px;
+
+    object-fit: contain;
+    box-sizing: border-box;
+
+    background: transparent;
+    padding: 8px;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+
+    transition: transform 0.3s ease;
+}
+
+.home-page .partners-logos img:hover {
+    transform: scale(1.06);
+}
+
+/* Seamless movement */
+
+@keyframes cmsPartnersMarquee {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* Pause on hover */
+
+.home-page .partners-logos:hover .partners-track {
+    animation-play-state: paused;
+}
+
+/* Disclaimer */
+
+.home-page .partners-note {
+    margin: 20px 0 0;
+    color: #52647a;
+    font-size: 12px;
+    font-style: italic;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+    .home-page .partners {
+        padding: 30px 15px;
+    }
+
+    .home-page .partners-group {
+        gap: 8px;
+        padding: 0 5px;
+    }
+
+    .home-page .partners-logos img {
+        width: 30%;
+        height: 55px;
+        padding: 4px;
+    }
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+    .home-page .partners-track {
+        animation: none;
+        width: 100%;
+    }
+
+    .home-page .partners-group {
+        flex: 0 0 100%;
+    }
+
+    .home-page .partners-group[aria-hidden="true"] {
+        display: none;
+    }
+}
