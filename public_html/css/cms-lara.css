@@ -697,7 +697,7 @@ body {
     justify-content: center;
     align-items: center;
 
-    background-color: #eaf4fb;
+    background: linear-gradient(to bottom, #94BDDB, #ECECEF);;
 }
 
 /* Caixa do Login */
@@ -867,7 +867,7 @@ body {
     justify-content: center;
     align-items: center;
 
-    background-color: #ffffff;
+    background: linear-gradient(to bottom, #94BDDB, #ECECEF);;
 }
 
 /* Caixa do registo */
