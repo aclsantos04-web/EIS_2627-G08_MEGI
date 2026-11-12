@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<!-- =========================================================
+     courier-add-vehicle.html — COURIER: ADD VEHICLE
+     The courier registers a vehicle with its capacity and its
+     insurance and inspection documents. It starts as
+     "Pending" until a Staff member approves it.
+     Fields = the VEHICLE entity of the ER model.
+
+     Files used by this page:
+       css/style.css              -> layout + original sidebar (shared)
+       css/courier.css            -> look of the courier pages
+       js/vehicles.js             -> vehicle data + date helpers (shared)
+       js/validation.js           -> form checks (shared)
+       js/courier-add-vehicle.js  -> this page's logic
+     ========================================================= -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Add Vehicle</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/courier.css">
+</head>
+
+<body class="cms-page">
+<div class="app-layout">
+
+    <!-- ===== SIDEBAR =====-->
+    <nav class="sidebar" aria-label="Courier menu">
+        <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
+            <svg viewBox="0 0 64 40" aria-hidden="true">
+                <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+            </svg>
+            CMS
+        </a>
+        <p class="sidebar-role">Courier</p>
+        <a href="courier-available-orders.html"><i class="ti ti-package" aria-hidden="true"></i> Available Orders</a>
+        <a href="courier-active-route.html"><i class="ti ti-route" aria-hidden="true"></i> Active Route</a>
+        <a href="courier-proof-delivery.html"><i class="ti ti-signature" aria-hidden="true"></i> Proof of Delivery</a>
+        <a href="courier-vehicles.html" class="active"><i class="ti ti-truck" aria-hidden="true"></i> Vehicles</a>
+        <a href="courier-completed-orders.html"><i class="ti ti-circle-check" aria-hidden="true"></i> Completed Orders</a>
+        <a href="courier_profile.html"><i class="ti ti-user" aria-hidden="true"></i> Profile</a>
+        <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
+    </nav>
+
+    <!-- ===== PAGE CONTENT ===== -->
+    <main class="app-content">
+
+        <div class="title-with-back">
+            <a href="courier-vehicles.html" class="back-link" aria-label="Back to My Vehicles" title="Back to My Vehicles">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+            <h1>Add Vehicle</h1>
+        </div>
+
+        <!-- Confirmation shown after a successful submit -->
+        <p class="success-message" id="successMessage" role="status" hidden>
+            <span class="success-text"></span>
+            <a href="courier-vehicles.html">See My Vehicles</a>
+        </p>
+
+        <section class="form-card">
+
+            <!-- novalidate: the browser doesn't show its own bubbles,
+                 our JavaScript shows the error messages instead -->
+            <form id="vehicleForm" novalidate>
+
+                <!-- ---------- 1. Vehicle information ---------- -->
+                <h2>Vehicle Information</h2>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="plate">License plate *</label>
+                        <input id="plate" type="text" placeholder="e.g.: AA-00-AA" maxlength="8" autocomplete="off">
+                        <span class="error-message" id="plate-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vehicleType">Vehicle type *</label>
+                        <select id="vehicleType">
+                            <option value="">Select a type</option>
+                            <option>Bike</option>
+                            <option>Moto</option>
+                            <option>Van</option>
+                            <option>Truck</option>
+                        </select>
+                        <span class="error-message" id="vehicleType-error"></span>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="model">Model *</label>
+                        <input id="model" type="text" placeholder="e.g.: Renault Kangoo">
+                        <span class="error-message" id="model-error"></span>
+                    </div>
+                </div>
+
+                <!-- ---------- 2. Capacity ---------- -->
+                <h2 class="section-title">Maximum Capacity</h2>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="maxWeight">Max weight (kg) *</label>
+                        <input id="maxWeight" type="number" min="0" step="0.1" placeholder="e.g.: 650">
+                        <span class="error-message" id="maxWeight-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="maxVolume">Max volume (m³) *</label>
+                        <input id="maxVolume" type="number" min="0" step="0.01" placeholder="e.g.: 3.3">
+                        <span class="error-message" id="maxVolume-error"></span>
+                    </div>
+                </div>
+
+                <!-- ---------- 3. Documents ---------- -->
+                <h2 class="section-title">Documents</h2>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="insuranceDate">Insurance expiry date *</label>
+                        <input id="insuranceDate" type="date">
+                        <span class="error-message" id="insuranceDate-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="insuranceDoc">Insurance certificate (PDF, JPG, PNG) *</label>
+                        <input id="insuranceDoc" type="file" accept=".pdf,.jpg,.jpeg,.png">
+                        <span class="error-message" id="insuranceDoc-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inspectionDate">Inspection expiry date *</label>
+                        <input id="inspectionDate" type="date">
+                        <span class="error-message" id="inspectionDate-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inspectionDoc">Inspection certificate (PDF, JPG, PNG) *</label>
+                        <input id="inspectionDoc" type="file" accept=".pdf,.jpg,.jpeg,.png">
+                        <span class="error-message" id="inspectionDoc-error"></span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary submit-button">Submit for Approval</button>
+            </form>
+        </section>
+    </main>
+</div>
+
+
+<script src="js/vehicles.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/courier-add-vehicle.js"></script>
+<!-- Top bar (notifications + user menu), built by js/topbar.js -->
+<script src="js/topbar.js"
+        data-name="Diogo Silva"
+        data-role="Courier"
+        data-username="diogo.silva"
+        data-profile="courier_profile.html"></script>
+</body>
+</html>

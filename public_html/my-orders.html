@@ -9,7 +9,8 @@
     <title>CMS - My Orders</title>
 
   
-<link rel="stylesheet" href="css/cms-lara.css">
+<link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cms-lara.css">
 
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,53 +20,40 @@
 
 <body>
 
-    <div class="client-layout">
+    <div class="app-layout">
 
-        <!-- SIDEBAR -->
-
-        <aside class="client-sidebar">
-
-            <a href="index.html" class="client-logo">
+        <!-- ===== SIDEBAR (the same on every Client page) =====
+             class="active" marks the page you are on. -->
+        <nav class="sidebar" aria-label="Client menu">
+            <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
+                <svg viewBox="0 0 64 40" aria-hidden="true">
+                    <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                    <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                    <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                    <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                </svg>
                 CMS
             </a>
-
-            <div class="client-role">
-                <img src="images/users.svg" alt="Client">
-                <span>Client</span>
-            </div>
-
-            <nav class="client-nav">
-
-           
-<a href="client_new_order.html">New Order</a>
-
-                <a href="my-orders.html" class="active">
-                    My Orders
-                </a>
-
-                <a href="new-product.html">
-                    New Product
-                </a>
-
-                <a href="my-products.html">
-                    My Products
-                </a>
-
-                <a href="client_profile.html">
-                    Profile
-                </a>
-
-            </nav>
-
-        </aside>
+            <div class="sidebar-role"><span class="role-icon" aria-hidden="true">📦</span> Client Panel</div>
+            <a href="client_new_order.html"><i class="ti ti-square-plus" aria-hidden="true"></i> New Order</a>
+            <a href="my-orders.html" class="active"><i class="ti ti-list-details" aria-hidden="true"></i> My Orders</a>
+            <a href="new-product.html"><i class="ti ti-box" aria-hidden="true"></i> New Product</a>
+            <a href="my-products.html"><i class="ti ti-packages" aria-hidden="true"></i> My Products</a>
+            <a href="client_profile.html"><i class="ti ti-user" aria-hidden="true"></i> Profile</a>
+            <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
+        </nav>
 
         <!-- MAIN CONTENT -->
 
-        <main class="orders-content">
+        <main class="app-content orders-content">
 
             <h1>My Orders</h1>
 
-            <div class="orders-table-container">
+            <!-- "View" is a link to the details page. ?order=1001 tells that
+                 page which order to show (read by js/client_orders.js). -->
+
+            <!-- table-wrap = the shared table card from style.css -->
+            <div class="table-wrap orders-table-container">
 
                 <table class="orders-table">
 
@@ -86,12 +74,12 @@
                             <td>#1001</td>
                             <td>Porto</td>
                             <td>Aveiro</td>
-                            <td>Completed</td>
+                            <td><span class="badge badge-success">Completed</span></td>
                             <td>15/10/2026</td>
                             <td>
-                                <button type="button" class="view-order" data-order-id="1001">
+                                <a href="client_orders.html?order=1001" class="btn btn-primary btn-small">
                                     View
-                                </button>
+                                </a>
                             </td>
                         </tr>
 
@@ -99,12 +87,12 @@
                             <td>#1002</td>
                             <td>Braga</td>
                             <td>Porto</td>
-                            <td>In Progress</td>
+                            <td><span class="badge badge-info">In Progress</span></td>
                             <td>18/10/2026</td>
                             <td>
-                                <button type="button" class="view-order" data-order-id="1002">
+                                <a href="client_orders.html?order=1002" class="btn btn-primary btn-small">
                                     View
-                                </button>
+                                </a>
                             </td>
                         </tr>
 
@@ -112,12 +100,12 @@
                             <td>#1003</td>
                             <td>Lisboa</td>
                             <td>Coimbra</td>
-                            <td>Initiated</td>
+                            <td><span class="badge badge-warning">Initiated</span></td>
                             <td>20/10/2026</td>
                             <td>
-                                <button type="button" class="view-order" data-order-id="1003">
+                                <a href="client_orders.html?order=1003" class="btn btn-primary btn-small">
                                     View
-                                </button>
+                                </a>
                             </td>
                         </tr>
 
@@ -125,12 +113,12 @@
                             <td>#1004</td>
                             <td>Viana do Castelo</td>
                             <td>Braga</td>
-                            <td>Cancelled</td>
+                            <td><span class="badge badge-danger">Cancelled</span></td>
                             <td>21/10/2026</td>
                             <td>
-                                <button type="button" class="view-order" data-order-id="1004">
+                                <a href="client_orders.html?order=1004" class="btn btn-primary btn-small">
                                     View
-                                </button>
+                                </a>
                             </td>
                         </tr>
 
@@ -144,5 +132,11 @@
 
     </div>
 
+<!-- Top bar (notifications + user menu), built by js/topbar.js -->
+<script src="js/topbar.js"
+        data-name="Marta Ferreira"
+        data-role="Client"
+        data-username="marta.ferreira"
+        data-profile="client_profile.html"></script>
 </body>
 </html>

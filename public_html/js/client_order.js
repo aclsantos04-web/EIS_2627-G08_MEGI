@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         alert('Encomenda submetida com sucesso! (Estado: Initiated)');
-        window.location.href = 'client_orders.html';
+        window.location.href = 'my-orders.html';   // back to the list of orders
     });
 
     renderProductList();

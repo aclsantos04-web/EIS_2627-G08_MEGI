@@ -73,9 +73,17 @@
 }
 
 /* Secção de Notas */
+/* The card stacks the title and the box (flex column); the box
+   takes only the space left under the title (flex: 1), so it no
+   longer grows past the bottom of the card. */
+.notes-card {
+    display: flex;
+    flex-direction: column;
+}
+
 .notes-card textarea {
+    flex: 1;
     min-height: 140px;
-    height: 100%;
     resize: none;
 }
 
@@ -304,4 +312,34 @@
     .order-details-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* ===================================================
+   ORDER DETAILS: back link, cancelled step, not found
+   =================================================== */
+.back-to-list {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.step.cancelled .step-circle {
+    background-color: var(--danger);
+    border-color: var(--danger);
+    color: #ffffff;
+}
+
+.step.cancelled .step-label {
+    color: var(--danger);
+}
+
+.step.current .step-circle {          /* the step the order is on now */
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.step.current .step-label {
+    color: var(--primary);
 }

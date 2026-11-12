@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - My Orders</title>
+    
+    <!-- Folha de estilos do Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Estilos partilhados da equipa -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Estilos específicos do cliente -->
+    <link rel="stylesheet" href="css/client.css">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- Sidebar oficial da equipa -->
+        <nav class="sidebar">
+            <a href="index.html" class="sidebar-logo">CMS</a>
+            <div class="sidebar-role">Client</div>
+
+            <a href="client_new_order.html">New Order</a>
+            <a href="client_orders.html" class="active">My Orders</a>
+            <a href="client_profile.html">Profile</a>
+            <a href="login.html" class="logout">Log out</a>
+        </nav>
+
+        <!-- Área Principal de Conteúdo -->
+        <main class="app-content">
+            <header class="page-header">
+                <h1>Order #1001</h1>
+            </header>
+
+            <!-- Barra de Progresso Moderna -->
+            <section class="card status-tracker-container">
+                <div class="status-tracker">
+                    <div class="tracker-progress-line"></div>
+
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <span class="step-label">Initiated</span>
+                    </div>
+
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <span class="step-label">In progress</span>
+                    </div>
+
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <span class="step-label">Completed</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Grelha com Detalhes da Encomenda à esquerda e Mapa à direita -->
+            <div class="order-details-grid">
+                
+                <!-- Order Information Card -->
+                <section class="card order-info-card">
+                    <h3>Order Information</h3>
+                    
+                    <div class="info-group">
+                        <span class="info-label">Origin</span>
+                        <p class="info-value">Location 1 (41.1780 ; -8.5980)</p>
+                    </div>
+
+                    <div class="info-group">
+                        <span class="info-label">Destination</span>
+                        <p class="info-value">Location 2 (41.1496 ; -8.6109)</p>
+                    </div>
+
+                    <div class="info-group">
+                        <span class="info-label">Courier</span>
+                        <p class="info-value">Diogo Silva</p>
+                    </div>
+
+                    <div class="info-group">
+                        <span class="info-label">Products</span>
+                        <ul class="products-bullet-list">
+                            <li>Product 1 (Qt: 2; 5kg)</li>
+                            <li>Product 2 (Qt: 3; 10kg)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Coluna Direita: Mapa Leaflet e Ação do Comprovativo -->
+                <div class="map-action-column">
+                    <section class="card map-container-card">
+                        <div id="map"></div>
+                        <div class="map-footer-hint">
+                            <p class="text-muted">Route between Origin and Destination</p>
+                        </div>
+                    </section>
+
+                    <div class="pod-action-container">
+                        <button type="button" id="btnViewPod" class="btn btn-secondary">See Proof of Delivery</button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Pop-up nativo <dialog> conforme a secção 12 do style.css -->
+    <dialog id="podDialog">
+        <h3>Electronic Proof of Delivery (e-POD)</h3>
+        <p><strong>Order:</strong> #1001</p>
+        <p><strong>Courier:</strong> Diogo Silva</p>
+        
+        <div class="pod-preview-box">
+            <div id="signaturePlaceholder" class="signature-placeholder">
+                <span class="text-muted">✍️ Nenhuma assinatura ou foto registada ainda.</span>
+            </div>
+        </div>
+
+        <div class="form-actions" style="margin-top: 20px;">
+            <button type="button" id="btnClosePod" class="btn btn-outline">Close</button>
+        </div>
+    </dialog>
+
+    <!-- Scripts essenciais -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/client_orders.js"></script>
+</body>
+</html>

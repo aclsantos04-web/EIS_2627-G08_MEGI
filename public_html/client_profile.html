@@ -31,7 +31,8 @@
 <body class="cms-page">
 <div class="app-layout">
 
-    <!-- ===== SIDEBAR (Client menu) ===== -->
+    <!-- ===== SIDEBAR (the same on every Client page) =====
+         class="active" marks the page you are on. -->
     <nav class="sidebar" aria-label="Client menu">
         <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
             <svg viewBox="0 0 64 40" aria-hidden="true">
@@ -42,7 +43,7 @@
             </svg>
             CMS
         </a>
-        <p class="sidebar-role">Client</p>
+        <div class="sidebar-role"><span class="role-icon" aria-hidden="true">📦</span> Client Panel</div>
         <a href="client_new_order.html"><i class="ti ti-square-plus" aria-hidden="true"></i> New Order</a>
         <a href="my-orders.html"><i class="ti ti-list-details" aria-hidden="true"></i> My Orders</a>
         <a href="new-product.html"><i class="ti ti-box" aria-hidden="true"></i> New Product</a>

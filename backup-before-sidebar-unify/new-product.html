@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CMS - Create New Product</title>
+
+ 
+<link rel="stylesheet" href="css/cms-lara.css">
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Poppins:wght@500;600;700&amp;display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="client-layout">
+
+        <!-- CLIENT SIDEBAR -->
+
+        <aside class="client-sidebar">
+
+            <a href="index.html" class="client-logo">
+                CMS
+            </a>
+
+            <div class="client-role">
+
+                <img src="images/users.svg" alt="Client">
+                <span>Client</span>
+
+            </div>
+
+            <nav class="client-nav">
+
+         
+<a href="client_new_order.html">New Order</a>
+
+                <a href="my-orders.html">
+                    My Orders
+                </a>
+
+                <a href="new-product.html" class="active">
+                    New Product
+                </a>
+
+                <a href="my-products.html">
+                    My Products
+                </a>
+
+                <a href="client_profile.html">
+                    Profile
+                </a>
+
+            </nav>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+
+        <main class="product-content">
+
+            <h1>Create New Product</h1>
+
+            <section class="product-container">
+
+                <h2>Product Information</h2>
+
+                <form id="product-form" novalidate="">
+
+                    <div class="product-fields">
+
+                        <!-- PRODUCT NAME -->
+
+                        <div class="product-group">
+
+                            <label for="product-name">
+                                Product Name
+                            </label>
+
+                            <input type="text"
+                                   id="product-name"
+                                   name="product-name"
+                                   placeholder="e.g.: Product A"
+                                   required>
+
+                        </div>
+
+                        <!-- PRODUCT DESCRIPTION -->
+
+                        <div class="product-group">
+
+                            <label for="product-description">
+                                Product Description
+                            </label>
+
+                            <input type="text"
+                                   id="product-description"
+                                   name="product-description"
+                                   placeholder="e.g.: Smartphone"
+                                   required>
+
+                        </div>
+
+                        <!-- PRODUCT CATEGORY -->
+
+                        <div class="product-group">
+
+                            <label for="product-category">
+                                Product Category
+                            </label>
+
+                            <input type="text"
+                                   id="product-category"
+                                   name="product-category"
+                                   placeholder="e.g.: Electronics"
+                                   required>
+
+                        </div>
+
+                    </div>
+
+                    <!-- PRODUCT SIZING -->
+
+                    <h2 class="sizing-title">
+                        Product Sizing
+                    </h2>
+
+                    <div class="product-sizing">
+
+                        <!-- WEIGHT -->
+
+                        <div class="product-group">
+
+                            <label for="product-weight">
+                                Weight (kg)
+                            </label>
+
+                            <input type="number"
+                                   id="product-weight"
+                                   name="weight"
+                                   placeholder="0.00"
+                                   min="0.01"
+                                   step="0.01"
+                                   required>
+
+                        </div>
+
+                        <!-- VOLUME -->
+
+                        <div class="product-group">
+
+                            <label for="product-volume">
+                                Volume (m³)
+                            </label>
+
+                            <input type="number"
+                                   id="product-volume"
+                                   name="volume"
+                                   placeholder="0.00"
+                                   min="0.001"
+                                   step="0.001"
+                                   required>
+
+                        </div>
+
+                    </div>
+
+                    <!-- SUBMIT BUTTON -->
+
+                    <div id="product-message" role="status"></div>
+
+<button type="submit" class="product-button">
+    Submit Product
+</button>
+
+                </form>
+
+            </section>
+
+        </main>
+
+    </div>
+<script src="js/new-product.js"></script>
+</body>
+</html>

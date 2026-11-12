@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Create New Order</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- CSS Partilhado do Grupo -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- CSS Complementar do Cliente -->
+    <link rel="stylesheet" href="css/client.css">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- Sidebar no padrão oficial do style.css -->
+        <nav class="sidebar">
+            <a href="index.html" class="sidebar-logo">CMS</a>
+            <div class="sidebar-role">Client</div>
+
+            <a href="client_new_order.html" class="active">New Order</a>
+            <a href="client_orders.html">My Orders</a>
+            <a href="client_profile.html">Profile</a>
+            <a href="login.html" class="logout">Log out</a>
+        </nav>
+
+        <!-- Área Principal -->
+        <main class="app-content">
+            <header class="page-header">
+                <h1>Create new order</h1>
+            </header>
+
+            <form id="orderForm" class="order-grid" novalidate>
+                
+                <!-- Package Information -->
+                <section class="card package-card">
+                    <h3>Package Information</h3>
+                    
+                    <div class="product-input-row">
+                        <select id="productSelect">
+                            <option value="" disabled selected>Select Products</option>
+                            <option value="Product A" data-weight="5kg" data-vol="0.02 m²">Product A (5kg | 0.02 m²)</option>
+                            <option value="Product B" data-weight="12kg" data-vol="0.05 m²">Product B (12kg | 0.05 m²)</option>
+                            <option value="Product C" data-weight="1.5kg" data-vol="0.005 m²">Product C (1.5kg | 0.005 m²)</option>
+                        </select>
+
+                        <input type="number" id="productQty" class="qty-input" placeholder="Qt" min="1" value="1">
+                        
+                        <!-- Novo botão secundário da equipa -->
+                        <button type="button" id="btnAddProduct" class="btn btn-secondary btn-small">Add</button>
+                    </div>
+
+                    <!-- Lista de produtos adicionados -->
+                    <div id="selectedProductsList" class="product-list"></div>
+                </section>
+
+                <!-- Additional Information -->
+                <section class="card notes-card">
+                    <h3>Additional Information</h3>
+                    <textarea id="orderNotes" placeholder="Notes (optional)"></textarea>
+                </section>
+
+                <!-- Select Location -->
+                <section class="card location-card">
+                    <h3>Select Location</h3>
+                    
+                    <div class="coords-section">
+                        <div class="coords-subtitle">Origin</div>
+                        <div class="coords-row">
+                            <div class="input-block">
+                                <label for="originLat">Latitude</label>
+                                <input type="number" step="any" id="originLat" placeholder="41.1780" value="41.1780">
+                            </div>
+                            <div class="input-block">
+                                <label for="originLong">Longitude</label>
+                                <input type="number" step="any" id="originLong" placeholder="-8.5980" value="-8.5980">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="coords-section">
+                        <div class="coords-subtitle">Destination</div>
+                        <div class="coords-row">
+                            <div class="input-block">
+                                <label for="destLat">Latitude</label>
+                                <input type="number" step="any" id="destLat" placeholder="41.1496" value="41.1496">
+                            </div>
+                            <div class="input-block">
+                                <label for="destLong">Longitude</label>
+                                <input type="number" step="any" id="destLong" placeholder="-8.6109" value="-8.6109">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-footer">
+                        <!-- Novo botão primário da equipa -->
+                        <button type="submit" class="btn btn-primary">Submit Order</button>
+                    </div>
+                </section>
+
+                <!-- Contentor do Mapa (integrado com o map.js) -->
+                <section class="card map-container-card">
+                    <div id="map"></div>
+                    <div class="map-footer-hint">
+                        <p class="text-muted">Click on the map or change coordinates to update route</p>
+                    </div>
+                </section>
+
+            </form>
+        </main>
+    </div>
+
+    <!-- Scripts na ordem correta -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/client_order.js"></script>
+</body>
+</html>

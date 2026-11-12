@@ -1162,8 +1162,7 @@ body {
 .orders-table-container {
     width: 100%;
     overflow-x: auto;
-    border: 1px solid #c5e0f0;
-    border-radius: 10px;
+    /* frame, shadow and top line come from .table-wrap (style.css) */
 }
 
 .orders-table {
@@ -1220,6 +1219,18 @@ body {
 
 .view-order:hover {
     background-color: #173d70;
+}
+
+/* "View" is now a link (<a>) to the order details page:
+   same look as the button, without underline */
+a.view-order {
+    display: inline-block;
+    text-decoration: none;
+}
+
+a.view-order:hover {
+    color: #ffffff;
+    text-decoration: none;
 }
 
 /* ECRAS PEQUENOS */
@@ -1498,8 +1509,7 @@ body {
 .products-table-container {
     width: 100%;
     overflow-x: auto;
-    border: 1px solid #c5e0f0;
-    border-radius: 10px;
+    /* frame, shadow and top line come from .table-wrap (style.css) */
 }
 
 /* Table */
@@ -1644,3 +1654,10 @@ body {
     display: none;
 }
 
+
+
+/* Header row of the client tables: same light blue as the other tables */
+.orders-table th,
+.products-table th {
+    background-color: #eaf4fb;
+}

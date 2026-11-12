@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Proof of Delivery</title>
+
+    <!-- CSS geral -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- CSS das páginas Courier -->
+    <link rel="stylesheet" href="css/courier.css">
+
+    <!-- CSS específico desta página -->
+    <style>
+        .proof-container {
+            width: 100%;
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 28px;
+            background-color: var(--card);
+            border-radius: var(--radius);
+        }
+
+        .proof-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .proof-header h2 {
+            flex: 1;
+            margin: 0;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .proof-close {
+            border: none;
+            background: transparent;
+            color: var(--text);
+            font-size: 28px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Botões Signature e Photo */
+        .proof-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .proof-tab {
+            padding: 9px 15px;
+            border: 1px solid #999;
+            border-radius: 999px;
+            background-color: #fff;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .proof-tab.active {
+            background-color: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Área de assinatura */
+        #signatureCanvas {
+            display: block;
+            width: 100%;
+            height: 240px;
+            background-color: #fff;
+            border: 1px solid #999;
+            border-radius: 12px;
+            cursor: crosshair;
+            touch-action: none;
+        }
+
+        /* Área de fotografia */
+        .photo-area {
+            min-height: 280px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            background-color: #fff;
+            border: 1px dashed #999;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        #cameraPreview {
+            width: 100%;
+            max-height: 320px;
+            border-radius: 8px;
+            object-fit: cover;
+            background-color: #000;
+        }
+
+        #photoCanvas {
+            display: none;
+        }
+
+        #photoPreview {
+            display: none;
+            max-width: 100%;
+            max-height: 280px;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+
+        #deliveryPhoto {
+            display: none;
+        }
+
+        .photo-actions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* Botões no fundo */
+        .proof-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .proof-actions-right {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        /* Mensagens de erro */
+        #proofError {
+            min-height: 20px;
+            margin-top: 10px;
+            color: var(--danger);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* Versão para ecrãs pequenos */
+        @media (max-width: 760px) {
+            .proof-container {
+                padding: 18px;
+            }
+
+            .proof-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .proof-actions-right {
+                width: 100%;
+                margin-left: 0;
+                flex-direction: column;
+            }
+
+            .proof-actions .btn,
+            .photo-actions .btn {
+                width: 100%;
+            }
+
+            .photo-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+
+        <!-- Menu lateral -->
+        <nav class="sidebar" aria-label="Courier menu">
+            <a href="index.html" class="sidebar-logo">CMS</a>
+
+            <p class="sidebar-role">🚚 Courier</p>
+
+            <a href="courier-available-orders.html">Available Orders</a>
+            <a href="courier-active-route.html">Active Route</a>
+            <a href="courier-proof-delivery.html" class="active">Proof of Delivery</a>
+            <a href="courier-vehicles.html">Vehicles</a>
+            <a href="courier-completed-orders.html">Completed Orders</a>
+            <a href="courier_profile.html">Profile</a>
+
+            <!-- Logout -->
+            <a href="login.html" class="logout">Log out</a>
+        </nav>
+
+        <!-- Conteúdo principal -->
+        <main class="app-content">
+            <div class="page-header">
+                <h1>Proof of Delivery</h1>
+            </div>
+
+            <section class="proof-container">
+
+                <!-- Cabeçalho -->
+                <div class="proof-header">
+                    <h2>Completed Delivery</h2>
+
+                    <button
+                        type="button"
+                        id="closeProof"
+                        class="proof-close"
+                        aria-label="Close">
+                        ×
+                    </button>
+                </div>
+
+                <!-- Escolha Signature ou Photo -->
+                <div class="proof-tabs">
+                    <button
+                        type="button"
+                        id="signatureTab"
+                        class="proof-tab active">
+                        Signature
+                    </button>
+
+                    <button
+                        type="button"
+                        id="photoTab"
+                        class="proof-tab">
+                        Photo
+                    </button>
+                </div>
+
+                <!-- Área de assinatura -->
+                <div id="signaturePanel">
+                    <canvas
+                        id="signatureCanvas"
+                        width="700"
+                        height="240">
+                        Your browser does not support Canvas.
+                    </canvas>
+                </div>
+
+                <!-- Área de fotografia -->
+                <div id="photoPanel" hidden>
+                    <div class="photo-area">
+
+                        <!-- Câmara em direto -->
+                        <video
+                            id="cameraPreview"
+                            autoplay
+                            playsinline
+                            hidden>
+                        </video>
+
+                        <!-- Canvas usado para capturar a imagem -->
+                        <canvas id="photoCanvas" hidden></canvas>
+
+                        <!-- Preview da fotografia -->
+                        <img
+                            id="photoPreview"
+                            alt="Delivery photo preview">
+
+                        <p id="photoText">
+                            Take or choose a photo confirming the delivery.
+                        </p>
+
+                        <div class="photo-actions">
+
+                            <!-- Abrir a câmara -->
+                            <button
+                                type="button"
+                                id="openCamera"
+                                class="btn btn-secondary">
+                                Take Photo
+                            </button>
+
+                            <!-- Capturar fotografia -->
+                            <button
+                                type="button"
+                                id="capturePhoto"
+                                class="btn btn-primary"
+                                hidden>
+                                Capture
+                            </button>
+
+                            <!-- Escolher fotografia existente -->
+                            <input
+                                type="file"
+                                id="deliveryPhoto"
+                                accept="image/*">
+
+                            <label
+                                for="deliveryPhoto"
+                                class="btn btn-outline">
+                                Choose Photo
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mensagem de erro -->
+                <p id="proofError" role="alert"></p>
+
+                <!-- Botões finais -->
+                <div class="proof-actions">
+                    <button
+                        type="button"
+                        id="btnClearSignature"
+                        class="btn btn-outline btn-small">
+                        Clear
+                    </button>
+
+                    <div class="proof-actions-right">
+                        <button
+                            type="button"
+                            id="cancelProof"
+                            class="btn btn-outline">
+                            Cancel
+                        </button>
+
+                        <button
+                            type="button"
+                            id="confirmDelivery"
+                            class="btn btn-secondary">
+                            Confirm Delivery
+                        </button>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <!-- JS da assinatura -->
+    <script src="js/signature.js"></script>
+
+    <!-- JS da câmara e Proof of Delivery -->
+    <script src="js/camera_proof_of_delivery.js"></script>
+</body>
+</html>

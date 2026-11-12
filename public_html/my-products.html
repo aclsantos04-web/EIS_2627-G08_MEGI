@@ -9,7 +9,8 @@
     <title>CMS - My Products</title>
 
   
-<link rel="stylesheet" href="css/cms-lara.css">
+<link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cms-lara.css">
 
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,54 +22,37 @@
 
 <body>
 
-    <div class="client-layout">
+    <div class="app-layout">
 
-        <!-- CLIENT SIDEBAR -->
-
-        <aside class="client-sidebar">
-
-            <a href="index.html" class="client-logo">
+        <!-- ===== SIDEBAR (the same on every Client page) =====
+             class="active" marks the page you are on. -->
+        <nav class="sidebar" aria-label="Client menu">
+            <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
+                <svg viewBox="0 0 64 40" aria-hidden="true">
+                    <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                    <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                    <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                    <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                </svg>
                 CMS
             </a>
-
-            <div class="client-role">
-                <img src="images/users.svg" alt="Client">
-                <span>Client</span>
-            </div>
-
-            <nav class="client-nav">
-
-               
-<a href="client_new_order.html">New Order</a>
-
-
-                <a href="my-orders.html">
-                    My Orders
-                </a>
-
-                <a href="new-product.html">
-                    New Product
-                </a>
-
-                <a href="my-products.html" class="active">
-                    My Products
-                </a>
-
-                <a href="client_profile.html">
-                    Profile
-                </a>
-
-            </nav>
-
-        </aside>
+            <div class="sidebar-role"><span class="role-icon" aria-hidden="true">📦</span> Client Panel</div>
+            <a href="client_new_order.html"><i class="ti ti-square-plus" aria-hidden="true"></i> New Order</a>
+            <a href="my-orders.html"><i class="ti ti-list-details" aria-hidden="true"></i> My Orders</a>
+            <a href="new-product.html"><i class="ti ti-box" aria-hidden="true"></i> New Product</a>
+            <a href="my-products.html" class="active"><i class="ti ti-packages" aria-hidden="true"></i> My Products</a>
+            <a href="client_profile.html"><i class="ti ti-user" aria-hidden="true"></i> Profile</a>
+            <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
+        </nav>
 
         <!-- MAIN CONTENT -->
 
-        <main class="products-content">
+        <main class="app-content products-content">
 
             <h1>My Products</h1>
 
-            <div class="products-table-container">
+            <!-- table-wrap = the shared table card from style.css -->
+            <div class="table-wrap products-table-container">
 
                 <table class="products-table">
 
@@ -95,9 +79,14 @@
 
             </div>
 
-            <p id="no-products" hidden>
-                No products registered yet.
-            </p>
+            <!-- Shown by my-products.js when no product was registered yet
+                 (empty-state styles: style.css, section 14) -->
+            <div id="no-products" class="card empty-state" hidden>
+                <span class="empty-state-icon"><i class="ti ti-packages" aria-hidden="true"></i></span>
+                <h3>No products yet</h3>
+                <p>Register the products you want to send. You can then add them to a new order.</p>
+                <a href="new-product.html" class="btn btn-primary btn-small">+ New Product</a>
+            </div>
             
 <!-- PRODUCT DETAILS -->
 
@@ -141,5 +130,11 @@
 
     </div>
 <script src="js/my-products.js"></script>
+<!-- Top bar (notifications + user menu), built by js/topbar.js -->
+<script src="js/topbar.js"
+        data-name="Marta Ferreira"
+        data-role="Client"
+        data-username="marta.ferreira"
+        data-profile="client_profile.html"></script>
 </body>
 </html>

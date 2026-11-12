@@ -31,7 +31,8 @@
 <body class="cms-page">
 <div class="app-layout">
 
-    <!-- ===== SIDEBAR (Admin menu) ===== -->
+    <!-- ===== SIDEBAR (the same on every Admin page) =====
+         class="active" marks the page you are on. -->
     <nav class="sidebar" aria-label="Admin menu">
         <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
             <svg viewBox="0 0 64 40" aria-hidden="true">
@@ -42,7 +43,7 @@
             </svg>
             CMS
         </a>
-        <p class="sidebar-role">Admin</p>
+        <div class="sidebar-role"><span class="role-icon" aria-hidden="true">💼</span> Admin Panel</div>
         <a href="admin-staff.html"><i class="ti ti-user-check" aria-hidden="true"></i> Staff Approvals</a>
         <a href="admin-users.html"><i class="ti ti-users" aria-hidden="true"></i> Users</a>
         <a href="admin_dashboard.html"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Dashboard</a>

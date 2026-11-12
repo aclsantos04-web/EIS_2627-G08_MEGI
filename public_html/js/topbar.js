@@ -16,8 +16,14 @@
    data-profile   the role's profile page
 
    The bar is added at the top of <main class="app-content">.
-   Its styles are in style.css, section 13.
+   Its styles are in style.css, section 13. The bar's class is
+   "app-topbar" ("topbar" is already used by the homepage menu).
    ========================================================= */
+
+/* Everything is inside (function () { ... })(); so the names used
+   here (createIcon, getNotifications...) stay private and can't clash
+   with functions of the same name in other pages' scripts. */
+(function () {
 
 /* document.currentScript = the <script> tag running this file,
    so we can read its data-... attributes (dataset). It is only
@@ -251,7 +257,7 @@ function renderTopbar() {
     const name = getDisplayName();
     const role = topbarSettings.role || "";
 
-    const bar = createElement("header", "topbar");
+    const bar = createElement("header", "app-topbar");
     const notificationsMenu = buildNotificationsMenu(getNotifications(role));
     const userMenu = buildUserMenu(name, role);
     connectMenu(notificationsMenu);
@@ -262,3 +268,5 @@ function renderTopbar() {
 }
 
 renderTopbar();
+
+})();

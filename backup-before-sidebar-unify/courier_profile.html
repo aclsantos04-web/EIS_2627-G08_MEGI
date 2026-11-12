@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!-- =========================================================
+     courier_profile.html — COURIER: MY PROFILE
+     There are four profile pages (client, courier, staff,
+     admin). They are the same except for:
+       - the sidebar (each role has its own menu)
+       - the sample details written in the fields below
+     The checks and saving are shared in js/profile.js.
+     Fields = the USER entity of the ER model.
+
+     Files used by this page:
+       css/style.css       -> layout + original sidebar (shared)
+       css/courier.css     -> look of the content (shared)
+       js/validation.js    -> form checks (shared)
+       js/profile.js       -> profile logic (shared by the 4 profile pages)
+     ========================================================= -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - My Profile</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/courier.css">
+</head>
+
+<body class="cms-page">
+<div class="app-layout">
+
+    <!-- ===== SIDEBAR (Courier menu) ===== -->
+    <nav class="sidebar" aria-label="Courier menu">
+        <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
+            <svg viewBox="0 0 64 40" aria-hidden="true">
+                <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+            </svg>
+            CMS
+        </a>
+        <p class="sidebar-role">Courier</p>
+        <a href="courier-available-orders.html"><i class="ti ti-package" aria-hidden="true"></i> Available Orders</a>
+        <a href="courier-active-route.html"><i class="ti ti-route" aria-hidden="true"></i> Active Route</a>
+        <a href="courier-proof-delivery.html"><i class="ti ti-signature" aria-hidden="true"></i> Proof of Delivery</a>
+        <a href="courier-vehicles.html"><i class="ti ti-truck" aria-hidden="true"></i> Vehicles</a>
+        <a href="courier-completed-orders.html"><i class="ti ti-circle-check" aria-hidden="true"></i> Completed Orders</a>
+        <a href="courier_profile.html" class="active"><i class="ti ti-user" aria-hidden="true"></i> Profile</a>
+        <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
+    </nav>
+
+    <!-- ===== PAGE CONTENT ===== -->
+    <main class="app-content">
+
+        <h1>My Profile</h1>
+
+        <!-- Summary at the top. profile.js updates the name and
+             initials when the user saves a new name. -->
+        <section class="profile-header">
+            <div class="profile-avatar" id="profileInitials" aria-hidden="true">DS</div>
+            <div>
+                <h2 id="profileName">Diogo Silva</h2>
+                <span class="badge badge-info">Courier</span>
+                <span class="badge badge-success">Approved by Staff</span>
+                <p class="text-muted">Member since 15/09/2026. Your account was validated by Staff, so you can accept orders.</p>
+            </div>
+        </section>
+
+        <!-- Blue confirmation after saving (hidden until then) -->
+        <p class="success-message" id="successMessage" role="status" hidden></p>
+
+        <!-- data-username tells profile.js whose profile this is.
+             novalidate: our JavaScript shows the error messages. -->
+        <form id="profileForm" data-username="diogo.silva" novalidate>
+
+            <!-- ---------- 1. Personal information ---------- -->
+            <section class="form-card">
+                <h2>Personal Information</h2>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <!-- readonly: shown but can't be changed -->
+                        <input id="username" type="text" value="diogo.silva" readonly>
+                        <span class="hint">The username can't be changed.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fullName">Full name *</label>
+                        <input id="fullName" type="text" value="Diogo Silva" autocomplete="name">
+                        <span class="error-message" id="fullName-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input id="email" type="email" value="diogo.silva@email.pt" autocomplete="email">
+                        <span class="error-message" id="email-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone *</label>
+                        <input id="phone" type="tel" value="936123456" maxlength="9" autocomplete="tel">
+                        <span class="error-message" id="phone-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nif">NIF *</label>
+                        <input id="nif" type="text" value="234567890" maxlength="9" inputmode="numeric">
+                        <span class="error-message" id="nif-error"></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ---------- 2. Change password (optional) ---------- -->
+            <section class="form-card">
+                <h2>Change Password</h2>
+                <p class="text-muted">Leave these fields empty to keep your current password.</p>
+
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="currentPassword">Current password</label>
+                        <input id="currentPassword" type="password" autocomplete="current-password">
+                        <span class="error-message" id="currentPassword-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newPassword">New password</label>
+                        <input id="newPassword" type="password" autocomplete="new-password">
+                        <span class="hint">At least 8 characters.</span>
+                        <span class="error-message" id="newPassword-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm new password</label>
+                        <input id="confirmPassword" type="password" autocomplete="new-password">
+                        <span class="error-message" id="confirmPassword-error"></span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary submit-button">Save Changes</button>
+            </section>
+        </form>
+    </main>
+</div>
+
+<!-- Shared checks first, then the shared profile logic -->
+<script src="js/validation.js"></script>
+<script src="js/profile.js"></script>
+<!-- vehicles.js gives the top bar the courier's document alerts -->
+<script src="js/vehicles.js"></script>
+<!-- Top bar (notifications + user menu), built by js/topbar.js -->
+<script src="js/topbar.js"
+        data-name="Diogo Silva"
+        data-role="Courier"
+        data-username="diogo.silva"
+        data-profile="courier_profile.html"></script>
+</body>
+</html>

@@ -13,15 +13,24 @@
 
     <div class="app-layout">
         <!-- Sidebar oficial do projeto -->
-        <nav class="sidebar">
-            <a href="index.html" class="sidebar-logo">CMS</a>
-            <div class="sidebar-role">Staff</div>
-
-            <a href="staff_courier_approvals.html">Courier Approvals</a>
-            <a href="staff_vehicle_approvals.html">Vehicle Approvals</a>
-            <a href="staff_alerts.html" class="active">Document Alerts</a>
-            <a href="staff_profile.html">Profile</a>
-            <a href="login.html" class="logout">Log out</a>
+        <!-- ===== SIDEBAR (the same on every Staff page) =====
+             class="active" marks the page you are on. -->
+        <nav class="sidebar" aria-label="Staff menu">
+            <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
+                <svg viewBox="0 0 64 40" aria-hidden="true">
+                    <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                    <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                    <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                    <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                </svg>
+                CMS
+            </a>
+            <div class="sidebar-role"><span class="role-icon" aria-hidden="true">📋</span> Staff Panel</div>
+            <a href="staff_courier_approvals.html"><i class="ti ti-user-check" aria-hidden="true"></i> Courier Approvals</a>
+            <a href="staff_vehicle_approvals.html"><i class="ti ti-truck" aria-hidden="true"></i> Vehicle Approvals</a>
+            <a href="staff_alerts.html" class="active"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Document Alerts</a>
+            <a href="staff_profile.html"><i class="ti ti-user" aria-hidden="true"></i> Profile</a>
+            <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
         </nav>
 
         <!-- Área Principal de Conteúdo -->
@@ -125,5 +134,11 @@
     </dialog>
 
     <script src="js/staff_alerts.js"></script>
+<!-- Top bar (notifications + user menu), built by js/topbar.js -->
+<script src="js/topbar.js"
+        data-name="Rita Almeida"
+        data-role="Staff"
+        data-username="rita.almeida"
+        data-profile="staff_profile.html"></script>
 </body>
 </html>

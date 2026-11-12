@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Available Orders</title>
+
+    <!-- CSS comum do projeto -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="app-layout">
+
+        <!-- Menu lateral -->
+        <aside class="sidebar">
+            <a href="index.html" class="sidebar-logo">CMS</a>
+
+            <div class="sidebar-role">🚚 Courier</div>
+
+            <a href="courier-available-orders.html" class="active">Available Orders</a>
+            <a href="courier-active-route.html">Active Route</a>
+            <a href="courier-proof-delivery.html">Proof of Delivery</a>
+            <a href="courier-vehicles.html">Vehicles</a>
+            <a href="courier-completed-orders.html">Completed Orders</a>
+            <a href="courier_profile.html">Profile</a>
+
+            <!-- Logout -->
+            <a href="login.html" class="logout">Log out</a>
+        </aside>
+
+        <!-- Conteúdo principal -->
+        <main class="app-content">
+            <div class="page-header">
+                <h1>Available Orders</h1>
+            </div>
+
+            <!-- Orders disponíveis -->
+            <div class="card-grid">
+
+                <!-- Order 1001 -->
+                <div class="card">
+                    <h2>Order #1001</h2>
+                    <h3>Porto → Aveiro</h3>
+
+                    <p>Distance: 70 km</p>
+
+                    <p class="text-muted">
+                        2 packages · 8 kg
+                    </p>
+
+                    <button
+                        type="button"
+                        class="btn btn-outline btn-small select-order-btn"
+                        data-order="1001">
+                        Select Order
+                    </button>
+
+                    <a
+                        href="courier-active-route.html?order=1001"
+                        class="btn btn-secondary btn-small">
+                        View Details
+                    </a>
+                </div>
+
+                <!-- Order 1002 -->
+                <div class="card">
+                    <h2>Order #1002</h2>
+                    <h3>Aveiro → Coimbra</h3>
+
+                    <p>Distance: 70 km</p>
+
+                    <p class="text-muted">
+                        2 packages · 8 kg
+                    </p>
+
+                    <button
+                        type="button"
+                        class="btn btn-outline btn-small select-order-btn"
+                        data-order="1002">
+                        Select Order
+                    </button>
+
+                    <a
+                        href="courier-active-route.html?order=1002"
+                        class="btn btn-secondary btn-small">
+                        View Details
+                    </a>
+                </div>
+            </div>
+
+            <!-- Confirmar seleção -->
+            <button
+                type="button"
+                id="acceptSelection"
+                class="btn btn-primary">
+                Accept Selection
+            </button>
+
+            <!-- Mensagem de erro -->
+            <span
+                id="selectionError"
+                class="error-message">
+            </span>
+        </main>
+    </div>
+
+    <!-- JavaScript desta página -->
+    <script>
+        /* Guarda a order selecionada */
+        let selectedOrder = null;
+
+        /* Todos os botões Select Order */
+        const orderButtons =
+                document.querySelectorAll(".select-order-btn");
+
+        /* Selecionar uma order */
+        orderButtons.forEach(function (button) {
+            button.addEventListener("click", function () {
+
+                /* Retirar seleção dos outros botões */
+                orderButtons.forEach(function (otherButton) {
+                    otherButton.classList.remove("btn-secondary");
+                    otherButton.classList.add("btn-outline");
+                    otherButton.textContent = "Select Order";
+                });
+
+                /* Guardar ID da order */
+                selectedOrder =
+                        button.getAttribute("data-order");
+
+                /* Destacar a order selecionada */
+                button.classList.remove("btn-outline");
+                button.classList.add("btn-secondary");
+                button.textContent = "Selected";
+
+                /* Limpar erro */
+                document.getElementById("selectionError")
+                        .textContent = "";
+            });
+        });
+
+        /* Aceitar a order selecionada */
+        document.getElementById("acceptSelection")
+                .addEventListener("click", function () {
+
+                    if (selectedOrder === null) {
+                        document.getElementById("selectionError")
+                                .textContent =
+                                "Please select an order first.";
+
+                        return;
+                    }
+
+                    /* Abrir Active Route com o ID da order */
+                    window.location.href =
+                            "courier-active-route.html?order="
+                            + selectedOrder;
+                });
+    </script>
+</body>
+</html>
