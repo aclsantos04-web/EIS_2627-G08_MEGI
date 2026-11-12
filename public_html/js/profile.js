@@ -195,10 +195,9 @@ profileForm.addEventListener("submit", function (event) {
 
     updateHeader(profile.fullName);
 
-    message.textContent = passwordChanged
+    showSuccessMessage("successMessage", passwordChanged   // validation.js
         ? "Profile and password updated successfully!"
-        : "Profile updated successfully!";
-    message.hidden = false;
+        : "Profile updated successfully!");
     message.scrollIntoView({ behavior: "smooth", block: "center" });
 
     // Empty the password fields after saving

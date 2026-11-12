@@ -22,7 +22,7 @@ const dashboardData = {
         clients: 100,
         couriers: 27,
         staff: 6,
-        pendingStaff: 2              // staff accounts waiting for the Admin
+        pendingStaff: 4              // staff accounts waiting for the Admin
     },
 
     orders: {                        // orders created this month, by status

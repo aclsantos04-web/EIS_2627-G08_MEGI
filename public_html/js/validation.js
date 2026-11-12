@@ -120,3 +120,93 @@ function checkDocumentFile(fieldId) {
     }
     return true;
 }
+
+
+/* ---------- Confirmation message ----------
+   Shows a green message with a close button (×) in a box like:
+     <p class="success-message" id="successMessage" role="status" hidden></p>
+   The box can also hold a link: put <span class="success-text"></span>
+   before it, and the text goes in that span.
+   The message closes by itself after 8 seconds. */
+function showSuccessMessage(boxId, text) {
+    const box = document.getElementById(boxId);
+
+    // The part that holds the text (created the first time)
+    let textPart = box.querySelector(".success-text");
+    if (textPart === null) {
+        textPart = document.createElement("span");
+        textPart.classList.add("success-text");
+        box.prepend(textPart);
+    }
+    textPart.textContent = text;
+
+    // The × button (created the first time)
+    if (box.querySelector(".message-close") === null) {
+        const closeButton = document.createElement("button");
+        closeButton.type = "button";
+        closeButton.classList.add("message-close");
+        closeButton.setAttribute("aria-label", "Close message");
+        closeButton.textContent = "×";
+        closeButton.addEventListener("click", function () {
+            box.hidden = true;
+        });
+        box.append(closeButton);
+    }
+
+    box.hidden = false;
+
+    // Close automatically after 8 seconds. clearTimeout() cancels an
+    // earlier timer, so a second message gets its full 8 seconds.
+    clearTimeout(box.hideTimer);
+    box.hideTimer = setTimeout(function () {
+        box.hidden = true;
+    }, 8000);
+}
+
+
+/* ---------- Empty states ---------- */
+/* Builds a friendly "nothing here" message (styles: style.css, section 14):
+   an icon, a title, a sentence and, optionally, a button.
+   button = { text: "...", href: "..." } for a link,
+            or { text: "...", onClick: function } for an action. */
+function createEmptyState(iconName, title, text, button) {
+    const box = document.createElement("div");
+    box.classList.add("empty-state");
+
+    const iconCircle = document.createElement("span");
+    iconCircle.classList.add("empty-state-icon");
+    const icon = document.createElement("i");
+    icon.className = "ti " + iconName;
+    icon.setAttribute("aria-hidden", "true");
+    iconCircle.append(icon);
+
+    const heading = document.createElement("h3");
+    heading.textContent = title;
+    const sentence = document.createElement("p");
+    sentence.textContent = text;
+    box.append(iconCircle, heading, sentence);
+
+    if (button !== undefined) {
+        const action = document.createElement(button.href ? "a" : "button");
+        action.className = "btn btn-primary btn-small";
+        action.textContent = button.text;
+        if (button.href) {
+            action.href = button.href;
+        } else {
+            action.type = "button";
+            action.addEventListener("click", button.onClick);
+        }
+        box.append(action);
+    }
+    return box;
+}
+
+// One table row with the empty state across all the columns
+function createEmptyRow(columns, emptyState) {
+    const row = document.createElement("tr");
+    const cell = document.createElement("td");
+    cell.setAttribute("colspan", String(columns));
+    cell.append(emptyState);
+    row.append(cell);
+    return row;
+}

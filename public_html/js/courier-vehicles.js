@@ -72,15 +72,14 @@ function renderTable() {
     const tbody = document.getElementById("vehicleRows");
     tbody.innerHTML = "";                                 // remove old rows
 
-    // No vehicles: one row with a message across all 7 columns
+    // No vehicles: a friendly message across all 7 columns (validation.js)
     if (vehicles.length === 0) {
-        const row = document.createElement("tr");
-        const cell = document.createElement("td");
-        cell.setAttribute("colspan", "7");
-        cell.classList.add("empty-row");
-        cell.textContent = "You have no vehicles yet. Use “+ Add Vehicle” to register one.";
-        row.append(cell);
-        tbody.append(row);
+        tbody.append(createEmptyRow(7, createEmptyState(
+            "ti-truck-off",
+            "No vehicles yet",
+            "Register a vehicle with its insurance and inspection documents to start accepting orders.",
+            { text: "+ Add Vehicle", href: "courier-add-vehicle.html" }
+        )));
         return;
     }
 
@@ -226,10 +225,8 @@ documentForm.addEventListener("submit", function (event) {
 
     saveVehicles(vehicles);                               // vehicles.js
 
-    const message = document.getElementById("successMessage");
-    message.textContent = "New " + documentType + " certificate for " + vehicle.plate +
-        " uploaded. Staff have been notified to review it.";
-    message.hidden = false;
+    showSuccessMessage("successMessage", "New " + documentType + " certificate for " + vehicle.plate +
+        " uploaded. Staff have been notified to review it.");   // validation.js
 
     dialog.close();
     renderPage();

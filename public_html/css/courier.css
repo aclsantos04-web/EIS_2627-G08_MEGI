@@ -43,8 +43,7 @@
 
 /* ---------- 2. Page area ---------- */
 .cms-page .app-content {
-    background-color: #ffffff;
-    padding: 50px 45px;
+    padding: 50px 45px;          /* background comes from style.css */
 }
 
 .cms-page h1 {
@@ -123,12 +122,7 @@
 }
 
 
-/* ---------- 4. Tables (same as My Orders) ---------- */
-.cms-page .table-wrap {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-}
-
+/* ---------- 4. Tables (frame and shadow come from style.css) ---------- */
 .cms-page th {
     background-color: var(--primary-softer);
     padding: 18px;
@@ -153,13 +147,7 @@
 }
 
 
-/* ---------- 5. Cards with numbers ---------- */
-.cms-page .card {
-    background-color: #ffffff;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-}
-
+/* ---------- 5. Cards with numbers (card look comes from style.css) ---------- */
 .cms-page .stat-value {
     font-family: 'Poppins', Arial, sans-serif;
     font-size: 28px;
@@ -169,8 +157,6 @@
 
 /* ---------- 6. Forms (same as New Product) ---------- */
 .cms-page .form-card {
-    border: 1px solid var(--border);
-    border-radius: 10px;
     padding: 35px;
     max-width: 850px;
 }
@@ -248,19 +234,65 @@
 
 /* ---------- 7. Messages ---------- */
 /* Blue confirmation box (like #product-message) */
+/* Green confirmation box with a close button (×).
+   Filled by showSuccessMessage() in validation.js. White background
+   and dark green text so it stays readable on the blue page. */
 .cms-page .success-message {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     margin: 0 0 25px;
-    padding: 15px;
-    background-color: var(--primary-softer);
-    border-left: 4px solid var(--primary);
-    border-radius: 7px;
+    padding: 14px 14px 14px 18px;
+    background-color: #FFFFFF;
+    border: 1px solid #BFE3C6;
+    border-left: 5px solid #2E8B47;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    color: #1F4D2A;
     font-size: 14px;
     font-weight: 500;
     max-width: 850px;
 }
 
+.cms-page .success-message::before {      /* green tick */
+    content: "\2713";
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #DFF2E1;
+    color: #2E8B47;
+    font-weight: 700;
+}
+
+.cms-page .success-message .success-text {
+    flex: 1;                     /* text takes the space, × goes to the right */
+}
+
 .cms-page .success-message a {
-    font-weight: 600;
+    color: #1F4D2A;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.cms-page .message-close {       /* the × button */
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: #1F4D2A;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.cms-page .message-close:hover {
+    background-color: #DFF2E1;
 }
 
 .cms-page .alert {

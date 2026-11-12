@@ -18,8 +18,19 @@
      9. Status badges
     10. Alert boxes (+ small helpers)
     12. Pop-up windows (dialog)
+    13. Top bar (notifications + user menu, built by js/topbar.js)
+    14. Empty states ("nothing here yet" messages)
     11. Phones and tablets  (kept last so it can override everything above)
    ========================================================= */
+
+/* Fonts used by every page: Inter (text) and Poppins (titles).
+   Loading them here means no page needs its own font <link>. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap");
+
+/* Icons (Tabler Icons, free). Use them anywhere with:
+   <i class="ti ti-truck" aria-hidden="true"></i>
+   Icon names: https://tabler.io/icons */
+@import url("https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css");
 
 
 /* =========================================================
@@ -31,7 +42,9 @@
     /* Brand blues */
     --primary: #1B4B91;          /* main buttons, titles, active links */
     --primary-hover: #163C74;    /* darker blue when hovering          */
-    --primary-light: #C9E4F7;    /* light blue: secondary buttons, active menu item */
+    --primary-light: #C9E4F7;    /* light blue: secondary buttons, sidebar hover */
+    --accent-blue: #2F73B8;      /* second blue of the sidebar gradients */
+    --page-soft: #EAF5FC;        /* very light blue at the top of each page */
 
     /* Greys */
     --bg: #FFFFFF;               /* page background      */
@@ -49,7 +62,8 @@
 
     /* Shapes and fonts */
     --radius: 12px;              /* rounded corners */
-    --font: Arial, sans-serif;
+    --font: "Inter", Arial, sans-serif;           /* normal text */
+    --font-title: "Poppins", Arial, sans-serif;   /* titles and logo */
 }
 
 
@@ -72,6 +86,7 @@ body {
 h1, h2, h3 {
     margin: 0 0 16px;
     line-height: 1.2;
+    font-family: var(--font-title);
 }
 
 h1 { font-size: 32px; }
@@ -249,32 +264,45 @@ img {
     min-height: 100vh;          
 }
 
+/* ---------------------------------------------------------
+   Sidebar design proposed by the team (admin-staff-design2.html).
+   The previous version is kept in css/style-before-new-design.css.
+   --------------------------------------------------------- */
 .sidebar {
-    width: 230px;
-    flex-shrink: 0;             
-    background-color: var(--surface);
-    padding: 24px 16px;
+    width: 250px;
+    min-height: 100vh;
+    flex-shrink: 0;              /* the sidebar never gets squeezed */
+    padding: 24px 16px 20px;
     display: flex;
     flex-direction: column;      /* links stacked vertically */
-    gap: 6px;
+    /* very light blue, a little darker towards the bottom */
+    background:
+        radial-gradient(circle at 15% 90%, rgba(47, 115, 184, 0.12), transparent 34%),
+        linear-gradient(180deg, #F8FCFF 0%, #EDF7FD 55%, #DDEFFA 100%);
+    border-right: 1px solid rgba(27, 75, 145, 0.12);
+    box-shadow: 6px 0 22px rgba(27, 75, 145, 0.07);
 }
 
-/* The logo is a link to the homepage (index.html). */
+/* Logo: a link to the homepage. Works with or without the truck icon. */
 .sidebar a.sidebar-logo {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 0;
-    margin: 0 0 8px 8px;
-    font-size: 32px;
-    font-weight: 800;
-    letter-spacing: -1px;
-    color: var(--text);
+    margin: 0 0 20px;
+    padding: 4px 10px 18px;
+    border-bottom: 1px solid rgba(27, 75, 145, 0.12);
+    border-radius: 0;
+    font-family: var(--font-title);
+    font-size: 31px;
+    font-weight: 700;
+    letter-spacing: -1.6px;
+    color: #17212b;
 }
 
 .sidebar a.sidebar-logo:hover {
-    background-color: transparent;
-    color: var(--primary);       /* logo turns blue to show it's clickable */
+    background: transparent;
+    color: var(--primary);       /* turns blue to show it's clickable */
+    text-decoration: none;
 }
 
 .sidebar-logo svg {
@@ -282,39 +310,136 @@ img {
     height: auto;
 }
 
-.sidebar-role {                  /* "Client", "Courier", "Staff", "Admin" */
-    font-weight: 700;
-    color: var(--muted);
-    margin: 0 0 16px 8px;
-}
-
-.sidebar a {
-    display: block;
-    padding: 12px;
-    border-radius: var(--radius);
-    color: var(--text);
-    font-weight: 600;
-}
-
-.sidebar a:hover {
-    background-color: #E0E0E0;
-    text-decoration: none;
-}
-
-.sidebar a.active {              /* add class="active" to the current page's link */
-    background-color: var(--primary-light);
+/* Role ("Client", "Courier"...) in a small white box.
+   Optional icon: <span class="role-icon">💼</span> before the text. */
+.sidebar-role {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 4px 20px;
+    padding: 12px 13px;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(27, 75, 145, 0.12);
+    border-radius: 13px;
+    box-shadow: 0 5px 13px rgba(27, 75, 145, 0.04);
     color: var(--primary);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.role-icon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: var(--primary-light);
+    font-size: 15px;
+}
+
+/* Menu links */
+.sidebar a {
+    position: relative;
+    display: block;
+    margin-bottom: 7px;
+    padding: 12px 14px;
+    border-radius: 11px;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+/* Icon in front of a menu link: <a href="..."><i class="ti ti-truck"></i> Vehicles</a> */
+.sidebar a .ti {
+    width: 20px;
+    margin-right: 10px;
+    font-size: 19px;
+    vertical-align: -3px;
+    text-align: center;
+}
+
+.sidebar a:not(.sidebar-logo):not(.logout):hover {
+    background: rgba(201, 228, 247, 0.80);
+    color: var(--primary);
+    text-decoration: none;
+    transform: translateX(3px);  /* moves slightly right on hover */
+}
+
+/* The page you are on: add class="active" to its link */
+.sidebar a.active {
+    background: linear-gradient(135deg, var(--primary), var(--accent-blue));
+    color: #FFFFFF !important;
+    transform: translateX(4px);
+    box-shadow: 0 8px 20px rgba(27, 75, 145, 0.25);
+}
+
+.sidebar a.active:hover {
+    background: linear-gradient(135deg, var(--primary-hover), var(--primary));
+    color: #FFFFFF !important;
+}
+
+.sidebar a.active::before {      /* small glowing bar on the left */
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: 9px;
+    bottom: 9px;
+    width: 4px;
+    border-radius: 4px;
+    background: #8CC9F2;
+    box-shadow: 0 0 8px rgba(140, 201, 242, 0.75);
 }
 
 .sidebar a.logout {
     margin-top: auto;            /* pushes Log out to the bottom of the sidebar */
-    color: var(--danger);
+    margin-bottom: 0;
+    color: #9f2626;
+    background: rgba(255, 255, 255, 0.58);
 }
 
+.sidebar a.logout:hover {
+    background: #fde8e8;
+    color: #861c1c;
+    text-decoration: none;
+    transform: translateX(3px);
+}
+
+/* Page area: light blue at the top, fading to white */
 .app-content {
     flex: 1;                     /* takes all the remaining width */
     min-width: 0;                /* lets wide tables scroll instead of breaking the layout */
     padding: 32px;
+    background:
+        radial-gradient(circle at 88% 5%, rgba(255, 255, 255, 0.36), transparent 28%),
+        radial-gradient(circle at 70% 18%, rgba(47, 115, 184, 0.08), transparent 23%),
+        linear-gradient(180deg, var(--primary-light) 0%, var(--page-soft) 300px, #FFFFFF 620px);
+}
+
+/* Soft round shape in the top-right corner of the page */
+.app-content {
+    position: relative;
+    overflow: hidden;            /* the part of the circle outside the page is cut off */
+}
+
+.app-content::before {
+    content: "";
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    top: -250px;
+    right: -100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.24);
+    pointer-events: none;        /* clicks go through it */
+}
+
+/* Keep the page content above the shape.
+   Pop-ups (<dialog>) are left alone: they position themselves. */
+.app-content > *:not(dialog) {
+    position: relative;
+    z-index: 1;
 }
 
 .page-header {                   /* page title on the left, button on the right */
@@ -334,11 +459,31 @@ img {
 /* =========================================================
    6. CARDS
    ========================================================= */
-.card {
-    background-color: var(--card);
-    border-radius: var(--radius);
+/* White cards with a soft shadow and a blue gradient line on top
+   (design from admin-staff-design2.html). Also used by .form-card. */
+.card,
+.form-card {
+    position: relative;
+    overflow: hidden;            /* keeps the top line inside the rounded corners */
+    background-color: #FFFFFF;
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: 17px;
+    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.065);
     padding: 20px;
     margin-bottom: 20px;
+}
+
+.card::before,
+.form-card::before,
+.table-wrap::before {            /* the gradient line on top */
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent-blue), #7FC7F2);
+    z-index: 1;
 }
 
 .card-grid {
@@ -356,6 +501,18 @@ img {
 .stat-card {
     display: flex;
     flex-direction: column;
+    border-radius: 16px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.055);
+    transition: 0.2s ease;
+}
+
+.stat-card::before {             /* thinner line on the small number cards */
+    height: 3px;
+}
+
+.stat-card:hover {               /* lifts a little on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 11px 27px rgba(27, 75, 145, 0.10);
 }
 
 .stat-value {
@@ -374,10 +531,23 @@ img {
    Wrap every table so it can scroll sideways on phones:
    <div class="table-wrap"><table> ... </table></div>
    ========================================================= */
+/* A table inside a card (any class with "card" in its name)
+   already has the card's line and shadow, so it gets neither. */
+[class*="card"] .table-wrap {
+    box-shadow: none;
+}
+
+[class*="card"] .table-wrap::before {
+    display: none;
+}
+
 .table-wrap {
+    position: relative;          /* places the gradient line on top */
     overflow-x: auto;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
+    background-color: #FFFFFF;
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: 17px;
+    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.065);
     margin-bottom: 20px;
 }
 
@@ -566,6 +736,242 @@ dialog::backdrop {               /* the dark layer behind the pop-up */
 
 
 /* =========================================================
+   13. TOP BAR
+   Built by js/topbar.js at the top of <main class="app-content">:
+   a bell with notifications and a menu with the user's initials.
+   ========================================================= */
+.topbar {
+    display: flex;
+    justify-content: flex-end;   /* everything on the right */
+    align-items: center;
+    gap: 12px;
+    margin: -12px 0 24px;
+}
+
+/* The top bar sits on a higher layer than the rest of the page,
+   so its drop-down menus open OVER the cards and buttons below. */
+.app-content > .topbar {
+    z-index: 30;
+}
+
+.topbar-item {
+    position: relative;          /* the drop-down panel is placed under it */
+}
+
+/* Bell button */
+.topbar-icon-button {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(27, 75, 145, 0.12);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--primary);
+    font-size: 21px;
+    cursor: pointer;
+    box-shadow: 0 5px 13px rgba(27, 75, 145, 0.06);
+    transition: background-color 0.2s;
+}
+
+.topbar-icon-button:hover {
+    background: #FFFFFF;
+}
+
+.topbar-badge {                  /* red number on the bell */
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    min-width: 19px;
+    height: 19px;
+    padding: 0 5px;
+    border: 2px solid #FFFFFF;
+    border-radius: 999px;
+    background: #D93636;
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 15px;
+    text-align: center;
+}
+
+/* User button: initials + name + role */
+.topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 12px 5px 5px;
+    border: 1px solid rgba(27, 75, 145, 0.12);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--text);
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 5px 13px rgba(27, 75, 145, 0.06);
+}
+
+.topbar-user:hover {
+    background: #FFFFFF;
+}
+
+.topbar-avatar {                 /* circle with the initials */
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent-blue));
+    color: #FFFFFF;
+    font-family: var(--font-title);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.topbar-user-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    line-height: 1.2;
+}
+
+.topbar-user-text strong {
+    font-size: 14px;
+}
+
+.topbar-user-text small,
+.topbar-account-header small {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* Drop-down panels */
+.topbar-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 20;                 /* above cards and tables */
+    min-width: 230px;
+    padding: 8px;
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: 14px;
+    background: #FFFFFF;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.14);
+}
+
+.topbar-notifications {
+    width: 320px;
+}
+
+.topbar-panel-title {
+    margin: 4px 8px 8px;
+    font-weight: 700;
+}
+
+.topbar-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.topbar-notification,
+.topbar-menu-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 14px;
+}
+
+.topbar-notification:hover,
+.topbar-menu-link:hover {
+    background: var(--page-soft);
+    text-decoration: none;
+}
+
+.topbar-notification .ti,
+.topbar-menu-link .ti {
+    font-size: 18px;
+    color: var(--primary);
+}
+
+.topbar-account-header {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 10px 10px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+}
+
+.topbar-logout,
+.topbar-logout .ti {
+    color: #9f2626;
+}
+
+.topbar-empty {                  /* "You're all caught up." */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.topbar-empty .ti {
+    font-size: 20px;
+    color: var(--success);
+}
+
+
+/* =========================================================
+   14. EMPTY STATES
+   Shown when a list has nothing in it yet:
+   <div class="empty-state">
+       <span class="empty-state-icon"><i class="ti ti-truck-off"></i></span>
+       <h3>No vehicles yet</h3>
+       <p>Register a vehicle to start accepting orders.</p>
+       <a href="..." class="btn btn-primary">+ Add Vehicle</a>
+   </div>
+   ========================================================= */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.empty-state-icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    border-radius: 18px;
+    background: var(--page-soft);
+    color: var(--primary);
+    font-size: 30px;
+}
+
+.empty-state h3 {
+    margin: 0 0 6px;
+    font-size: 18px;
+}
+
+.empty-state p {
+    max-width: 380px;
+    margin: 0 0 18px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+
+/* =========================================================
    11. PHONES AND TABLETS
    These rules only apply when the screen is 760px wide or less.
    ========================================================= */
@@ -594,15 +1000,21 @@ dialog::backdrop {               /* the dark layer behind the pop-up */
 
     .sidebar {
         width: 100%;
+        min-height: auto;        /* a bar, not the full screen height */
         flex-direction: row;
         flex-wrap: wrap;
         align-items: center;
+        gap: 4px;
         padding: 12px;
+        border-right: none;
+        border-bottom: 1px solid rgba(27, 75, 145, 0.12);
     }
 
     .sidebar a.sidebar-logo {
         font-size: 24px;
         margin: 0 8px 0 4px;
+        padding: 0;
+        border-bottom: none;
     }
 
     .sidebar-logo svg {
@@ -614,8 +1026,18 @@ dialog::backdrop {               /* the dark layer behind the pop-up */
     }
 
     .sidebar a {
+        margin-bottom: 0;
         padding: 8px 10px;
         font-size: 14px;
+    }
+
+    .sidebar a.active,
+    .sidebar a:not(.sidebar-logo):not(.logout):hover {
+        transform: none;         /* no sideways movement in a top bar */
+    }
+
+    .sidebar a.active::before {
+        display: none;
     }
 
     .sidebar a.logout {
@@ -632,6 +1054,25 @@ dialog::backdrop {               /* the dark layer behind the pop-up */
     /* Tables keep a readable width and scroll sideways instead */
     .table-wrap table {
         min-width: 680px;
+    }
+
+    /* Top bar: only the initials, no name */
+    .topbar {
+        margin: 0 0 16px;
+    }
+
+    .topbar-user-text {
+        display: none;
+    }
+
+    /* On phones the panels line up with the right edge of the bar,
+       so they never stick out of the screen */
+    .topbar-item {
+        position: static;
+    }
+
+    .topbar-notifications {
+        width: min(320px, calc(100vw - 32px));
     }
 
     /* Forms: one field per row */

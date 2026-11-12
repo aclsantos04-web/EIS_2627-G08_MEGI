@@ -43,11 +43,11 @@
             CMS
         </a>
         <p class="sidebar-role">Staff</p>
-        <a href="staff_courier_approvals.html">Courier Approvals</a>
-        <a href="staff_vehicle_approvals.html">Vehicle Approvals</a>
-        <a href="staff_alerts.html">Document Alerts</a>
-        <a href="staff_profile.html" class="active">Profile</a>
-        <a href="login.html" class="logout">Log out</a>
+        <a href="staff_courier_approvals.html"><i class="ti ti-user-check" aria-hidden="true"></i> Courier Approvals</a>
+        <a href="staff_vehicle_approvals.html"><i class="ti ti-truck" aria-hidden="true"></i> Vehicle Approvals</a>
+        <a href="staff_alerts.html"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Document Alerts</a>
+        <a href="staff_profile.html" class="active"><i class="ti ti-user" aria-hidden="true"></i> Profile</a>
+        <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
     </nav>
 
     <!-- ===== PAGE CONTENT ===== -->
@@ -147,5 +147,11 @@
 <!-- Shared checks first, then the shared profile logic -->
 <script src="js/validation.js"></script>
 <script src="js/profile.js"></script>
+<!-- Top bar (notifications + user menu), built by js/topbar.js -->
+<script src="js/topbar.js"
+        data-name="Rita Almeida"
+        data-role="Staff"
+        data-username="rita.almeida"
+        data-profile="staff_profile.html"></script>
 </body>
 </html>

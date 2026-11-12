@@ -95,13 +95,26 @@ function renderTable() {
     document.getElementById("resultCount").textContent =
         visibleOrders.length + " of " + completedOrders.length + " orders";
 
+    // Nothing to show: a friendly message (helpers in validation.js)
+    if (completedOrders.length === 0) {
+        tbody.append(createEmptyRow(8, createEmptyState(
+            "ti-clipboard-list",
+            "No completed deliveries yet",
+            "Orders you deliver will appear here with their proof of delivery.",
+            { text: "See available orders", href: "courier-available-orders.html" }
+        )));
+        return;
+    }
     if (visibleOrders.length === 0) {
-        const row = document.createElement("tr");
-        const cell = createTextCell("No completed orders match “" + searchText + "”.");
-        cell.setAttribute("colspan", "8");
-        cell.classList.add("empty-row");
-        row.append(cell);
-        tbody.append(row);
+        tbody.append(createEmptyRow(8, createEmptyState(
+            "ti-search",
+            "No orders match “" + searchText + "”",
+            "Try another order number or city.",
+            { text: "Clear search", onClick: function () {
+                document.getElementById("orderSearch").value = "";
+                renderTable();
+            } }
+        )));
         return;
     }
 
