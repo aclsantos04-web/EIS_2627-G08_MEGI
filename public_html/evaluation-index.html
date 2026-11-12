@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Evaluation Navigation</title>
+
+    <!-- CSS comum do projeto -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        body {
+            margin: 0;
+            background:
+                radial-gradient(
+                    circle at 90% 5%,
+                    rgba(255,255,255,0.40),
+                    transparent 28%
+                ),
+                linear-gradient(
+                    180deg,
+                    #C9E4F7 0%,
+                    #EAF5FC 300px,
+                    #FFFFFF 650px
+                );
+        }
+
+        .evaluation-page {
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 45px 30px 60px;
+        }
+
+        .evaluation-header {
+            margin-bottom: 28px;
+        }
+
+        .evaluation-header h1 {
+            margin: 0 0 7px;
+            font-size: 36px;
+        }
+
+        .evaluation-header p {
+            margin: 0;
+            color: var(--text-muted, #64748b);
+            font-size: 16px;
+        }
+
+        /* Aviso de avaliação */
+        .evaluation-warning {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding: 20px 22px;
+            background: rgba(255,255,255,0.96);
+            border: 1px solid rgba(27,75,145,0.15);
+            border-left: 5px solid var(--primary, #1B4B91);
+            border-radius: 14px;
+            box-shadow: 0 8px 22px rgba(27,75,145,0.08);
+        }
+
+        .warning-icon {
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: #E5F2FC;
+            color: var(--primary, #1B4B91);
+            font-size: 22px;
+        }
+
+        .evaluation-warning h2 {
+            margin: 0 0 6px;
+            color: var(--primary, #1B4B91);
+            font-size: 17px;
+        }
+
+        .evaluation-warning p {
+            margin: 0;
+            color: #526273;
+            line-height: 1.55;
+            font-size: 14px;
+        }
+
+        /* Grelha de roles */
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .role-card {
+            position: relative;
+            overflow: hidden;
+            padding: 23px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid rgba(148,163,184,0.25);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.055);
+        }
+
+        .role-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(
+                90deg,
+                #1B4B91,
+                #2F73B8,
+                #7FC7F2
+            );
+        }
+
+        .role-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .role-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: #E8F4FC;
+            color: var(--primary, #1B4B91);
+            font-size: 20px;
+        }
+
+        .role-card h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .role-description {
+            min-height: 42px;
+            margin: 0 0 18px;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* Links das páginas */
+        .page-links {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 9px;
+        }
+
+        .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 11px 13px;
+            background: #F6FAFD;
+            border: 1px solid #DBE9F4;
+            border-radius: 10px;
+            color: #25364A;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.18s ease;
+        }
+
+        .page-link:hover {
+            background: var(--primary, #1B4B91);
+            border-color: var(--primary, #1B4B91);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 12px rgba(27,75,145,0.15);
+        }
+
+        .page-link span:last-child {
+            font-size: 15px;
+        }
+
+        /* Public pages ocupam largura toda */
+        .public-card {
+            grid-column: 1 / -1;
+        }
+
+        .public-card .page-links {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        /* Nota final */
+        .evaluation-footer {
+            margin-top: 28px;
+            padding: 17px 20px;
+            background: rgba(255,255,255,0.88);
+            border: 1px solid rgba(27,75,145,0.12);
+            border-radius: 13px;
+            color: #526273;
+            font-size: 13px;
+            line-height: 1.55;
+            text-align: center;
+        }
+
+        .evaluation-footer strong {
+            color: var(--primary, #1B4B91);
+        }
+
+        @media (max-width: 850px) {
+            .role-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .public-card {
+                grid-column: auto;
+            }
+
+            .public-card .page-links,
+            .page-links {
+                grid-template-columns: 1fr;
+            }
+
+            .evaluation-page {
+                padding: 30px 18px 45px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<main class="evaluation-page">
+
+    <!-- Título -->
+    <header class="evaluation-header">
+        <h1>CMS – Evaluation Navigation</h1>
+
+        <p>
+            Direct access to the implemented pages of the Courier Management System.
+        </p>
+    </header>
+
+
+    <!-- Aviso -->
+    <section class="evaluation-warning">
+
+        <div class="warning-icon">
+            ⚠
+        </div>
+
+        <div>
+            <h2>For evaluation purposes only</h2>
+
+            <p>
+                This page was created exclusively to facilitate the evaluation and
+                demonstration of the project. It is not part of the actual Courier
+                Management System and would not be accessible to regular users in a
+                real deployment. Since each CMS user normally has access only to the
+                functionalities associated with their role, this page provides direct
+                access to all implemented areas for assessment purposes.
+            </p>
+        </div>
+
+    </section>
+
+
+    <section class="role-grid">
+
+        <!-- Public -->
+        <article class="role-card public-card">
+
+            <div class="role-header">
+
+                <div class="role-icon">
+                    🌐
+                </div>
+
+                <h2>Public Pages</h2>
+
+            </div>
+
+            <p class="role-description">
+                Pages accessible before authentication and general information about
+                the Courier Management System.
+            </p>
+
+            <div class="page-links">
+
+                <a
+                    href="cms-home.html.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Home</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="team.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Team</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="login.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Login</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="register.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Register</span>
+                    <span>↗</span>
+                </a>
+
+            </div>
+
+        </article>
+
+
+        <!-- Client -->
+        <article class="role-card">
+
+            <div class="role-header">
+
+                <div class="role-icon">
+                    👤
+                </div>
+
+                <h2>Client</h2>
+
+            </div>
+
+            <p class="role-description">
+                Functionalities available to registered clients for creating and
+                managing products and delivery orders.
+            </p>
+
+            <div class="page-links">
+
+                <a
+                    href="client_new_order.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>New Order</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="my-orders.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>My Orders</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="new-product.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>New Product</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="my-products.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>My Products</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="client_profile.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Profile</span>
+                    <span>↗</span>
+                </a>
+
+            </div>
+
+        </article>
+
+
+        <!-- Courier -->
+        <article class="role-card">
+
+            <div class="role-header">
+
+                <div class="role-icon">
+                    🚚
+                </div>
+
+                <h2>Courier</h2>
+
+            </div>
+
+            <p class="role-description">
+                Functionalities used by couriers to accept orders, manage delivery
+                routes and register proof of delivery.
+            </p>
+
+            <div class="page-links">
+
+                <a
+                    href="courier-available-orders.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Available Orders</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="courier-active-route.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Active Route</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="courier-proof-delivery.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Proof of Delivery</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="courier-vehicles.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Vehicles</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="courier-completed-orders.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Completed Orders</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="courier_profile.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Profile</span>
+                    <span>↗</span>
+                </a>
+
+            </div>
+
+        </article>
+
+
+        <!-- Staff -->
+        <article class="role-card">
+
+            <div class="role-header">
+
+                <div class="role-icon">
+                    🛠
+                </div>
+
+                <h2>Staff</h2>
+
+            </div>
+
+            <p class="role-description">
+                Operational validation pages used to manage courier accounts,
+                vehicles and document alerts.
+            </p>
+
+            <div class="page-links">
+
+                <a
+                    href="staff_courier_approvals.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Courier Approvals</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="staff_vehicle_approvals.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Vehicle Approvals</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="staff_alerts.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Document Alerts</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="staff_profile.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Profile</span>
+                    <span>↗</span>
+                </a>
+
+            </div>
+
+        </article>
+
+
+        <!-- Admin -->
+        <article class="role-card">
+
+            <div class="role-header">
+
+                <div class="role-icon">
+                    💼
+                </div>
+
+                <h2>Admin</h2>
+
+            </div>
+
+            <p class="role-description">
+                Administration functionalities for Staff approval, user management
+                and system monitoring.
+            </p>
+
+            <div class="page-links">
+
+                <a
+                    href="admin-staff.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Staff Approvals</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="admin-users.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Users</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="admin_dashboard.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Dashboard</span>
+                    <span>↗</span>
+                </a>
+
+                <a
+                    href="admin_profile.html"
+                    class="page-link"
+                    target="_blank">
+                    <span>Profile</span>
+                    <span>↗</span>
+                </a>
+
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- Nota final -->
+    <footer class="evaluation-footer">
+
+        <strong>Note:</strong>
+        In the actual CMS, access to each area would be restricted according to
+        the authenticated user's role. This navigation page exists only to allow
+        the project evaluator to access and test all implemented interfaces.
+
+    </footer>
+
+</main>
+
+</body>
+</html>

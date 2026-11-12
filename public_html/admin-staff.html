@@ -5,19 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CMS - Staff Approvals</title>
 
-    <!-- Fontes apenas para esta página -->
+    <!-- Fontes apenas desta página -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 
-    <!-- CSS comum do projeto -->
+    <!-- CSS comum -->
     <link rel="stylesheet" href="css/style.css">
 
     <style>
         :root {
-            --admin-accent: #6D5DFB;
-            --admin-accent-light: #EEEAFE;
-            --admin-accent-dark: #5146C8;
+            --admin-primary: #1B4B91;
+            --admin-primary-dark: #163C74;
+            --admin-blue: #2F73B8;
+            --admin-light: #C9E4F7;
+            --admin-soft: #EAF5FC;
+            --admin-extra-light: #F5FAFE;
         }
 
         body {
@@ -41,47 +44,61 @@
             flex-direction: column;
             background:
                 radial-gradient(
-                    circle at 10% 90%,
-                    rgba(109, 93, 251, 0.10),
-                    transparent 30%
+                    circle at 15% 90%,
+                    rgba(47, 115, 184, 0.12),
+                    transparent 34%
                 ),
                 linear-gradient(
                     180deg,
-                    #f9fcff 0%,
-                    #edf7fd 48%,
-                    #e7e5ff 100%
+                    #F8FCFF 0%,
+                    #EDF7FD 55%,
+                    #DDEFFA 100%
                 );
             border-right: 1px solid rgba(27, 75, 145, 0.12);
-            box-shadow: 6px 0 20px rgba(27, 75, 145, 0.07);
+            box-shadow: 6px 0 22px rgba(27, 75, 145, 0.07);
         }
 
         .sidebar .sidebar-logo {
             display: block;
             margin-bottom: 20px;
             padding: 4px 10px 18px;
-            color: #111827;
-            font-size: 30px;
+            color: #17212b;
+            font-size: 31px;
             font-weight: 700;
-            letter-spacing: -1.5px;
+            letter-spacing: -1.6px;
             text-decoration: none;
             border-bottom: 1px solid rgba(27, 75, 145, 0.12);
         }
 
         .sidebar-role {
-            margin: 0 4px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 4px 20px;
             padding: 12px 13px;
-            background: rgba(255, 255, 255, 0.72);
-            border: 1px solid rgba(109, 93, 251, 0.10);
-            border-radius: 12px;
-            color: #334155;
+            background: rgba(255, 255, 255, 0.82);
+            border: 1px solid rgba(27, 75, 145, 0.12);
+            border-radius: 13px;
+            color: var(--admin-primary);
             font-size: 14px;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            font-weight: 700;
+            box-shadow: 0 5px 13px rgba(27, 75, 145, 0.04);
+        }
+
+        .role-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9px;
+            background: var(--admin-light);
+            font-size: 15px;
         }
 
         .sidebar a:not(.sidebar-logo) {
             position: relative;
-            margin-bottom: 6px;
+            margin-bottom: 7px;
             padding: 12px 14px;
             border-radius: 11px;
             color: #334155;
@@ -92,84 +109,90 @@
         }
 
         .sidebar a:not(.sidebar-logo):not(.logout):hover {
-            background: rgba(255, 255, 255, 0.78);
-            color: var(--primary);
+            background: rgba(201, 228, 247, 0.80);
+            color: var(--admin-primary);
             transform: translateX(3px);
         }
 
+        /* Página selecionada */
         .sidebar a.active {
             background: linear-gradient(
                 135deg,
-                #d8effc,
-                #e7e2ff
+                var(--admin-primary),
+                var(--admin-blue)
             );
-            color: #164b91;
-            box-shadow:
-                0 5px 14px rgba(27, 75, 145, 0.12),
-                0 0 20px rgba(109, 93, 251, 0.08);
+            color: #fff !important;
+            transform: translateX(4px);
+            box-shadow: 0 8px 20px rgba(27, 75, 145, 0.25);
+        }
+
+        .sidebar a.active:hover {
+            background: linear-gradient(
+                135deg,
+                var(--admin-primary-dark),
+                var(--admin-primary)
+            );
+            color: #fff !important;
         }
 
         .sidebar a.active::before {
             content: "";
             position: absolute;
-            left: 0;
-            top: 8px;
-            bottom: 8px;
+            left: -5px;
+            top: 9px;
+            bottom: 9px;
             width: 4px;
-            border-radius: 0 5px 5px 0;
-            background: linear-gradient(
-                180deg,
-                var(--primary),
-                var(--admin-accent)
-            );
+            border-radius: 4px;
+            background: #8CC9F2;
+            box-shadow: 0 0 8px rgba(140, 201, 242, 0.75);
         }
 
         .sidebar .logout {
             margin-top: auto;
             margin-bottom: 0;
-            color: #b42318;
-            background: rgba(255, 255, 255, 0.5);
+            color: #9f2626;
+            background: rgba(255, 255, 255, 0.58);
         }
 
         .sidebar .logout:hover {
             background: #fde8e8;
-            color: #991b1b;
+            color: #861c1c;
             transform: translateX(3px);
         }
 
-        /* Fundo principal */
+        /* Fundo da página */
         .admin-content {
             min-height: 100vh;
             position: relative;
             overflow: hidden;
             background:
                 radial-gradient(
-                    circle at 88% 7%,
-                    rgba(109, 93, 251, 0.16),
-                    transparent 27%
+                    circle at 88% 5%,
+                    rgba(255, 255, 255, 0.36),
+                    transparent 28%
                 ),
                 radial-gradient(
-                    circle at 68% 18%,
-                    rgba(76, 186, 232, 0.10),
-                    transparent 25%
+                    circle at 70% 18%,
+                    rgba(47, 115, 184, 0.08),
+                    transparent 23%
                 ),
                 linear-gradient(
                     180deg,
-                    #ccecff 0,
-                    #eef4ff 260px,
-                    #fff 580px
+                    var(--admin-light) 0%,
+                    var(--admin-soft) 300px,
+                    #FFFFFF 620px
                 );
         }
 
         .admin-content::before {
             content: "";
             position: absolute;
-            width: 430px;
-            height: 430px;
-            top: -240px;
+            width: 450px;
+            height: 450px;
+            top: -250px;
             right: -100px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.24);
             pointer-events: none;
         }
 
@@ -180,11 +203,12 @@
 
         /* Cabeçalho */
         .admin-hero {
-            margin-bottom: 22px;
+            margin-bottom: 24px;
         }
 
         .admin-hero h1 {
             margin: 0 0 5px;
+            color: #17212b;
             font-size: 32px;
             font-weight: 700;
             letter-spacing: -0.8px;
@@ -193,6 +217,7 @@
         .admin-hero p {
             margin: 0;
             color: #64748b;
+            font-size: 15px;
         }
 
         /* KPIs */
@@ -200,7 +225,7 @@
             display: grid;
             grid-template-columns: repeat(3, minmax(160px, 1fr));
             gap: 16px;
-            margin-bottom: 22px;
+            margin-bottom: 23px;
         }
 
         .approval-stat {
@@ -209,11 +234,17 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            padding: 18px;
-            background: rgba(255, 255, 255, 0.94);
-            border: 1px solid rgba(27, 75, 145, 0.09);
-            border-radius: 15px;
-            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.055);
+            padding: 19px;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(27, 75, 145, 0.07);
+            border-radius: 16px;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.055);
+            transition: 0.2s ease;
+        }
+
+        .approval-stat:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 11px 27px rgba(27, 75, 145, 0.10);
         }
 
         .approval-stat::before {
@@ -225,32 +256,34 @@
             height: 3px;
             background: linear-gradient(
                 90deg,
-                var(--primary),
-                #5bb9e8,
-                var(--admin-accent)
+                var(--admin-primary),
+                var(--admin-blue),
+                #72B9E7
             );
         }
 
         .stat-icon {
-            width: 46px;
-            height: 46px;
+            width: 48px;
+            height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 13px;
-            font-size: 20px;
+            border-radius: 14px;
+            font-size: 21px;
         }
 
         .stat-pending .stat-icon {
-            background: #fff1c7;
+            background: #FFF0C8;
         }
 
         .stat-approved .stat-icon {
-            background: #dff4e4;
+            background: #DFF3E4;
+            color: #25713A;
         }
 
         .stat-rejected .stat-icon {
-            background: #fde2e2;
+            background: #FDE2E2;
+            color: #A62626;
         }
 
         .approval-stat strong {
@@ -264,15 +297,15 @@
             font-size: 13px;
         }
 
-        /* Card principal */
+        /* Card da tabela */
         .admin-card {
             position: relative;
             overflow: hidden;
-            padding: 24px;
-            background: rgba(255, 255, 255, 0.96);
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.97);
             border: 1px solid rgba(148, 163, 184, 0.28);
-            border-radius: 16px;
-            box-shadow: 0 9px 25px rgba(0, 0, 0, 0.065);
+            border-radius: 17px;
+            box-shadow: 0 10px 27px rgba(0, 0, 0, 0.065);
         }
 
         .admin-card::before {
@@ -280,13 +313,13 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
+            right: 0;
             height: 4px;
             background: linear-gradient(
                 90deg,
-                var(--primary),
-                #58b8e8,
-                var(--admin-accent)
+                var(--admin-primary),
+                var(--admin-blue),
+                #7FC7F2
             );
         }
 
@@ -295,7 +328,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 21px;
         }
 
         .admin-card-header h2 {
@@ -314,9 +347,23 @@
             gap: 10px;
         }
 
+        .search-wrap {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 15px;
+            pointer-events: none;
+        }
+
         .admin-tools input,
         .admin-tools select {
-            min-height: 40px;
+            min-height: 41px;
             padding: 8px 12px;
             border: 1px solid #d8e0e8;
             border-radius: 10px;
@@ -327,17 +374,18 @@
         }
 
         .admin-tools input {
-            width: 220px;
+            width: 225px;
+            padding-left: 35px;
         }
 
         .admin-tools input:focus,
         .admin-tools select:focus {
             outline: none;
-            border-color: var(--admin-accent);
-            box-shadow: 0 0 0 3px rgba(109, 93, 251, 0.10);
+            border-color: var(--admin-primary);
+            box-shadow: 0 0 0 3px rgba(27, 75, 145, 0.10);
         }
 
-        /* Staff */
+        /* Utilizador */
         .staff-user {
             display: flex;
             align-items: center;
@@ -353,12 +401,12 @@
             border-radius: 50%;
             background: linear-gradient(
                 135deg,
-                var(--primary),
-                var(--admin-accent)
+                var(--admin-primary),
+                #4D9BD3
             );
             color: #fff;
             font-weight: 700;
-            box-shadow: 0 4px 10px rgba(109, 93, 251, 0.16);
+            box-shadow: 0 4px 11px rgba(27, 75, 145, 0.20);
         }
 
         .staff-avatar {
@@ -368,22 +416,18 @@
         }
 
         tbody tr {
-            transition: 0.18s ease;
+            transition: background 0.18s ease;
         }
 
         tbody tr:hover {
-            background: linear-gradient(
-                90deg,
-                #f7fcff,
-                #faf8ff
-            );
+            background: #F3F9FE;
         }
 
         /* Estados */
         .status-badge {
             display: inline-block;
             min-width: 80px;
-            padding: 5px 10px;
+            padding: 6px 11px;
             border-radius: 999px;
             text-align: center;
             font-size: 12px;
@@ -391,18 +435,18 @@
         }
 
         .status-pending {
-            background: #fff1c7;
-            color: #8a6300;
+            background: #FFECBD;
+            color: #735400;
         }
 
         .status-approved {
-            background: #dff4e4;
-            color: #24713a;
+            background: #DFF3E4;
+            color: #25713A;
         }
 
         .status-rejected {
-            background: #fde2e2;
-            color: #a62626;
+            background: #FDE2E2;
+            color: #A62626;
         }
 
         .approval-actions {
@@ -411,20 +455,63 @@
             gap: 7px;
         }
 
-        .view-btn,
-        .review-btn {
-            color: var(--primary);
-            border-color: var(--primary);
+        /* Botões */
+        .table-action {
+            padding: 7px 13px;
+            border-radius: 999px;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.18s ease;
+        }
+
+        .view-btn {
+            background: #EEF5FF;
+            color: var(--admin-primary);
+            border: 1px solid #9CB9DF;
+        }
+
+        .view-btn:hover {
+            background: var(--admin-primary);
+            color: #fff;
+            border-color: var(--admin-primary);
+        }
+
+        .approve-btn {
+            background: #E1F2E4;
+            color: #246A36;
+            border: 1px solid #9FCAA8;
+        }
+
+        .approve-btn:hover {
+            background: #33924C;
+            color: #fff;
+            border-color: #33924C;
+        }
+
+        .reject-btn {
+            background: #FDE8E8;
+            color: #A62626;
+            border: 1px solid #EFAAAA;
+        }
+
+        .reject-btn:hover {
+            background: #CC4040;
+            color: #fff;
+            border-color: #CC4040;
         }
 
         .review-btn {
-            background: var(--admin-accent-light);
-            color: var(--admin-accent-dark);
-            border-color: #c8c0ff;
+            background: #E7F2FB;
+            color: var(--admin-primary);
+            border: 1px solid #9EC2E0;
         }
 
         .review-btn:hover {
-            background: #dfd9ff;
+            background: var(--admin-blue);
+            color: #fff;
+            border-color: var(--admin-blue);
         }
 
         /* Modal */
@@ -434,23 +521,23 @@
             padding: 0;
             border: none;
             border-radius: 17px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 22px 55px rgba(0, 0, 0, 0.25);
         }
 
         .staff-dialog::backdrop {
             background: rgba(15, 23, 42, 0.48);
+            backdrop-filter: blur(2px);
         }
 
         .dialog-content {
             position: relative;
             overflow: hidden;
-            padding: 26px;
-            background:
-                linear-gradient(
-                    180deg,
-                    #f2f7ff 0,
-                    #fff 145px
-                );
+            padding: 27px;
+            background: linear-gradient(
+                180deg,
+                #EDF6FC 0,
+                #FFFFFF 155px
+            );
         }
 
         .dialog-content::before {
@@ -458,12 +545,13 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
+            right: 0;
             height: 4px;
             background: linear-gradient(
                 90deg,
-                var(--primary),
-                var(--admin-accent)
+                var(--admin-primary),
+                var(--admin-blue),
+                #7FC7F2
             );
         }
 
@@ -479,10 +567,12 @@
         }
 
         .dialog-close {
+            width: 34px;
+            height: 34px;
             border: none;
-            background: transparent;
-            font-size: 26px;
-            font-weight: 700;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.85);
+            font-size: 23px;
             cursor: pointer;
         }
 
@@ -516,8 +606,8 @@
 
         .dialog-info div {
             padding: 12px;
-            background: rgba(245, 247, 250, 0.95);
-            border: 1px solid #edf0f5;
+            background: #F5F9FC;
+            border: 1px solid #E4EDF5;
             border-radius: 9px;
         }
 
@@ -583,7 +673,7 @@
 <body>
     <div class="app-layout">
 
-        <!-- Menu lateral -->
+        <!-- Sidebar -->
         <!-- ===== SIDEBAR (the same on every Admin page) =====
              class="active" marks the page you are on. -->
         <nav class="sidebar" aria-label="Admin menu">
@@ -641,7 +731,7 @@
                     </div>
                 </section>
 
-                <!-- Staff Registrations -->
+                <!-- Registos -->
                 <section class="admin-card">
                     <div class="admin-card-header">
                         <div>
@@ -650,10 +740,14 @@
                         </div>
 
                         <div class="admin-tools">
-                            <input
-                                type="search"
-                                id="staffSearch"
-                                placeholder="Search Staff...">
+                            <div class="search-wrap">
+                                <span class="search-icon">⌕</span>
+
+                                <input
+                                    type="search"
+                                    id="staffSearch"
+                                    placeholder="Search Staff...">
+                            </div>
 
                             <select id="statusFilter">
                                 <option value="all">All status</option>
@@ -684,16 +778,11 @@
                                             <strong>João Silva</strong>
                                         </div>
                                     </td>
-
                                     <td>joao.silva@cms.com</td>
                                     <td>10/11/2026</td>
-
                                     <td>
-                                        <span class="status-badge status-pending">
-                                            Pending
-                                        </span>
+                                        <span class="status-badge status-pending">Pending</span>
                                     </td>
-
                                     <td>
                                         <div class="approval-actions"></div>
                                     </td>
@@ -706,16 +795,11 @@
                                             <strong>Maria Lopes</strong>
                                         </div>
                                     </td>
-
                                     <td>maria.lopes@cms.com</td>
                                     <td>10/11/2026</td>
-
                                     <td>
-                                        <span class="status-badge status-pending">
-                                            Pending
-                                        </span>
+                                        <span class="status-badge status-pending">Pending</span>
                                     </td>
-
                                     <td>
                                         <div class="approval-actions"></div>
                                     </td>
@@ -728,16 +812,11 @@
                                             <strong>Pedro Costa</strong>
                                         </div>
                                     </td>
-
                                     <td>pedro.costa@cms.com</td>
                                     <td>11/11/2026</td>
-
                                     <td>
-                                        <span class="status-badge status-pending">
-                                            Pending
-                                        </span>
+                                        <span class="status-badge status-pending">Pending</span>
                                     </td>
-
                                     <td>
                                         <div class="approval-actions"></div>
                                     </td>
@@ -750,16 +829,11 @@
                                             <strong>Ana Ribeiro</strong>
                                         </div>
                                     </td>
-
                                     <td>ana.ribeiro@cms.com</td>
                                     <td>11/11/2026</td>
-
                                     <td>
-                                        <span class="status-badge status-pending">
-                                            Pending
-                                        </span>
+                                        <span class="status-badge status-pending">Pending</span>
                                     </td>
-
                                     <td>
                                         <div class="approval-actions"></div>
                                     </td>
@@ -819,7 +893,6 @@
                 </div>
             </div>
 
-            <!-- Aprovar ou rever decisão -->
             <div class="dialog-decision">
                 <p id="decisionMessage">
                     Select a decision for this registration.
@@ -904,7 +977,7 @@
             rejectedCount.textContent = rejected;
         }
 
-        /* Atualizar ações da linha */
+        /* Criar ações de cada linha */
         function updateRowActions(row) {
             const actions = row.querySelector(".approval-actions");
             const status = row.dataset.status;
@@ -919,7 +992,7 @@
 
             viewButton.type = "button";
             viewButton.className =
-                    "btn btn-outline btn-small " +
+                    "table-action " +
                     (status === "pending" ? "view-btn" : "review-btn");
 
             viewButton.textContent =
@@ -937,13 +1010,11 @@
                 const rejectButton = document.createElement("button");
 
                 approveButton.type = "button";
-                approveButton.className =
-                        "btn btn-success btn-small";
+                approveButton.className = "table-action approve-btn";
                 approveButton.textContent = "Approve";
 
                 rejectButton.type = "button";
-                rejectButton.className =
-                        "btn btn-danger btn-small";
+                rejectButton.className = "table-action reject-btn";
                 rejectButton.textContent = "Reject";
 
                 approveButton.addEventListener("click", function () {
@@ -999,7 +1070,7 @@
             staffDialog.showModal();
         }
 
-        /* Estado mostrado dentro do modal */
+        /* Atualizar modal */
         function updateDialogStatus() {
             const status = selectedRow.dataset.status;
 
@@ -1041,7 +1112,7 @@
             }
         }
 
-        /* Alterar decisão dentro do modal */
+        /* Rever decisão */
         dialogApprove.addEventListener("click", function () {
             if (selectedRow) {
                 changeStatus(selectedRow, "approved");
@@ -1079,7 +1150,7 @@
         staffSearch.addEventListener("input", filterRows);
         statusFilter.addEventListener("change", filterRows);
 
-        /* Preparar botões iniciais */
+        /* Criar botões iniciais */
         staffRows.forEach(function (row) {
             updateRowActions(row);
         });
