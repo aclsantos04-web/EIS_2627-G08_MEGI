@@ -1,0 +1,1562 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMS - Home</title>
+
+<style>
+:root {
+    --blue: #1f4f9c;
+    --dark: #163c74;
+    --text: #17283e;
+    --muted: #54677d;
+    --line: #d9e7f3;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text);
+    background: #f5f7fa;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+button, input, select {
+    font: inherit;
+}
+
+.page {
+    max-width: 1500px;
+    margin: auto;
+    background: #f6f7f8;
+}
+
+/* NAVIGATION */
+
+.navbar {
+    min-height: 78px;
+    padding: 14px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    background: white;
+}
+
+.nav-left,
+.nav-right,
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+}
+
+.nav-left {
+    gap: 55px;
+}
+
+.logo {
+    gap: 10px;
+    font-size: 29px;
+    font-weight: 800;
+    color: #111;
+}
+
+.logo img {
+    height: 43px;
+    width: 43px;
+}
+
+.nav-links {
+    font-size: 15px;
+}
+
+.nav-right {
+    gap: 12px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 25px;
+    padding: 11px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    transition: transform .2s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    background: var(--blue);
+    color: white;
+    border: 2px solid var(--blue);
+}
+
+.btn-outline {
+    background: white;
+    color: var(--blue);
+    border: 2px solid var(--blue);
+}
+
+/* HERO */
+
+.hero {
+    display: grid;
+    grid-template-columns: 46% 54%;
+    min-height: 490px;
+    background: #b9d8eb;
+    overflow: hidden;
+}
+
+.hero-content {
+    padding: 55px 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero-tag {
+    color: #496883;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0 0 16px;
+}
+
+.hero-title {
+    font-size: clamp(35px, 4vw, 54px);
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin: 0 0 22px;
+    color: #101b34;
+}
+
+.hero-title span {
+    color: var(--blue);
+}
+
+.hero-text {
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0 0 25px;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.hero-image {
+    min-height: 490px;
+    overflow: hidden;
+}
+
+.hero-image img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* KPI CARDS */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    position: relative;
+    z-index: 2;
+    margin: -40px 20px 0;
+}
+
+.stat-card {
+    background: white;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-height: 102px;
+    padding: 20px 25px;
+    border: 1px solid #e5eaf0;
+    border-radius: 15px;
+    box-shadow: 0 8px 22px #19344d18;
+}
+
+.stat-card img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.stat-number {
+    font-size: 26px;
+    font-weight: 800;
+    color: #111;
+}
+
+.stat-label {
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.demo-figure {
+    font-size: 11px;
+    color: #697c90;
+    text-align: right;
+    margin: 9px 24px 0;
+}
+
+/* PARTNERS */
+
+.brands-section {
+    padding: 42px 0 40px;
+    background: #f7f7f7;
+    overflow: hidden;
+}
+
+.brands-title {
+    text-align: center;
+    font-size: 14px;
+    color: #4b5563;
+    margin: 0 0 22px;
+}
+
+.brands-marquee {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.brands-marquee::before,
+.brands-marquee::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 70px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.brands-marquee::before {
+    left: 0;
+    background: linear-gradient(90deg, #f7f7f7, transparent);
+}
+
+.brands-marquee::after {
+    right: 0;
+    background: linear-gradient(270deg, #f7f7f7, transparent);
+}
+
+.brands-track {
+    display: flex;
+    gap: 60px;
+    width: max-content;
+    align-items: center;
+    animation: brandsMove 34s linear infinite;
+}
+
+.brands-marquee:hover .brands-track {
+    animation-play-state: paused;
+}
+
+.brands-group {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    padding-right: 60px;
+    flex-shrink: 0;
+}
+
+.brand {
+    height: 55px;
+    min-width: 118px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.brand img {
+    max-height: 46px;
+    max-width: 145px;
+    object-fit: contain;
+}
+
+.brand.red {
+    color: #df1827;
+}
+
+.brand.blue {
+    color: #1168aa;
+}
+
+.brand.yellow {
+    color: #d9a000;
+}
+
+.brand.green {
+    color: #348b47;
+}
+
+@keyframes brandsMove {
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.brands-note {
+    text-align: center;
+    color: #748397;
+    font-size: 11px;
+    margin: 20px 12px 0;
+}
+
+/* SERVICE HIGHLIGHTS */
+
+.highlights {
+    padding: 28px 20px 34px;
+    background: #b9d8eb;
+}
+
+.highlights h2 {
+    font-size: 23px;
+    color: var(--blue);
+    margin: 0 0 20px;
+}
+
+.highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.highlight {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    min-height: 130px;
+    box-shadow: 0 8px 22px #193c6017;
+}
+
+.highlight-icon {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    background: #d2e4f0;
+    border-radius: 13px;
+    flex-shrink: 0;
+}
+
+.highlight-icon img {
+    width: 35px;
+    height: 35px;
+}
+
+.highlight h3 {
+    font-size: 15px;
+    color: var(--blue);
+    margin: 0 0 7px;
+}
+
+.highlight p {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #516175;
+    margin: 0;
+}
+
+/* DELIVERY ESTIMATE - TWO COLUMNS */
+
+.budget-section {
+    background: linear-gradient(
+        120deg,
+        #eff7fe,
+        #fff 52%,
+        #eaf4fc
+    );
+    padding: 68px 34px;
+}
+
+.budget-layout {
+    max-width: 1240px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: 52px;
+    align-items: center;
+}
+
+.budget-intro {
+    min-width: 0;
+}
+
+.budget-tag {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 15px;
+}
+
+.budget-intro h2 {
+    font-size: clamp(27px, 3vw, 39px);
+    line-height: 1.18;
+    color: #173d71;
+    margin: 0 0 18px;
+}
+
+.budget-description {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.7;
+    margin: 0 0 29px;
+}
+
+/* DELIVERY OPTIONS */
+
+.delivery-list {
+    display: flex;
+    flex-direction: column;
+    gap: 21px;
+}
+
+.delivery-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.delivery-check {
+    width: 31px;
+    height: 31px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #e0f3e9;
+    color: #208054;
+    font-weight: 800;
+}
+
+.delivery-item strong {
+    display: block;
+    font-size: 15px;
+    color: #1e4f83;
+    margin: 1px 0 6px;
+}
+
+.delivery-item p {
+    color: #566b80;
+    font-size: 13px;
+    line-height: 1.45;
+    margin: 0;
+}
+
+.budget-perks {
+    font-size: 12px;
+    line-height: 1.7;
+    color: #52789d;
+    margin: 26px 0 0;
+}
+
+/* CALCULATOR */
+
+.budget-card {
+    min-width: 0;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 14px 32px #1b52821a;
+}
+
+.budget-card h3 {
+    font-size: 20px;
+    color: #1a4378;
+    margin: 0 0 22px;
+}
+
+.budget-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.budget-field {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.budget-field label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #253e59;
+}
+
+.budget-field select,
+.budget-field input {
+    min-width: 0;
+    width: 100%;
+    height: 48px;
+    background: white;
+    border: 1px solid #cbdce9;
+    border-radius: 10px;
+    padding: 0 13px;
+    color: #223247;
+}
+
+.budget-field select:focus,
+.budget-field input:focus {
+    outline: 2px solid #a9c8e5;
+    outline-offset: 1px;
+}
+
+.budget-button {
+    margin-top: 22px;
+    width: 100%;
+    padding: 15px 18px;
+    border: 0;
+    border-radius: 11px;
+    background: var(--blue);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.budget-button:hover {
+    background: var(--dark);
+}
+
+.budget-note {
+    font-size: 11px;
+    color: #667c92;
+    line-height: 1.55;
+    margin: 13px 0 0;
+}
+
+.budget-result {
+    margin-top: 16px;
+    padding: 18px;
+    border-radius: 12px;
+    border: 1px solid #cbdff1;
+    background: #eaf5ff;
+}
+
+.budget-result[hidden] {
+    display: none;
+}
+
+.budget-result strong {
+    display: block;
+    font-size: 29px;
+    color: #173d71;
+    margin: 6px 0;
+}
+
+.budget-result p {
+    color: #536980;
+    font-size: 12px;
+    margin: 6px 0 0;
+    line-height: 1.5;
+}
+
+.budget-result.error {
+    background: #fff0ee;
+    border-color: #edb8ae;
+    color: #9b322d;
+}
+
+/* TRUSTPILOT */
+
+.trustpilot {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 25px;
+    background: white;
+    border-top: 1px solid #e0e7ee;
+}
+
+.trust-left {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.trust-brand {
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.trust-brand span {
+    color: #00ad78;
+}
+
+.star-row {
+    display: flex;
+    gap: 3px;
+}
+
+.star-row span {
+    display: grid;
+    place-items: center;
+    background: #00ad78;
+    color: white;
+    width: 25px;
+    height: 25px;
+}
+
+.trust-caption {
+    font-size: 12px;
+    color: #485b70;
+}
+
+.trust-note {
+    font-size: 11px;
+    color: #66788a;
+}
+
+/* SCROLL ANIMATIONS */
+
+.reveal {
+    opacity: 1;
+    transform: none;
+}
+
+.js-animate .reveal {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity .65s, transform .65s;
+}
+
+.js-animate .reveal.visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+
+    .hero {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-image {
+        min-height: 360px;
+        height: 360px;
+    }
+
+    .stats,
+    .highlights-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats {
+        margin-top: 17px;
+    }
+
+    .budget-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .budget-intro {
+        max-width: 760px;
+    }
+}
+
+@media (max-width: 700px) {
+
+    .navbar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 18px;
+    }
+
+    .nav-left {
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .nav-right {
+        justify-content: flex-start;
+    }
+
+    .hero-content {
+        padding: 35px 25px;
+    }
+
+    .hero-title {
+        font-size: 38px;
+    }
+
+    .hero-text {
+        font-size: 15px;
+    }
+
+    .hero-image {
+        height: 300px;
+        min-height: 300px;
+    }
+
+    .highlights {
+        padding: 26px 15px;
+    }
+
+    .budget-section {
+        padding: 46px 18px;
+    }
+
+    .budget-card {
+        padding: 24px;
+    }
+
+    .budget-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .trustpilot {
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .nav-left {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hero-actions {
+        gap: 8px;
+    }
+
+    .btn {
+        padding: 10px 17px;
+    }
+
+    .stat-card {
+        padding: 17px;
+    }
+
+    .budget-card {
+        padding: 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    .brands-track {
+        animation: none;
+    }
+
+    .js-animate .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+<!-- NAVIGATION -->
+
+<header class="navbar">
+
+    <div class="nav-left">
+
+        <a class="logo" href="cms-home.html">
+            <img src="images/truck.svg" alt="">
+            CMS
+        </a>
+
+        <nav class="nav-links">
+            <a href="team.html">Meet the Team </a>
+        </nav>
+
+    </div>
+
+    <div class="nav-right">
+
+        <a class="btn btn-primary" href="login.html">
+            Login
+        </a>
+
+        <a class="btn btn-outline" href="register.html">
+            Get Started
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- 1. HERO -->
+
+<section class="hero">
+
+    <div class="hero-content reveal">
+
+        <p class="hero-tag">
+            Business Courier Services
+        </p>
+
+        <h1 class="hero-title">
+            Connect people,<br>
+            packages and<br>
+            <span>possibilities</span>
+        </h1>
+
+        <p class="hero-text">
+            A complete delivery platform that connects
+            clients, couriers, staff and admins -
+            from booking to proof of delivery.
+        </p>
+
+        <div class="hero-actions">
+
+            <a href="login.html" class="btn btn-primary">
+                Login →
+            </a>
+
+            <a href="register.html" class="btn btn-outline">
+                Get Started →
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="hero-image reveal">
+
+        <img
+            src="images/hero.jpg"
+            alt="Courier delivery team"
+            onerror="this.onerror=null;this.src='images/courier.jpg'"
+        >
+
+    </div>
+
+</section>
+
+
+<!-- 2. KPI CARDS -->
+
+<section class="stats" aria-label="CMS statistics">
+
+    <article class="stat-card reveal">
+
+        <img src="images/package.svg" alt="">
+
+        <div>
+            <div class="stat-number">12 480</div>
+            <div class="stat-label">Deliveries this year</div>
+        </div>
+
+    </article>
+
+    <article class="stat-card reveal">
+
+        <img src="images/truck.svg" alt="">
+
+        <div>
+            <div class="stat-number">27</div>
+            <div class="stat-label">Active Couriers</div>
+        </div>
+
+    </article>
+
+    <article class="stat-card reveal">
+
+        <img src="images/users.svg" alt="">
+
+        <div>
+            <div class="stat-number">320</div>
+            <div class="stat-label">Clients</div>
+        </div>
+
+    </article>
+
+</section>
+
+
+
+
+<!-- 3. PARTNERS -->
+
+<section class="brands-section reveal">
+
+    <p class="brands-title">
+        Trusted Logistics Partner by
+    </p>
+
+    <div class="brands-marquee">
+
+        <div class="brands-track">
+
+            <div class="brands-group">
+
+                <div class="brand">
+                    <img src="images/worten.svg" alt="Worten">
+                </div>
+
+                <div class="brand">
+                    <img src="images/lidl.svg" alt="Lidl">
+                </div>
+
+                <div class="brand">
+                    <img src="images/sephora.svg" alt="Sephora">
+                </div>
+
+                <div class="brand red">Continente</div>
+                <div class="brand blue">IKEA</div>
+                <div class="brand yellow">FNAC</div>
+                <div class="brand blue">DECATHLON</div>
+                <div class="brand red">Auchan</div>
+                <div class="brand green">LEROY MERLIN</div>
+
+            </div>
+
+            <div class="brands-group" aria-hidden="true">
+
+                <div class="brand">
+                    <img src="images/worten.svg" alt="">
+                </div>
+
+                <div class="brand">
+                    <img src="images/lidl.svg" alt="">
+                </div>
+
+                <div class="brand">
+                    <img src="images/sephora.svg" alt="">
+                </div>
+
+                <div class="brand red">Continente</div>
+                <div class="brand blue">IKEA</div>
+                <div class="brand yellow">FNAC</div>
+                <div class="brand blue">DECATHLON</div>
+                <div class="brand red">Auchan</div>
+                <div class="brand green">LEROY MERLIN</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+ 
+
+</section>
+
+
+<!-- 4. SERVICE HIGHLIGHTS -->
+
+<section class="highlights">
+
+    <h2 class="reveal">
+        Service Highlights
+    </h2>
+
+    <div class="highlights-grid">
+
+        <article class="highlight reveal">
+
+            <div class="highlight-icon">
+                <img src="images/map-pin.svg" alt="">
+            </div>
+
+            <div>
+
+                <h3>Real-time tracking</h3>
+
+                <p>
+                    Track deliveries and vehicles
+                    as they happen.
+                </p>
+
+            </div>
+
+        </article>
+
+        <article class="highlight reveal">
+
+            <div class="highlight-icon">
+                <img src="images/truck-electric.svg" alt="">
+            </div>
+
+            <div>
+
+                <h3>Vehicle matching</h3>
+
+                <p>
+                    Match each delivery with a suitable
+                    available vehicle.
+                </p>
+
+            </div>
+
+        </article>
+
+        <article class="highlight reveal">
+
+            <div class="highlight-icon">
+                <img src="images/file-check.svg" alt="">
+            </div>
+
+            <div>
+
+                <h3>Proof of Delivery</h3>
+
+                <p>
+                    Photo or digital signature
+                    for every delivery.
+                </p>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- 5. DELIVERY ESTIMATE -->
+
+<section class="budget-section" id="delivery-estimate">
+
+    <div class="budget-layout">
+
+        <!-- LEFT: DELIVERY OPTIONS -->
+
+        <div class="budget-intro reveal">
+
+    
+
+            <h2>
+                How much will your delivery cost?
+            </h2>
+
+            <p class="budget-description">
+                Choose your cities, package weight
+                and delivery speed for an instant estimate.
+                Simple, fast and transparent.
+            </p>
+
+            <div class="delivery-list">
+
+                <div class="delivery-item">
+
+                    <span class="delivery-check">✓</span>
+
+                    <div>
+                        <strong>Standard Delivery</strong>
+                        <p>
+                            An affordable choice for
+                            everyday shipments.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="delivery-item">
+
+                    <span class="delivery-check">✓</span>
+
+                    <div>
+                        <strong>Fast / Express Delivery</strong>
+                        <p>
+                            Priority service when time matters.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="delivery-item">
+
+                    <span class="delivery-check">✓</span>
+
+                    <div>
+                        <strong>Same Day Delivery</strong>
+                        <p>
+                            For urgent deliveries,
+                            subject to route availability.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        
+
+        </div>
+
+
+        <!-- RIGHT: CALCULATOR -->
+
+        <form class="budget-card reveal" id="budget-form">
+
+            <h3>Get a Delivery Estimate</h3>
+
+            <div class="budget-grid">
+
+                <div class="budget-field">
+
+                    <label for="budget-origin">
+                        Origin city
+                    </label>
+
+                    <select id="budget-origin" required>
+                        <option value="">Choose a city</option>
+                    </select>
+
+                </div>
+
+                <div class="budget-field">
+
+                    <label for="budget-destination">
+                        Destination city
+                    </label>
+
+                    <select id="budget-destination" required>
+                        <option value="">Choose a city</option>
+                    </select>
+
+                </div>
+
+                <div class="budget-field">
+
+                    <label for="budget-weight">
+                        Package weight (kg)
+                    </label>
+
+                    <input
+                        id="budget-weight"
+                        type="number"
+                        min="0.1"
+                        max="10000"
+                        step="0.1"
+                        placeholder="e.g. 2.5"
+                        required
+                    >
+
+                </div>
+
+                <div class="budget-field">
+
+                    <label for="budget-speed">
+                        Delivery type
+                    </label>
+
+                    <select id="budget-speed">
+
+                        <option value="standard">
+                            Standard
+                        </option>
+
+                        <option value="express">
+                            Fast / Express
+                        </option>
+
+                        <option value="same-day">
+                            Same Day
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <button type="submit" class="budget-button">
+                Calculate Estimate →
+            </button>
+
+            <div
+                id="budget-result"
+                class="budget-result"
+                role="status"
+                aria-live="polite"
+                hidden>
+            </div>
+
+            
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- 6. TRUSTPILOT -->
+
+<footer class="trustpilot reveal">
+
+    <div class="trust-left">
+
+        <strong class="trust-brand">
+            <span>★</span> Trustpilot
+        </strong>
+
+        <div class="star-row" aria-hidden="true">
+            <span>★</span>
+            <span>★</span>
+            <span>★</span>
+            <span>★</span>
+            <span>★</span>
+        </div>
+
+        <span class="trust-caption">
+            4.8 / 5
+        </span>
+
+    </div>
+
+    <span class="trust-note">
+        No verified customer reviews are available yet.
+    </span>
+
+</footer>
+
+</div>
+
+
+<!-- JAVASCRIPT -->
+
+<script>
+(function () {
+
+    "use strict";
+
+    /* SCROLL ANIMATIONS */
+
+    if (
+        "IntersectionObserver" in window &&
+        !matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+
+        const items = document.querySelectorAll(".reveal");
+
+        document.documentElement.classList.add("js-animate");
+
+        const observer = new IntersectionObserver(
+            entries => {
+
+                entries.forEach(entry => {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.classList.add("visible");
+
+                        observer.unobserve(entry.target);
+
+                    }
+
+                });
+
+            },
+            { threshold: 0.05 }
+        );
+
+        items.forEach(item => observer.observe(item));
+
+    }
+
+
+    /* 30 PORTUGUESE CITIES */
+
+    const cities = {
+
+        "Almada": [38.68, -9.16],
+        "Aveiro": [40.64, -8.65],
+        "Barcelos": [41.53, -8.62],
+        "Beja": [38.02, -7.86],
+        "Braga": [41.55, -8.43],
+        "Bragança": [41.81, -6.76],
+        "Cascais": [38.70, -9.42],
+        "Castelo Branco": [39.82, -7.49],
+        "Coimbra": [40.21, -8.43],
+        "Évora": [38.57, -7.91],
+        "Faro": [37.02, -7.93],
+        "Guarda": [40.54, -7.27],
+        "Guimarães": [41.44, -8.30],
+        "Leiria": [39.74, -8.81],
+        "Lisboa": [38.72, -9.14],
+        "Maia": [41.23, -8.62],
+        "Matosinhos": [41.18, -8.69],
+        "Portalegre": [39.30, -7.43],
+        "Portimão": [37.14, -8.54],
+        "Porto": [41.15, -8.61],
+        "Póvoa de Varzim": [41.38, -8.76],
+        "Santarém": [39.24, -8.69],
+        "Setúbal": [38.52, -8.89],
+        "Sintra": [38.80, -9.38],
+        "Viana do Castelo": [41.69, -8.83],
+        "Vila do Conde": [41.35, -8.75],
+        "Vila Nova de Famalicão": [41.41, -8.52],
+        "Vila Nova de Gaia": [41.13, -8.61],
+        "Vila Real": [41.30, -7.74],
+        "Viseu": [40.66, -7.91]
+
+    };
+
+
+    /* FORM ELEMENTS */
+
+    const form = document.getElementById("budget-form");
+
+    const from = document.getElementById("budget-origin");
+
+    const to = document.getElementById("budget-destination");
+
+    const weight = document.getElementById("budget-weight");
+
+    const speed = document.getElementById("budget-speed");
+
+    const result = document.getElementById("budget-result");
+
+
+    /* POPULATE CITIES */
+
+    Object.keys(cities)
+        .sort((a, b) => a.localeCompare(b, "pt-PT"))
+        .forEach(city => {
+
+            [from, to].forEach(select => {
+
+                const option = document.createElement("option");
+
+                option.value = city;
+                option.textContent = city;
+
+                select.appendChild(option);
+
+            });
+
+        });
+
+
+    /* DISTANCE CALCULATION */
+
+    function distance(a, b) {
+
+        const [lat1, lon1] = cities[a];
+
+        const [lat2, lon2] = cities[b];
+
+        const r = Math.PI / 180;
+
+        const dLat = (lat2 - lat1) * r;
+        const dLon = (lon2 - lon1) * r;
+
+        const h =
+            Math.sin(dLat / 2) ** 2 +
+            Math.cos(lat1 * r) *
+            Math.cos(lat2 * r) *
+            Math.sin(dLon / 2) ** 2;
+
+        return 6371 * 2 * Math.atan2(
+            Math.sqrt(h),
+            Math.sqrt(1 - h)
+        );
+
+    }
+
+
+    /* RESULT HELPERS */
+
+    function clearResult() {
+
+        result.hidden = true;
+
+        result.classList.remove("error");
+
+        result.replaceChildren();
+
+    }
+
+    function showError(message) {
+
+        clearResult();
+
+        result.classList.add("error");
+
+        result.textContent = message;
+
+        result.hidden = false;
+
+    }
+
+
+    /* RESET ON CHANGE */
+
+    form.addEventListener("input", clearResult);
+
+    form.addEventListener("change", clearResult);
+
+
+    /* CALCULATE ESTIMATE */
+
+    form.addEventListener("submit", event => {
+
+        event.preventDefault();
+
+        const origin = from.value;
+        const dest = to.value;
+        const kg = Number(weight.value);
+        const tier = speed.value;
+
+        if (
+            !Object.prototype.hasOwnProperty.call(cities, origin) ||
+            !Object.prototype.hasOwnProperty.call(cities, dest) ||
+            !Number.isFinite(kg) ||
+            kg <= 0 ||
+            kg > 10000
+        ) {
+
+            showError(
+                "Please choose both cities and enter a valid weight."
+            );
+
+            return;
+        }
+
+        const km = distance(origin, dest);
+
+        /* ORIGINAL CMS DEMO PRICING */
+
+        const distanceFee =
+            km > 300 ? 10 :
+            km > 100 ? 6 :
+            km > 0 ? 3 : 0;
+
+        const standard =
+            4.50 + 0.90 * kg + distanceFee;
+
+
+        /* ILLUSTRATIVE DELIVERY MULTIPLIERS */
+
+        const multipliers = {
+            "standard": 1,
+            "express": 1.5,
+            "same-day": 2.2
+        };
+
+        const labels = {
+            "standard": "Standard",
+            "express": "Fast / Express",
+            "same-day": "Same Day"
+        };
+
+        if (
+            !Object.prototype.hasOwnProperty.call(
+                multipliers, tier
+            )
+        ) {
+
+            showError("Choose a delivery type.");
+
+            return;
+        }
+
+        const price = standard * multipliers[tier];
+
+
+        /* DISPLAY PRICE */
+
+        const caption = document.createElement("span");
+
+        caption.textContent = "Estimated delivery cost";
+
+
+        const amount = document.createElement("strong");
+
+        amount.textContent = price.toLocaleString(
+            "pt-PT",
+            {
+                style: "currency",
+                currency: "EUR"
+            }
+        );
+
+
+        const description = document.createElement("p");
+
+        description.textContent =
+            origin + " → " + dest +
+            " · " + kg + " kg" +
+            " · " + labels[tier];
+
+
+        const note = document.createElement("p");
+
+        
+
+
+        clearResult();
+
+        result.append(
+            caption,
+            amount,
+            description,
+            note
+        );
+
+        result.hidden = false;
+
+    });
+
+})();
+</script>
+
+</body>
+</html>

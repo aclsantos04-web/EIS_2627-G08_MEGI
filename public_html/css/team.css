@@ -1,31 +1,72 @@
 /* =========================================================
    team.css — STYLES ONLY FOR team.html
-
+   Same look as the rest of the CMS:
+   - the light-blue background gradient with the big soft
+     circle in the top-right corner (like .app-content)
+   - white cards with the blue gradient line on top
+   - Poppins for titles, Inter for text, the CMS blues
+   The top bar is in public-header.css (shared with cms-home).
    ========================================================= */
 
 
-
+/* ---------- Page area ----------
+   position: relative + overflow: hidden keep the circle
+   inside this section. */
 .team-hero {
-    background: linear-gradient(to bottom, #94BDDB, #ECECEF);
-    padding: 56px 32px 40px;
+    position: relative;
+    overflow: hidden;
+    min-height: calc(100vh - 140px);     /* fills the screen above the footer */
+    padding: 56px 32px 48px;
     text-align: center;
+    font-family: "Inter", Arial, sans-serif;
+    background:
+        radial-gradient(circle at 12% 8%, rgba(255, 255, 255, 0.55), transparent 32%),
+        linear-gradient(180deg, var(--primary-light) 0%, var(--page-soft) 300px, #FFFFFF 620px);
+}
+
+/* The big soft circle (same as the logged-in pages) */
+.team-hero::before {
+    content: "";
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    top: -250px;
+    right: -100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.24);
+    pointer-events: none;                /* never blocks a click */
+}
+
+/* Everything inside stays above the circle */
+.team-hero > * {
+    position: relative;
+    z-index: 1;
 }
 
 .team-hero h1 {
     margin: 0 0 8px;
+    color: #17212b;
+    font-family: "Poppins", Arial, sans-serif;
     font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.team-hero h1 span {
+    color: var(--primary);
 }
 
 .team-hero .subtitle {
     margin: 0;
-    font-size: 24px;
-    line-height: 1.3;
+    color: #475569;
+    font-size: 20px;
+    line-height: 1.4;
 }
 
 
 /* ---------- Grid of member cards ---------- */
 .team-grid {
-    list-style: none;         
+    list-style: none;
     padding: 0;
     margin: 40px auto 0;
     max-width: 1100px;
@@ -35,20 +76,36 @@
 }
 
 
-/* ---------- One member card ---------- */
+/* ---------- One member card ----------
+   Same card as the rest of the site: white, rounded,
+   soft shadow and the gradient line on top (::before). */
 .member-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 28px 16px;
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);   
+    position: relative;
+    overflow: hidden;
+    background: #FFFFFF;
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: 17px;
+    padding: 32px 16px 26px;
+    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.065);
     display: flex;
     flex-direction: column;    /* stack photo, name, details vertically */
     align-items: center;
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.member-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent-blue), #7FC7F2);
 }
 
 .member-card:hover {
     transform: translateY(-4px);   /* card lifts a little on hover */
+    box-shadow: 0 16px 34px rgba(27, 75, 145, 0.12);
 }
 
 /* Round photo with a blue ring.
@@ -57,57 +114,70 @@
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    border: 4px solid var(--primary);
-    background: var(--primary-light);  
+    border: 4px solid var(--primary-light);
+    box-shadow: 0 0 0 2px var(--primary);
+    background: var(--page-soft);
     object-fit: cover;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 
-/* Placeholder circle */
+/* Placeholder circle with the initials */
 .member-initials {
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--primary);
+    font-family: "Poppins", Arial, sans-serif;
     font-size: 36px;
-    font-weight: 800;
+    font-weight: 700;
 }
 
 .member-name {
     margin: 0 0 12px;
-    color: var(--primary);
-    font-size: 20px;
+    color: #17212b;
+    font-family: "Poppins", Arial, sans-serif;
+    font-size: 19px;
+    font-weight: 600;
     line-height: 1.3;
 }
 
 .member-info {
     margin: 0;
-    font-size: 15px;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 .member-info a {
-    color: var(--text);
-    word-break: break-all;    
+    color: var(--primary);
+    word-break: break-all;
 }
 
 .member-info a:hover {
-    color: var(--primary);
+    color: var(--accent-blue);
 }
 
 .member-role {
     display: inline-block;
-    margin-top: 10px;
-    padding: 2px 12px;
-    border-radius: 999px;     
-    background: var(--primary-light);
-    color: var(--primary);
-    font-size: 13px;
+    margin-top: 12px;
+    padding: 3px 12px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--primary), var(--accent-blue));
+    color: #FFFFFF;
+    font-size: 12px;
     font-weight: 600;
+    letter-spacing: 0.3px;
 }
 
 .course {
     margin: 40px 0 0;
-    font-size: 20px;
+    color: #475569;
+    font-size: 17px;
+}
+
+.course span {
+    color: #17212b;
+    font-weight: 600;
 }
 
 
@@ -126,7 +196,7 @@
         font-size: 30px;
     }
     .team-hero .subtitle {
-        font-size: 18px;
+        font-size: 17px;
     }
     .team-grid {
         grid-template-columns: 1fr;
