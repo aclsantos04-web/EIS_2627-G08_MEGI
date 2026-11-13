@@ -85,7 +85,16 @@
                        required>
                 <small id="password-error" class="field-error"></small>
 
-                <p>Forgot password?</p>
+                
+<!-- FORGOT PASSWORD -->
+
+
+<button type="button" id="forgot-open" class="forgot-link">
+    Forgot your password?
+</button>
+
+
+
                 <div id="login-message" role="alert"></div>
 
                 <button type="submit">Login</button>
@@ -96,5 +105,222 @@
 
     </main>
 <script src="js/login.js"></script>
+
+<!-- PASSWORD RESET POPUP -->
+
+<style>
+.forgot-link {
+    display: block;
+    margin: 2px 0 18px auto;
+    padding: 0;
+    width: fit-content;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #215394 !important;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+    transform: none !important;
+}
+
+.reset-popup {
+    width: min(440px, calc(100% - 32px));
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    margin: auto;
+    padding: 32px;
+    border: 1px solid #dae7f2;
+    border-radius: 20px;
+    background: white;
+    color: #192e47;
+    box-shadow: 0 25px 70px rgba(10,35,70,0.2);
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+.reset-popup::backdrop {
+    background: rgba(15, 35, 65, 0.55);
+    backdrop-filter: blur(3px);
+}
+
+.reset-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.reset-popup-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+    background: #e7f1fa;
+    color: #215394;
+    font-size: 24px;
+}
+
+.reset-close {
+    background: transparent;
+    color: #60758a;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.reset-popup h2 {
+    margin: 21px 0 10px;
+    color: #173e70;
+    font-size: 24px;
+}
+
+.reset-popup p {
+    color: #61758a;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.reset-popup label {
+    display: block;
+    margin: 22px 0 8px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.reset-popup input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 48px;
+    padding: 0 14px;
+    border: 1px solid #cbdbea;
+    border-radius: 10px;
+    outline: none;
+    font-size: 14px;
+}
+
+.reset-popup input:focus {
+    border-color: #215394;
+    box-shadow: 0 0 0 3px #21539418;
+}
+
+.reset-submit {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: #215394;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.reset-submit:hover {
+    background: #173e70;
+}
+
+.reset-feedback {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 9px;
+    background: #e7f5ed;
+    color: #236345;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.reset-feedback[hidden] {
+    display: none;
+}
+</style>
+
+<dialog id="reset-popup" class="reset-popup"
+        aria-labelledby="reset-title">
+
+    <div class="reset-popup-header">
+        <div class="reset-popup-icon">🔒</div>
+
+        <button type="button" class="reset-close"
+                id="reset-close" aria-label="Close">
+            &times;
+        </button>
+    </div>
+
+    <h2 id="reset-title">Reset your password</h2>
+
+    <p>
+        Forgot your password? Enter your email address
+        below to request a password reset.
+    </p>
+
+    <label for="reset-email">Email address</label>
+
+    <input type="email" id="reset-email"
+           placeholder="name@example.com"
+           autocomplete="email" required>
+
+    <button type="button" class="reset-submit"
+            id="reset-submit">
+        Request Reset Link
+    </button>
+
+    <div id="reset-feedback" class="reset-feedback"
+         role="status" aria-live="polite" hidden>
+    </div>
+
+</dialog>
+
+<script>
+(function () {
+    const popup = document.getElementById("reset-popup");
+    const openButton = document.getElementById("forgot-open");
+    const closeButton = document.getElementById("reset-close");
+    const submitButton = document.getElementById("reset-submit");
+    const email = document.getElementById("reset-email");
+    const feedback = document.getElementById("reset-feedback");
+
+    openButton.addEventListener("click", function () {
+        email.value = "";
+        feedback.hidden = true;
+        feedback.textContent = "";
+        popup.showModal();
+    });
+
+    closeButton.addEventListener("click", function () {
+        popup.close();
+    });
+
+    popup.addEventListener("click", function (event) {
+        if (event.target === popup) {
+            popup.close();
+        }
+    });
+
+    submitButton.addEventListener("click", function () {
+        if (!email.value.trim() || !email.checkValidity()) {
+            feedback.hidden = false;
+            feedback.style.background = "#fff0ee";
+            feedback.style.color = "#a3342b";
+            feedback.textContent =
+                "Please enter a valid email address.";
+            return;
+        }
+
+        feedback.hidden = false;
+        feedback.style.background = "#e7f5ed";
+        feedback.style.color = "#236345";
+        feedback.textContent =
+            "Email validated successfully! This is a demo. " +
+            "No password reset email has been sent.";
+    });
+})();
+</script>
+
 </body>
 </html>
