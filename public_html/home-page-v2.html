@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CMS - Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --blue: #1f4f9c;
+            --blue-dark: #163c74;
+            --blue-light: #b9d8eb;
+            --text: #111827;
+            --muted: #4b5563;
+            --white: #ffffff;
+            --background: #f6f7f8;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        .page {
+            max-width: 1500px;
+            margin: 0 auto;
+            background: #f5f5f5;
+        }
+
+        /* Navbar */
+        .navbar {
+            min-height: 82px;
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            border-bottom: 1px solid #e6e9ed;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 48px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 29px;
+            font-weight: 800;
+        }
+
+        .logo img {
+            width: 47px;
+            height: 47px;
+            object-fit: contain;
+        }
+
+        .nav-links a {
+            font-size: 16px;
+            color: #1f2937;
+            transition: color .2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--blue);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 26px;
+            border-radius: 999px;
+            font-size: 15px;
+            font-weight: 700;
+            transition: .22s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            color: #fff;
+            background: var(--blue);
+            border: 2px solid var(--blue);
+        }
+
+        .btn-primary:hover {
+            background: var(--blue-dark);
+            border-color: var(--blue-dark);
+            box-shadow: 0 7px 17px rgba(31, 79, 156, .18);
+        }
+
+        .btn-outline {
+            color: var(--blue);
+            background: #fff;
+            border: 2px solid var(--blue);
+        }
+
+        .btn-outline:hover {
+            background: #f0f7fd;
+        }
+
+        /* Hero */
+        .hero {
+            display: grid;
+            grid-template-columns: 46% 54%;
+            min-height: 520px;
+            background: var(--blue-light);
+            overflow: hidden;
+        }
+
+        .hero-content {
+            padding: 55px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-tag {
+            margin-bottom: 14px;
+            color: rgba(255,255,255,.88);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .hero-title {
+            max-width: 520px;
+            margin: 0 0 28px;
+            color: #101b34;
+            font-size: 54px;
+            line-height: 1.09;
+            letter-spacing: -1.4px;
+            font-weight: 800;
+        }
+
+        .hero-title .accent {
+            color: var(--blue);
+        }
+
+        .hero-text {
+            max-width: 520px;
+            margin-bottom: 30px;
+            color: #334155;
+            font-size: 18px;
+            line-height: 1.55;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .hero-image {
+            min-height: 520px;
+            overflow: hidden;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Stats */
+        .stats {
+            position: relative;
+            z-index: 5;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: -44px;
+            padding: 0 18px;
+        }
+
+        .stat-card {
+            min-height: 90px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            background: #fff;
+            border: 1px solid rgba(27,75,145,.08);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(28,55,80,.10);
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 28px rgba(28,55,80,.15);
+        }
+
+        .stat-icon {
+            width: 54px;
+            height: 54px;
+            flex-shrink: 0;
+            object-fit: contain;
+        }
+
+        .stat-number {
+            margin-bottom: 4px;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .stat-label {
+            color: #374151;
+            font-size: 14px;
+        }
+
+        /* Marcas */
+        .brands-section {
+            padding: 45px 0 46px;
+            background: #f6f6f6;
+            overflow: hidden;
+        }
+
+        .brands-title {
+            margin-bottom: 26px;
+            text-align: center;
+            color: #4b5563;
+            font-size: 14px;
+        }
+
+        .brands-marquee {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .brands-marquee::before,
+        .brands-marquee::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 90px;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .brands-marquee::before {
+            left: 0;
+            background: linear-gradient(
+                90deg,
+                #f6f6f6 0%,
+                rgba(246,246,246,0) 100%
+            );
+        }
+
+        .brands-marquee::after {
+            right: 0;
+            background: linear-gradient(
+                270deg,
+                #f6f6f6 0%,
+                rgba(246,246,246,0) 100%
+            );
+        }
+
+        .brands-track {
+            display: flex;
+            align-items: center;
+            gap: 70px;
+            width: max-content;
+            animation: brandScroll 36s linear infinite;
+        }
+
+        .brands-marquee:hover .brands-track {
+            animation-play-state: paused;
+        }
+
+        .brand-item {
+            min-width: 130px;
+            height: 58px;
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: .78;
+            transition: opacity .22s ease, transform .22s ease;
+        }
+
+        .brand-item:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .brand-logo img {
+            width: auto;
+            max-width: 145px;
+            max-height: 48px;
+            object-fit: contain;
+        }
+
+        .brand-text {
+            white-space: nowrap;
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .continente {
+            color: #e30613;
+        }
+
+        .ikea {
+            color: #0058a3;
+            letter-spacing: 1px;
+        }
+
+        .fnac {
+            color: #e4a400;
+            font-weight: 900;
+        }
+
+        .decathlon {
+            color: #1769aa;
+            font-size: 19px;
+            letter-spacing: .4px;
+        }
+
+        .auchan {
+            color: #d9232e;
+        }
+
+        .leroy {
+            color: #3d8e40;
+            font-size: 18px;
+        }
+
+        @keyframes brandScroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Service Highlights */
+        .highlights-wrapper {
+            padding: 20px 18px 26px;
+            background: #b8d7ea;
+            border-top: 1px solid #d6e3ec;
+            border-radius: 14px 14px 0 0;
+        }
+
+        .highlights-title {
+            margin: 0 0 16px 12px;
+            color: var(--blue);
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .highlight-card {
+            min-height: 105px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 8px 18px rgba(31,79,156,.12);
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+
+        .highlight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 13px 24px rgba(31,79,156,.17);
+        }
+
+        .highlight-icon-box {
+            width: 62px;
+            height: 62px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            background: #c3d7e8;
+        }
+
+        .highlight-icon-box img {
+            width: 34px;
+            height: 34px;
+            object-fit: contain;
+        }
+
+        .highlight-card h3 {
+            margin-bottom: 5px;
+            color: var(--blue);
+            font-size: 15px;
+        }
+
+        .highlight-card p {
+            color: #424242;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        /* Trustpilot */
+        .trustpilot {
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            background: #fff;
+            border-top: 1px solid #e4e4e4;
+        }
+
+        .trustpilot-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .trustpilot-brand {
+            font-weight: 700;
+            color: #333;
+        }
+
+        .trustpilot-star {
+            color: #00b67a;
+            font-size: 21px;
+        }
+
+        .stars {
+            display: flex;
+            gap: 3px;
+        }
+
+        .star-box {
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #00b67a;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .trustpilot-text {
+            color: #444;
+            font-size: 13px;
+        }
+
+        .trustpilot-link {
+            color: var(--blue);
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        /* Scroll animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity .6s ease, transform .6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 1000px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-image {
+                min-height: 380px;
+            }
+
+            .stats,
+            .highlight-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                margin-top: 20px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .navbar {
+                padding: 18px;
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .nav-left {
+                width: 100%;
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .nav-right {
+                width: 100%;
+            }
+
+            .hero-content {
+                padding: 40px 24px;
+            }
+
+            .hero-title {
+                font-size: 40px;
+            }
+
+            .hero-text {
+                font-size: 16px;
+            }
+
+            .brands-track {
+                gap: 45px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .brands-track {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- Navbar -->
+    <header class="navbar">
+
+        <div class="nav-left">
+
+            <a href="index.html" class="logo">
+                <img src="images/truck.svg" alt="CMS">
+                <span>CMS</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="team.html">Meet the Team ↓</a>
+            </nav>
+
+        </div>
+
+        <div class="nav-right">
+            <a href="login.html" class="btn btn-primary">
+                Login
+            </a>
+
+            <a href="register.html" class="btn btn-outline">
+                Get Started
+            </a>
+        </div>
+
+    </header>
+
+
+    <!-- Hero -->
+    <section class="hero">
+
+        <div class="hero-content reveal">
+
+            <p class="hero-tag">
+                Business Courier Services
+            </p>
+
+            <h1 class="hero-title">
+                Connect people,<br>
+                packages and<br>
+                <span class="accent">possibilities</span>
+            </h1>
+
+            <p class="hero-text">
+                A complete delivery platform that connects clients,
+                couriers, staff and admins - from booking to proof
+                of delivery.
+            </p>
+
+            <div class="hero-actions">
+
+                <a href="login.html"
+                   class="btn btn-primary">
+                    Login →
+                </a>
+
+                <a href="register.html"
+                   class="btn btn-outline">
+                    Get Started →
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-image reveal">
+
+            <img
+                src="images/sie_home page image.jpeg"
+                alt="Courier team">
+
+        </div>
+
+    </section>
+
+
+    <!-- Statistics -->
+    <section class="stats">
+
+        <article class="stat-card reveal">
+
+            <img
+                src="images/package.svg"
+                alt="Deliveries"
+                class="stat-icon">
+
+            <div>
+                <div class="stat-number">
+                    12.480
+                </div>
+
+                <div class="stat-label">
+                    Deliveries this year
+                </div>
+            </div>
+
+        </article>
+
+
+        <article class="stat-card reveal">
+
+            <img
+                src="images/truck.svg"
+                alt="Couriers"
+                class="stat-icon">
+
+            <div>
+                <div class="stat-number">
+                    27
+                </div>
+
+                <div class="stat-label">
+                    Active Couriers
+                </div>
+            </div>
+
+        </article>
+
+
+        <article class="stat-card reveal">
+
+            <img
+                src="images/users.svg"
+                alt="Clients"
+                class="stat-icon">
+
+            <div>
+                <div class="stat-number">
+                    320
+                </div>
+
+                <div class="stat-label">
+                    Clients
+                </div>
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- Brands -->
+    <section class="brands-section reveal">
+
+        <p class="brands-title">
+            Built for logistics across Portugal
+        </p>
+
+        <div class="brands-marquee">
+
+            <div class="brands-track">
+
+                <!-- Primeiro conjunto -->
+
+                <div class="brand-item brand-logo">
+                    <img
+                        src="images/worten.svg"
+                        alt="Worten">
+                </div>
+
+                <div class="brand-item brand-logo">
+                    <img
+                        src="images/lidl.svg"
+                        alt="Lidl">
+                </div>
+
+                <div class="brand-item brand-logo">
+                    <img
+                        src="images/sephora.svg"
+                        alt="Sephora">
+                </div>
+
+                <div class="brand-item brand-text continente">
+                    Continente
+                </div>
+
+                <div class="brand-item brand-text ikea">
+                    IKEA
+                </div>
+
+                <div class="brand-item brand-text fnac">
+                    FNAC
+                </div>
+
+                <div class="brand-item brand-text decathlon">
+                    DECATHLON
+                </div>
+
+                <div class="brand-item brand-text auchan">
+                    Auchan
+                </div>
+
+                <div class="brand-item brand-text leroy">
+                    LEROY MERLIN
+                </div>
+
+
+                <!-- Segundo conjunto para loop -->
+
+                <div class="brand-item brand-logo" aria-hidden="true">
+                    <img
+                        src="images/worten.svg"
+                        alt="">
+                </div>
+
+                <div class="brand-item brand-logo" aria-hidden="true">
+                    <img
+                        src="images/lidl.svg"
+                        alt="">
+                </div>
+
+                <div class="brand-item brand-logo" aria-hidden="true">
+                    <img
+                        src="images/sephora.svg"
+                        alt="">
+                </div>
+
+                <div class="brand-item brand-text continente"
+                     aria-hidden="true">
+                    Continente
+                </div>
+
+                <div class="brand-item brand-text ikea"
+                     aria-hidden="true">
+                    IKEA
+                </div>
+
+                <div class="brand-item brand-text fnac"
+                     aria-hidden="true">
+                    FNAC
+                </div>
+
+                <div class="brand-item brand-text decathlon"
+                     aria-hidden="true">
+                    DECATHLON
+                </div>
+
+                <div class="brand-item brand-text auchan"
+                     aria-hidden="true">
+                    Auchan
+                </div>
+
+                <div class="brand-item brand-text leroy"
+                     aria-hidden="true">
+                    LEROY MERLIN
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Service Highlights -->
+    <section class="highlights-wrapper">
+
+        <h2 class="highlights-title reveal">
+            Service Highlights
+        </h2>
+
+        <div class="highlight-grid">
+
+            <article class="highlight-card reveal">
+
+                <div class="highlight-icon-box">
+
+                    <img
+                        src="images/map-pin.svg"
+                        alt="Tracking">
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Real-time tracking
+                    </h3>
+
+                    <p>
+                        Track deliveries and vehicles
+                        as they happen.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <article class="highlight-card reveal">
+
+                <div class="highlight-icon-box">
+
+                    <img
+                        src="images/truck-electric.svg"
+                        alt="Vehicle matching">
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Vehicle matching
+                    </h3>
+
+                    <p>
+                        Match each delivery with the most
+                        suitable available vehicle.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <article class="highlight-card reveal">
+
+                <div class="highlight-icon-box">
+
+                    <img
+                        src="images/file-check.svg"
+                        alt="Proof of Delivery">
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Proof of Delivery
+                    </h3>
+
+                    <p>
+                        Photo or digital signature
+                        for every delivery.
+                    </p>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- Trustpilot -->
+    <footer class="trustpilot reveal">
+
+        <div class="trustpilot-left">
+
+            <span class="trustpilot-star">
+                ★
+            </span>
+
+            <span class="trustpilot-brand">
+                Trustpilot
+            </span>
+
+            <div class="stars">
+                <div class="star-box">★</div>
+                <div class="star-box">★</div>
+                <div class="star-box">★</div>
+                <div class="star-box">★</div>
+                <div class="star-box">★</div>
+            </div>
+
+            <span class="trustpilot-text">
+                Rated <strong>4.8</strong> out of 5 by our users
+            </span>
+
+        </div>
+
+        <a href="#"
+           class="trustpilot-link">
+            Read Reviews →
+        </a>
+
+    </footer>
+
+</div>
+
+
+<script>
+    const revealElements =
+        document.querySelectorAll(".reveal");
+
+    const observer =
+        new IntersectionObserver(
+            function(entries) {
+
+                entries.forEach(
+                    function(entry) {
+
+                        if (entry.isIntersecting) {
+
+                            entry.target
+                                .classList
+                                .add("visible");
+
+                            observer.unobserve(
+                                entry.target
+                            );
+
+                        }
+
+                    }
+                );
+
+            },
+            {
+                threshold: 0.12
+            }
+        );
+
+    revealElements.forEach(
+        function(element) {
+            observer.observe(element);
+        }
+    );
+</script>
+
+</body>
+</html>
