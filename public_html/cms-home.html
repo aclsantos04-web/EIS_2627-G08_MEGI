@@ -50,50 +50,6 @@ button, input, select {
     background: #f6f7f8;
 }
 
-/* NAVIGATION */
-
-.navbar {
-    min-height: 78px;
-    padding: 14px 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    background: white;
-}
-
-.nav-left,
-.nav-right,
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 17px;
-}
-
-.nav-left {
-    gap: 55px;
-}
-
-.logo {
-    gap: 10px;
-    font-size: 29px;
-    font-weight: 800;
-    color: #111;
-}
-
-.logo img {
-    height: 43px;
-    width: 43px;
-}
-
-.nav-links {
-    font-size: 15px;
-}
-
-.nav-right {
-    gap: 12px;
-}
-
 .btn {
     display: inline-flex;
     align-items: center;
@@ -705,21 +661,6 @@ button, input, select {
 
 @media (max-width: 700px) {
 
-    .navbar {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 18px;
-    }
-
-    .nav-left {
-        justify-content: space-between;
-        gap: 20px;
-    }
-
-    .nav-right {
-        justify-content: flex-start;
-    }
-
     .hero-content {
         padding: 35px 25px;
     }
@@ -761,11 +702,6 @@ button, input, select {
 
 @media (max-width: 400px) {
 
-    .nav-left {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
     .hero-actions {
         gap: 8px;
     }
@@ -801,41 +737,39 @@ button, input, select {
 }
 
 </style>
+
+<!-- Top bar shared with team.html -->
+<link rel="stylesheet" href="css/public-header.css">
 </head>
 
 <body>
 
 <div class="page">
 
-<!-- NAVIGATION -->
+<!-- ================= TOP BAR =================
+     Same bar on cms-home.html and team.html.
+     Styles: css/public-header.css
+     aria-current="page" marks the page we are on (blue gradient). -->
+<header class="public-header">
+    <a href="cms-home.html" class="public-logo" aria-label="CMS – go to homepage">
+        <svg viewBox="0 0 64 40" aria-hidden="true">
+            <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+            <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+            <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+            <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+        </svg>
+        CMS
+    </a>
 
-<header class="navbar">
+    <nav class="public-nav" aria-label="Main menu">
+        <a href="cms-home.html" aria-current="page">Home</a>
+        <a href="team.html">Meet the Team</a>
+    </nav>
 
-    <div class="nav-left">
-
-        <a class="logo" href="cms-home.html">
-            <img src="images/truck.svg" alt="">
-            CMS
-        </a>
-
-        <nav class="nav-links">
-            <a href="team.html">Meet the Team </a>
-        </nav>
-
+    <div class="public-actions">
+        <a href="login.html" class="public-btn public-btn-primary">Login</a>
+        <a href="register.html" class="public-btn public-btn-outline">Get Started</a>
     </div>
-
-    <div class="nav-right">
-
-        <a class="btn btn-primary" href="login.html">
-            Login
-        </a>
-
-        <a class="btn btn-outline" href="register.html">
-            Get Started
-        </a>
-
-    </div>
-
 </header>
 
 

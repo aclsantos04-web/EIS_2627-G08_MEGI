@@ -16,20 +16,20 @@
     <!-- Text shown on the browser tab -->
     <title>CMS – Meet the Team</title>
 
-    <!-- Shared styles first (header, buttons, colours), then this page's styles -->
+    <!-- Shared styles first, then the top bar (same as cms-home), then this page's styles -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/public-header.css">
     <link rel="stylesheet" href="css/team.css">
 </head>
 
 <body>
 
-    <!-- ================= HEADER (same on every public page) =================
-         <header> and <nav> are "semantic" tags: they tell the browser and
-         screen readers what each part is, which counts for good HTML5. -->
-    <header class="site-header">
-
-        <!-- Logo: a small truck drawn in SVG + the word CMS. Clicking it goes Home. -->
-        <a href="index.html" class="logo" aria-label="CMS home">
+    <!-- ================= TOP BAR =================
+         Same bar on cms-home.html and team.html.
+         Styles: css/public-header.css
+         aria-current="page" marks the page we are on (blue gradient). -->
+    <header class="public-header">
+        <a href="cms-home.html" class="public-logo" aria-label="CMS – go to homepage">
             <svg viewBox="0 0 64 40" aria-hidden="true">
                 <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
                 <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
@@ -39,15 +39,14 @@
             CMS
         </a>
 
-        <nav class="main-nav" aria-label="Main menu">
-            <a href="home.html">Home</a>
-            <!-- aria-current="page" marks the page we're on (styled in style.css) -->
+        <nav class="public-nav" aria-label="Main menu">
+            <a href="cms-home.html">Home</a>
             <a href="team.html" aria-current="page">Meet the Team</a>
         </nav>
 
-        <div class="header-actions">
-            <a href="login.html" class="btn btn-primary">Login</a>
-            <a href="register.html" class="btn btn-outline">Register</a>
+        <div class="public-actions">
+            <a href="login.html" class="public-btn public-btn-primary">Login</a>
+            <a href="register.html" class="public-btn public-btn-outline">Get Started</a>
         </div>
     </header>
 
@@ -79,9 +78,7 @@
     </footer>
 
 
-    <!-- ================= JAVASCRIPT =================
-         Placed at the END of <body> so all the HTML above already
-         exists when the script runs. -->
+    <!-- ================= JAVASCRIPT ================= -->
     <script>
         /* ---------------------------------------------------------
            1. TEAM DATA 
@@ -116,8 +113,7 @@
            2. BUILD ONE CARD
            Instead of writing HTML as text, we create each element
            with document.createElement() and fill it with
-           textContent. This is safer (no HTML can be injected) and
-           easier to read step by step.
+           textContent. 
            --------------------------------------------------------- */
         function createMemberCard(member) {
             // <li class="member-card">
@@ -130,7 +126,7 @@
             photo.setAttribute("src", member.photo);
             photo.setAttribute("alt", "Photo of " + member.name);
             // If the image file is missing, swap the <img> for a blue
-            // circle with the member's initials (e.g. "Ana Santos" -> "AS").
+            // circle with the member's initials 
             photo.addEventListener("error", function () {
                 const placeholder = document.createElement("div");
                 placeholder.classList.add("member-photo", "member-initials");

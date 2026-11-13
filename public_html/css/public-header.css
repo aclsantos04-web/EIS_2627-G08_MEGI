@@ -1,0 +1,174 @@
+/* =========================================================
+   public-header.css — TOP BAR OF THE PUBLIC PAGES
+   Used by: cms-home.html, team.html
+   (Login and Register can use it too.)
+
+   The same look as the logged-in pages: truck logo + "CMS" in
+   Poppins, the CMS blues, and the blue gradient on the page
+   you are on (like the active link in the sidebar).
+
+   All classes start with "public-" so these rules can't
+   change anything else on the page.
+
+   HTML to copy (put aria-current="page" on the current link):
+
+   <header class="public-header">
+       <a href="cms-home.html" class="public-logo" aria-label="CMS – go to homepage">
+           <svg ...truck...></svg> CMS
+       </a>
+       <nav class="public-nav" aria-label="Main menu">
+           <a href="cms-home.html" aria-current="page">Home</a>
+           <a href="team.html">Meet the Team</a>
+       </nav>
+       <div class="public-actions">
+           <a href="login.html" class="public-btn public-btn-primary">Login</a>
+           <a href="register.html" class="public-btn public-btn-outline">Get Started</a>
+       </div>
+   </header>
+   ========================================================= */
+
+/* Same fonts as the rest of the site (must be the first rule) */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap");
+
+
+/* ---------- The bar ----------
+   position: sticky keeps it at the top while you scroll. */
+.public-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 14px 32px;
+    background: rgba(255, 255, 255, 0.94);
+    border-bottom: 1px solid rgba(27, 75, 145, 0.12);
+    box-shadow: 0 6px 22px rgba(27, 75, 145, 0.07);
+    font-family: "Inter", Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+/* ---------- Logo: truck + CMS (same as the sidebar logo) ---------- */
+.public-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #17212b;
+    font-family: "Poppins", Arial, sans-serif;
+    font-size: 31px;
+    font-weight: 700;
+    letter-spacing: -1.6px;
+    text-decoration: none;
+}
+
+.public-logo:hover {
+    color: #1B4B91;              /* turns blue to show it's clickable */
+    text-decoration: none;
+}
+
+.public-logo svg {
+    width: 44px;
+    height: auto;
+}
+
+/* ---------- Links: Home, Meet the Team ---------- */
+.public-nav {
+    display: flex;
+    gap: 6px;
+}
+
+.public-nav a {
+    padding: 9px 14px;
+    border-radius: 10px;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.public-nav a:hover {
+    background-color: rgba(201, 228, 247, 0.8);
+    color: #1B4B91;
+    text-decoration: none;
+}
+
+/* The page you are on: same blue gradient as the sidebar's active link */
+.public-nav a[aria-current="page"] {
+    background: linear-gradient(135deg, #1B4B91, #2F73B8);
+    color: #FFFFFF;
+    box-shadow: 0 6px 16px rgba(27, 75, 145, 0.22);
+}
+
+/* ---------- Buttons: Login, Get Started ---------- */
+.public-actions {
+    margin-left: auto;           /* pushes the buttons to the right */
+    display: flex;
+    gap: 10px;
+}
+
+.public-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 20px;
+    border: 2px solid #1B4B91;
+    border-radius: 11px;
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.public-btn:hover {
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+.public-btn-primary {
+    background: linear-gradient(135deg, #1B4B91, #2F73B8);
+    color: #FFFFFF;
+    box-shadow: 0 6px 16px rgba(27, 75, 145, 0.22);
+}
+
+.public-btn-primary:hover {
+    color: #FFFFFF;
+    box-shadow: 0 9px 20px rgba(27, 75, 145, 0.28);
+}
+
+.public-btn-outline {
+    background: #FFFFFF;
+    color: #1B4B91;
+}
+
+.public-btn-outline:hover {
+    background-color: #C9E4F7;
+    color: #1B4B91;
+}
+
+/* ---------- Phones ---------- */
+@media (max-width: 760px) {
+    .public-header {
+        flex-wrap: wrap;         /* buttons move to their own row */
+        gap: 10px 16px;
+        padding: 12px 16px;
+    }
+
+    .public-logo {
+        font-size: 26px;
+    }
+
+    .public-logo svg {
+        width: 36px;
+    }
+
+    .public-actions {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .public-btn {
+        flex: 1;                 /* both buttons share the row */
+    }
+}
