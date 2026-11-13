@@ -110,6 +110,18 @@ function getDisplayName() {
     return name;
 }
 
+// The photo this user added on the profile page, or null
+// (saved by profile.js under the key "cmsProfilePhotos")
+function getProfilePhoto() {
+    try {
+        const photos = JSON.parse(localStorage.getItem("cmsProfilePhotos") || "{}");
+        const photo = photos[topbarSettings.username];
+        return photo === undefined ? null : photo;
+    } catch (error) {
+        return null;                             // storage blocked: show the initials
+    }
+}
+
 // Creates an element with a class and (optional) text
 function createElement(tag, className, text) {
     const element = document.createElement(tag);
@@ -182,6 +194,16 @@ function buildUserMenu(name, role) {
 
     const avatar = createElement("span", "topbar-avatar", getTopbarInitials(name));
     avatar.setAttribute("aria-hidden", "true");
+
+    // If the user added a profile photo, show it instead of the initials
+    const photo = getProfilePhoto();
+    if (photo !== null) {
+        const image = document.createElement("img");
+        image.setAttribute("src", photo);
+        image.setAttribute("alt", "");
+        avatar.replaceChildren(image);
+        avatar.classList.add("has-photo");
+    }
 
     const text = createElement("span", "topbar-user-text");
     text.append(createElement("strong", "", name), createElement("small", "", role));

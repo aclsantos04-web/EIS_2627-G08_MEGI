@@ -56,15 +56,28 @@
 
         <h1>My Profile</h1>
 
-        <!-- Summary at the top. profile.js updates the name and
-             initials when the user saves a new name. -->
+        <!-- Summary at the top. profile.js updates the name, the
+             initials and the profile photo. -->
         <section class="profile-header">
-            <div class="profile-avatar" id="profileInitials" aria-hidden="true">RA</div>
+            <!-- Profile photo: shows the initials until a photo is added.
+                 The camera button opens the hidden file picker (profile.js). -->
+            <div class="profile-photo">
+                <div class="profile-avatar" id="profileInitials" aria-hidden="true">RA</div>
+                <button type="button" class="photo-button" id="changePhotoButton" aria-label="Change profile photo" title="Change profile photo">
+                    <i class="ti ti-camera" aria-hidden="true"></i>
+                </button>
+                <input type="file" id="photoInput" accept="image/jpeg, image/png, image/webp" hidden>
+            </div>
             <div>
                 <h2 id="profileName">Rita Almeida</h2>
                 <span class="badge badge-info">Staff</span>
                 <span class="badge badge-success">Approved by Admin</span>
                 <p class="text-muted">Member since 01/09/2026. Your account was validated by the Admin, so you can approve couriers and vehicles.</p>
+                <div class="photo-actions">
+                    <button type="button" class="link-button" id="choosePhotoLink">Change photo</button>
+                    <button type="button" class="link-button link-danger" id="removePhotoButton" hidden>Remove photo</button>
+                </div>
+                <span class="error-message" id="photoInput-error" role="alert"></span>
             </div>
         </section>
 
