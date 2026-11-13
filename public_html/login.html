@@ -10,6 +10,7 @@
 
    
 <link rel="stylesheet" href="css/cms-lara.css">
+<link rel="stylesheet" href="css/public-header.css">
 
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,23 +20,45 @@
 
 <body>
 
-    <header class="topbar">
+    
+<header class="public-header">
 
-        <a href="cms-home.html" class="logo">CMS</a>
+    <a href="cms-home.html" class="public-logo"
+       aria-label="CMS - Homepage">
+        <svg viewBox="0 0 64 40" aria-hidden="true">
+            <rect x="2" y="4" width="34" height="24"
+                  fill="currentColor"/>
+            <path d="M38 12h12l10 10v6H38z"
+                  fill="currentColor"/>
+            <circle cx="14" cy="32" r="5"
+                    fill="#fff" stroke="currentColor"
+                    stroke-width="3"/>
+            <circle cx="48" cy="32" r="5"
+                    fill="#fff" stroke="currentColor"
+                    stroke-width="3"/>
+        </svg>
+        CMS
+    </a>
 
-        <nav class="main-nav">
-           <a href="cms-home.html">Home</a>
-            <a href="team.html">Meet the Team</a>
-        </nav>
+    <nav class="public-nav" aria-label="Main menu">
+        <a href="cms-home.html">Home</a>
+        <a href="team.html">Meet the Team</a>
+    </nav>
 
-        <div class="auth-links">
-            <a href="login.html">Login</a>
-            <a href="register.html" class="nav-button">
-                Get Started
-            </a>
-        </div>
+    <div class="public-actions">
+        <a href="login.html"
+           class="public-btn public-btn-primary">
+            Login
+        </a>
 
-    </header>
+        <a href="register.html"
+           class="public-btn public-btn-outline">
+            Get Started
+        </a>
+    </div>
+
+</header>
+
 
     <main class="login-page">
 

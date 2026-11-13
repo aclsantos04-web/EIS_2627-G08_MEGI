@@ -740,6 +740,41 @@ button, input, select {
 
 <!-- Top bar shared with team.html -->
 <link rel="stylesheet" href="css/public-header.css">
+
+<style>
+/* Evaluation centered in the homepage header */
+
+.public-header .evaluation-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+}
+
+.public-header .evaluation-center:hover {
+    transform: translate(-50%, -52%);
+}
+
+@media (max-width: 900px) {
+    .public-header .evaluation-center {
+        position: static;
+        transform: none;
+    }
+
+    .public-header .evaluation-center:hover {
+        transform: none;
+    }
+
+    .public-header .public-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+</style>
+
+
+
 </head>
 
 <body>
@@ -767,6 +802,17 @@ button, input, select {
     </nav>
 
     <div class="public-actions">
+        
+
+
+
+<a href="evaluation-index.html"
+   class="public-btn public-btn-outline evaluation-center">
+    Evaluation
+</a>
+
+
+
         <a href="login.html" class="public-btn public-btn-primary">Login</a>
         <a href="register.html" class="public-btn public-btn-outline">Get Started</a>
     </div>
