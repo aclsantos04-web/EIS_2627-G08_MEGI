@@ -1,37 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>CMS - Staff Approvals</title>
 
-    <!-- Estilos partilhados da equipa -->
+    <!-- Shared styles -->
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- Estilos específicos de Staff Approvals -->
+    <!-- Staff Approvals specific styles -->
     <link rel="stylesheet" href="css/admin-staff.css">
 </head>
 
 <body>
+
     <div class="app-layout">
 
-        <!-- ===== SIDEBAR (the same on every Admin page) =====
-             class="active" marks the page you are on. -->
+        <!-- ===== SIDEBAR =====
+             class="active" marks the current page. -->
         <nav class="sidebar" aria-label="Admin menu">
-            <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
+
+            <a href="index.html"
+               class="sidebar-logo"
+               aria-label="CMS – go to homepage">
+
                 <svg viewBox="0 0 64 40" aria-hidden="true">
-                    <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
-                    <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
-                    <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
-                    <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                    <rect x="2" y="4" width="34" height="24"
+                          fill="currentColor"/>
+
+                    <path d="M38 12h12l10 10v6H38z"
+                          fill="currentColor"/>
+
+                    <circle cx="14" cy="32" r="5"
+                            fill="#fff"
+                            stroke="currentColor"
+                            stroke-width="3"/>
+
+                    <circle cx="48" cy="32" r="5"
+                            fill="#fff"
+                            stroke="currentColor"
+                            stroke-width="3"/>
                 </svg>
+
                 CMS
             </a>
 
             <div class="sidebar-role">
-                <span class="role-icon" aria-hidden="true">
-                    <i class="ti ti-shield-lock"></i>
-                </span>
+                <span class="role-icon" aria-hidden="true">💼</span>
                 Admin Panel
             </div>
 
@@ -59,90 +76,145 @@
                 <i class="ti ti-logout" aria-hidden="true"></i>
                 Log out
             </a>
+
         </nav>
 
-        <!-- Main content -->
+
+        <!-- ===== MAIN CONTENT ===== -->
         <main class="app-content">
 
             <header class="page-header">
                 <div>
                     <h1>Staff Approvals</h1>
+
                     <p class="text-muted">
                         Review and manage Staff registration requests.
                     </p>
                 </div>
             </header>
 
-            <!-- Approval statistics -->
+
+            <!-- ===== APPROVAL STATISTICS ===== -->
             <section class="card-grid approval-stats">
+
                 <article class="card stat-card">
                     <div class="approval-stat-content">
+
                         <span class="approval-stat-icon pending-icon">
                             <i class="ti ti-clock"></i>
                         </span>
 
                         <div>
-                            <div class="stat-value" id="pendingCount">4</div>
-                            <div class="stat-label">Pending</div>
+                            <div class="stat-value" id="pendingCount">
+                                4
+                            </div>
+
+                            <div class="stat-label">
+                                Pending
+                            </div>
                         </div>
+
                     </div>
                 </article>
 
+
                 <article class="card stat-card">
                     <div class="approval-stat-content">
+
                         <span class="approval-stat-icon approved-icon">
                             <i class="ti ti-check"></i>
                         </span>
 
                         <div>
-                            <div class="stat-value" id="approvedCount">0</div>
-                            <div class="stat-label">Approved</div>
+                            <div class="stat-value" id="approvedCount">
+                                0
+                            </div>
+
+                            <div class="stat-label">
+                                Approved
+                            </div>
                         </div>
+
                     </div>
                 </article>
 
+
                 <article class="card stat-card">
                     <div class="approval-stat-content">
+
                         <span class="approval-stat-icon rejected-icon">
                             <i class="ti ti-x"></i>
                         </span>
 
                         <div>
-                            <div class="stat-value" id="rejectedCount">0</div>
-                            <div class="stat-label">Rejected</div>
+                            <div class="stat-value" id="rejectedCount">
+                                0
+                            </div>
+
+                            <div class="stat-label">
+                                Rejected
+                            </div>
                         </div>
+
                     </div>
                 </article>
+
             </section>
 
-            <!-- Staff registration requests -->
+
+            <!-- ===== STAFF REGISTRATION REQUESTS ===== -->
             <section class="card">
+
                 <div class="approval-card-header">
+
                     <div>
                         <h2>Staff Registrations</h2>
+
                         <p class="text-muted">
                             Review account information before granting Staff access.
                         </p>
                     </div>
 
+
                     <div class="approval-tools">
+
                         <input
                             type="search"
                             id="staffSearch"
                             placeholder="Search Staff..."
                             aria-label="Search Staff">
 
-                        <select id="statusFilter" aria-label="Filter by status">
-                            <option value="all">All status</option>
-                            <option value="pending">Pending</option>
-                            <option value="approved">Approved</option>
-                            <option value="rejected">Rejected</option>
+                        <select
+                            id="statusFilter"
+                            aria-label="Filter by status">
+
+                            <option value="all">
+                                All status
+                            </option>
+
+                            <option value="pending">
+                                Pending
+                            </option>
+
+                            <option value="approved">
+                                Approved
+                            </option>
+
+                            <option value="rejected">
+                                Rejected
+                            </option>
+
                         </select>
+
                     </div>
+
                 </div>
 
+
                 <div class="table-wrap">
+
                     <table>
+
                         <thead>
                             <tr>
                                 <th>Staff Member</th>
@@ -153,8 +225,10 @@
                             </tr>
                         </thead>
 
+
                         <tbody id="staffTable">
 
+                            <!-- João Silva -->
                             <tr
                                 data-request-id="STAFF-001"
                                 data-status="pending"
@@ -163,13 +237,25 @@
 
                                 <td>
                                     <div class="staff-user">
-                                        <span class="staff-avatar">JS</span>
-                                        <strong>João Silva</strong>
+
+                                        <span class="staff-avatar">
+                                            JS
+                                        </span>
+
+                                        <strong>
+                                            João Silva
+                                        </strong>
+
                                     </div>
                                 </td>
 
-                                <td>joao.silva@cms.com</td>
-                                <td>10/11/2026</td>
+                                <td>
+                                    joao.silva@cms.com
+                                </td>
+
+                                <td>
+                                    10/11/2026
+                                </td>
 
                                 <td>
                                     <span class="badge badge-warning">
@@ -180,8 +266,11 @@
                                 <td>
                                     <div class="approval-actions"></div>
                                 </td>
+
                             </tr>
 
+
+                            <!-- Maria Lopes -->
                             <tr
                                 data-request-id="STAFF-002"
                                 data-status="pending"
@@ -190,13 +279,25 @@
 
                                 <td>
                                     <div class="staff-user">
-                                        <span class="staff-avatar">ML</span>
-                                        <strong>Maria Lopes</strong>
+
+                                        <span class="staff-avatar">
+                                            ML
+                                        </span>
+
+                                        <strong>
+                                            Maria Lopes
+                                        </strong>
+
                                     </div>
                                 </td>
 
-                                <td>maria.lopes@cms.com</td>
-                                <td>10/11/2026</td>
+                                <td>
+                                    maria.lopes@cms.com
+                                </td>
+
+                                <td>
+                                    10/11/2026
+                                </td>
 
                                 <td>
                                     <span class="badge badge-warning">
@@ -207,8 +308,11 @@
                                 <td>
                                     <div class="approval-actions"></div>
                                 </td>
+
                             </tr>
 
+
+                            <!-- Pedro Costa -->
                             <tr
                                 data-request-id="STAFF-003"
                                 data-status="pending"
@@ -217,13 +321,25 @@
 
                                 <td>
                                     <div class="staff-user">
-                                        <span class="staff-avatar">PC</span>
-                                        <strong>Pedro Costa</strong>
+
+                                        <span class="staff-avatar">
+                                            PC
+                                        </span>
+
+                                        <strong>
+                                            Pedro Costa
+                                        </strong>
+
                                     </div>
                                 </td>
 
-                                <td>pedro.costa@cms.com</td>
-                                <td>11/11/2026</td>
+                                <td>
+                                    pedro.costa@cms.com
+                                </td>
+
+                                <td>
+                                    11/11/2026
+                                </td>
 
                                 <td>
                                     <span class="badge badge-warning">
@@ -234,8 +350,11 @@
                                 <td>
                                     <div class="approval-actions"></div>
                                 </td>
+
                             </tr>
 
+
+                            <!-- Ana Ribeiro -->
                             <tr
                                 data-request-id="STAFF-004"
                                 data-status="pending"
@@ -244,13 +363,25 @@
 
                                 <td>
                                     <div class="staff-user">
-                                        <span class="staff-avatar">AR</span>
-                                        <strong>Ana Ribeiro</strong>
+
+                                        <span class="staff-avatar">
+                                            AR
+                                        </span>
+
+                                        <strong>
+                                            Ana Ribeiro
+                                        </strong>
+
                                     </div>
                                 </td>
 
-                                <td>ana.ribeiro@cms.com</td>
-                                <td>11/11/2026</td>
+                                <td>
+                                    ana.ribeiro@cms.com
+                                </td>
+
+                                <td>
+                                    11/11/2026
+                                </td>
 
                                 <td>
                                     <span class="badge badge-warning">
@@ -261,117 +392,201 @@
                                 <td>
                                     <div class="approval-actions"></div>
                                 </td>
+
                             </tr>
 
                         </tbody>
+
                     </table>
+
                 </div>
+
             </section>
+
         </main>
+
     </div>
 
-    <!-- Staff request View / Review -->
+
+    <!-- ===== STAFF REQUEST VIEW / REVIEW ===== -->
     <dialog id="staffDialog">
 
+
+        <!-- Dialog heading -->
         <div class="dialog-heading">
+
             <div>
-                <h2 id="dialogTitle">Staff Access Request</h2>
+                <h2 id="dialogTitle">
+                    Staff Access Request
+                </h2>
+
                 <p id="dialogRequestId" class="text-muted">
                     Request STAFF-001
                 </p>
             </div>
+
 
             <button
                 type="button"
                 id="closeDialog"
                 class="dialog-close"
                 aria-label="Close">
+
                 <i class="ti ti-x"></i>
+
             </button>
+
         </div>
+
 
         <!-- Staff identification -->
         <div class="dialog-profile">
-            <span id="dialogAvatar" class="staff-avatar dialog-avatar">
+
+            <span
+                id="dialogAvatar"
+                class="staff-avatar dialog-avatar">
+
                 JS
+
             </span>
 
             <div>
-                <h3 id="dialogName">João Silva</h3>
-                <p class="text-muted">Staff registration request</p>
+                <h3 id="dialogName">
+                    João Silva
+                </h3>
+
+                <p class="text-muted">
+                    Staff registration request
+                </p>
             </div>
+
         </div>
 
-        <!-- Information submitted during registration -->
-        <h3 class="section-title">Account Information</h3>
+
+        <!-- ===== ACCOUNT INFORMATION ===== -->
+        <h3 class="section-title">
+            Account Information
+        </h3>
+
 
         <div class="detail-grid">
+
             <div class="detail-item">
                 <span>Username</span>
                 <strong id="dialogUsername"></strong>
             </div>
+
 
             <div class="detail-item">
                 <span>Email</span>
                 <strong id="dialogEmail"></strong>
             </div>
 
+
             <div class="detail-item">
                 <span>NIF</span>
                 <strong id="dialogNif"></strong>
             </div>
+
 
             <div class="detail-item">
                 <span>Registration Date</span>
                 <strong id="dialogDate"></strong>
             </div>
 
+
             <div class="detail-item">
                 <span>Requested Role</span>
                 <strong>Staff</strong>
             </div>
 
+
             <div class="detail-item">
-                <span>Current Status</span>
+
+                <span>
+                    Current Status
+                </span>
 
                 <div>
-                    <span id="dialogStatus" class="badge badge-warning">
+                    <span
+                        id="dialogStatus"
+                        class="badge badge-warning">
+
                         Pending
+
                     </span>
                 </div>
+
             </div>
+
         </div>
 
-        <!-- Consequence of approving the request -->
-        <h3 class="section-title">Requested Access</h3>
+
+        <!-- ===== REQUESTED ACCESS ===== -->
+        <h3 class="section-title">
+            Requested Access
+        </h3>
+
 
         <div class="access-box">
+
             <p>
-                If approved, this user will gain access to the Staff Panel and will be able to:
+                If approved, this user will gain access to the Staff Panel
+                and will be able to:
             </p>
 
             <ul>
-                <li>Review and manage Courier Approvals</li>
-                <li>Review and manage Vehicle Approvals</li>
-                <li>View and manage Document Alerts</li>
+                <li>
+                    Review and manage Courier Approvals
+                </li>
+
+                <li>
+                    Review and manage Vehicle Approvals
+                </li>
+
+                <li>
+                    View and manage Document Alerts
+                </li>
             </ul>
+
         </div>
 
-        <!-- Previous decisions are never deleted -->
+
+        <!-- ===== DECISION HISTORY =====
+             Previous decisions are never deleted. -->
         <section id="decisionHistory" hidden>
-            <h3 class="section-title">Decision History</h3>
-            <div id="historyList" class="history-list"></div>
+
+            <h3 class="section-title">
+                Decision History
+            </h3>
+
+            <div
+                id="historyList"
+                class="history-list">
+            </div>
+
         </section>
 
-        <!-- New decision / decision review -->
-        <section class="decision-section">
-            <h3 class="section-title">Decision</h3>
 
-            <p id="decisionMessage" class="text-muted">
+        <!-- ===== DECISION ===== -->
+        <section class="decision-section">
+
+            <h3 class="section-title">
+                Decision
+            </h3>
+
+
+            <p
+                id="decisionMessage"
+                class="text-muted">
+
                 Review the information before making a decision.
+
             </p>
 
+
             <div class="form-group">
+
                 <label for="decisionReason">
                     Decision justification *
                 </label>
@@ -382,604 +597,62 @@
                     maxlength="500"
                     placeholder="Explain the reason for this decision..."></textarea>
 
-                <span id="decisionError" class="error-message"></span>
+                <span
+                    id="decisionError"
+                    class="error-message">
+                </span>
+
             </div>
 
+
             <div class="decision-actions">
+
                 <button
                     type="button"
                     id="dialogApprove"
                     class="btn btn-success">
+
                     <i class="ti ti-check"></i>
                     Approve
+
                 </button>
+
 
                 <button
                     type="button"
                     id="dialogReject"
                     class="btn btn-danger">
+
                     <i class="ti ti-x"></i>
                     Reject
+
                 </button>
+
             </div>
+
         </section>
 
+
+        <!-- Close -->
         <div class="form-actions">
+
             <button
                 type="button"
                 id="closeDialogButton"
                 class="btn btn-outline">
+
                 Close
+
             </button>
+
         </div>
 
     </dialog>
 
-    <script>
-        const staffRows = document.querySelectorAll("#staffTable tr");
-        const staffSearch = document.getElementById("staffSearch");
-        const statusFilter = document.getElementById("statusFilter");
 
-        const pendingCount = document.getElementById("pendingCount");
-        const approvedCount = document.getElementById("approvedCount");
-        const rejectedCount = document.getElementById("rejectedCount");
+    <!-- Staff Approvals behaviour -->
+    <script src="js/admin-staff.js"></script>
 
-        const staffDialog = document.getElementById("staffDialog");
-        const dialogTitle = document.getElementById("dialogTitle");
-        const dialogRequestId = document.getElementById("dialogRequestId");
-        const dialogName = document.getElementById("dialogName");
-        const dialogAvatar = document.getElementById("dialogAvatar");
-        const dialogUsername = document.getElementById("dialogUsername");
-        const dialogEmail = document.getElementById("dialogEmail");
-        const dialogNif = document.getElementById("dialogNif");
-        const dialogDate = document.getElementById("dialogDate");
-        const dialogStatus = document.getElementById("dialogStatus");
-
-        const decisionHistory = document.getElementById("decisionHistory");
-        const historyList = document.getElementById("historyList");
-        const decisionMessage = document.getElementById("decisionMessage");
-        const decisionReason = document.getElementById("decisionReason");
-        const decisionError = document.getElementById("decisionError");
-
-        const dialogApprove = document.getElementById("dialogApprove");
-        const dialogReject = document.getElementById("dialogReject");
-        const closeDialog = document.getElementById("closeDialog");
-        const closeDialogButton = document.getElementById("closeDialogButton");
-
-        const currentAdmin = "Carlos Pinto";
-        const storageKey = "cmsStaffApprovalDecisions";
-
-        let selectedRow = null;
-
-        /* Ler decisões guardadas */
-        function getStoredDecisions() {
-            const storedData = localStorage.getItem(storageKey);
-
-            if (!storedData) {
-                return {};
-            }
-
-            try {
-                return JSON.parse(storedData);
-            } catch (error) {
-                console.error("Could not read Staff approval decisions.", error);
-                return {};
-            }
-        }
-
-        /* Guardar decisões */
-        function saveStoredDecisions(decisions) {
-            localStorage.setItem(storageKey, JSON.stringify(decisions));
-        }
-
-        /* Cada pedido possui um identificador próprio */
-        function getRequestKey(row) {
-            return row.dataset.requestId;
-        }
-
-        function getRowEmail(row) {
-            return row.children[1].textContent.trim();
-        }
-
-        /*
-         * Compatibilidade com a versão anterior,
-         * em que apenas era guardada a última decisão.
-         */
-        function normalizeDecisionData(data) {
-            if (!data) {
-                return null;
-            }
-
-            if (Array.isArray(data.history)) {
-                return data;
-            }
-
-            if (data.status) {
-                return {
-                    currentStatus: data.status,
-                    history: [{
-                        previousStatus: "pending",
-                        decision: data.status,
-                        decidedBy: data.decidedBy || "Unknown Admin",
-                        date: data.date || "Date unavailable",
-                        justification: data.justification || "No justification recorded.",
-                        consequence: getAccessConsequence(data.status)
-                    }]
-                };
-            }
-
-            return null;
-        }
-
-        /* Restaurar decisões depois de atualizar a página */
-        function restoreDecisions() {
-            const decisions = getStoredDecisions();
-            let changed = false;
-
-            staffRows.forEach(function (row) {
-                const requestId = getRequestKey(row);
-                const email = getRowEmail(row);
-
-                let savedData = decisions[requestId];
-
-                /*
-                 * Compatibilidade com a versão anterior,
-                 * que utilizava o email como chave.
-                 */
-                if (!savedData && decisions[email]) {
-                    savedData = normalizeDecisionData(decisions[email]);
-
-                    if (savedData) {
-                        decisions[requestId] = savedData;
-                        delete decisions[email];
-                        changed = true;
-                    }
-                } else {
-                    savedData = normalizeDecisionData(savedData);
-                }
-
-                if (!savedData) {
-                    return;
-                }
-
-                decisions[requestId] = savedData;
-                row.dataset.status = savedData.currentStatus;
-
-                updateStatusBadge(row);
-            });
-
-            if (changed) {
-                saveStoredDecisions(decisions);
-            }
-        }
-
-        /* Atualizar a badge de estado da tabela */
-        function updateStatusBadge(row) {
-            const status = row.dataset.status;
-            const badge = row.querySelector(".badge");
-
-            badge.className = "badge";
-
-            if (status === "pending") {
-                badge.classList.add("badge-warning");
-                badge.textContent = "Pending";
-
-            } else if (status === "approved") {
-                badge.classList.add("badge-success");
-                badge.textContent = "Approved";
-
-            } else {
-                badge.classList.add("badge-danger");
-                badge.textContent = "Rejected";
-            }
-        }
-
-        /* Atualizar os indicadores superiores */
-        function updateStatistics() {
-            let pending = 0;
-            let approved = 0;
-            let rejected = 0;
-
-            staffRows.forEach(function (row) {
-                if (row.dataset.status === "pending") {
-                    pending++;
-
-                } else if (row.dataset.status === "approved") {
-                    approved++;
-
-                } else if (row.dataset.status === "rejected") {
-                    rejected++;
-                }
-            });
-
-            pendingCount.textContent = pending;
-            approvedCount.textContent = approved;
-            rejectedCount.textContent = rejected;
-        }
-
-        /* Criar as ações adequadas ao estado de cada pedido */
-        function updateRowActions(row) {
-            const actions = row.querySelector(".approval-actions");
-            const status = row.dataset.status;
-
-            actions.innerHTML = "";
-
-            const viewButton = document.createElement("button");
-            viewButton.type = "button";
-
-            if (status === "pending") {
-                viewButton.className = "btn btn-small btn-outline";
-                viewButton.textContent = "View";
-
-            } else {
-                viewButton.className = "btn btn-small btn-secondary";
-                viewButton.textContent = "Review";
-            }
-
-            viewButton.addEventListener("click", function () {
-                openStaffDialog(row);
-            });
-
-            actions.appendChild(viewButton);
-
-            /*
-             * Pending requests also show Approve and Reject.
-             * The decision is only completed after reviewing,
-             * justifying and confirming the action.
-             */
-            if (status === "pending") {
-                const approveButton = document.createElement("button");
-                const rejectButton = document.createElement("button");
-
-                approveButton.type = "button";
-                approveButton.className = "btn btn-small btn-success";
-                approveButton.textContent = "Approve";
-
-                rejectButton.type = "button";
-                rejectButton.className = "btn btn-small btn-danger";
-                rejectButton.textContent = "Reject";
-
-                approveButton.addEventListener("click", function () {
-                    openStaffDialog(row);
-                    decisionReason.focus();
-                });
-
-                rejectButton.addEventListener("click", function () {
-                    openStaffDialog(row);
-                    decisionReason.focus();
-                });
-
-                actions.appendChild(approveButton);
-                actions.appendChild(rejectButton);
-            }
-        }
-
-        /* Abrir o pedido em modo View ou Review */
-        function openStaffDialog(row) {
-            selectedRow = row;
-
-            const name = row.querySelector(".staff-user strong").textContent;
-            const names = name.split(" ");
-
-            dialogName.textContent = name;
-            dialogRequestId.textContent = "Request " + row.dataset.requestId;
-            dialogUsername.textContent = row.dataset.username;
-            dialogEmail.textContent = getRowEmail(row);
-            dialogNif.textContent = row.dataset.nif;
-            dialogDate.textContent = row.children[2].textContent.trim();
-
-            dialogAvatar.textContent =
-                names[0].charAt(0) +
-                names[names.length - 1].charAt(0);
-
-            decisionReason.value = "";
-            decisionError.textContent = "";
-
-            updateDialog();
-            staffDialog.showModal();
-        }
-
-        /* Atualizar o modal de acordo com o estado atual */
-        function updateDialog() {
-            const status = selectedRow.dataset.status;
-
-            updateDialogStatusBadge(status);
-
-            if (status === "pending") {
-                dialogTitle.textContent = "Staff Access Request";
-
-                decisionMessage.textContent =
-                    "Review the account information and justify the decision before approving or rejecting this Staff request.";
-
-                dialogApprove.disabled = false;
-                dialogReject.disabled = false;
-
-            } else if (status === "approved") {
-                dialogTitle.textContent = "Review Decision";
-
-                decisionMessage.textContent =
-                    "This request is currently approved. A new justification is required to change the decision.";
-
-                dialogApprove.disabled = true;
-                dialogReject.disabled = false;
-
-            } else {
-                dialogTitle.textContent = "Review Decision";
-
-                decisionMessage.textContent =
-                    "This request is currently rejected. A new justification is required to change the decision.";
-
-                dialogApprove.disabled = false;
-                dialogReject.disabled = true;
-            }
-
-            renderDecisionHistory();
-        }
-
-        /* Atualizar a badge apresentada no modal */
-        function updateDialogStatusBadge(status) {
-            dialogStatus.className = "badge";
-
-            if (status === "pending") {
-                dialogStatus.classList.add("badge-warning");
-                dialogStatus.textContent = "Pending";
-
-            } else if (status === "approved") {
-                dialogStatus.classList.add("badge-success");
-                dialogStatus.textContent = "Approved";
-
-            } else {
-                dialogStatus.classList.add("badge-danger");
-                dialogStatus.textContent = "Rejected";
-            }
-        }
-
-        /* Mostrar todas as decisões anteriores */
-        function renderDecisionHistory() {
-            const decisions = getStoredDecisions();
-            const requestId = getRequestKey(selectedRow);
-            const requestData = normalizeDecisionData(decisions[requestId]);
-
-            historyList.innerHTML = "";
-
-            if (!requestData || requestData.history.length === 0) {
-                decisionHistory.hidden = true;
-                return;
-            }
-
-            const reversedHistory = [...requestData.history].reverse();
-
-            reversedHistory.forEach(function (entry) {
-                const historyEntry = document.createElement("article");
-
-                historyEntry.className =
-                    "history-entry " + entry.decision;
-
-                const previousLabel =
-                    capitalizeStatus(entry.previousStatus);
-
-                const decisionLabel =
-                    capitalizeStatus(entry.decision);
-
-                historyEntry.innerHTML = `
-                    <div class="history-top">
-                        <span class="history-change">
-                            ${previousLabel} → ${decisionLabel}
-                        </span>
-
-                        <span class="history-date">
-                            ${entry.date}
-                        </span>
-                    </div>
-
-                    <p>
-                        <strong>Decided by:</strong>
-                        ${entry.decidedBy}
-                    </p>
-
-                    <p>
-                        <strong>Justification:</strong>
-                        ${entry.justification}
-                    </p>
-
-                    <p>
-                        <strong>Consequence:</strong>
-                        ${entry.consequence}
-                    </p>
-                `;
-
-                historyList.appendChild(historyEntry);
-            });
-
-            decisionHistory.hidden = false;
-        }
-
-        function capitalizeStatus(status) {
-            return status.charAt(0).toUpperCase() + status.slice(1);
-        }
-
-        /* Consequência associada a cada decisão */
-        function getAccessConsequence(status) {
-            if (status === "approved") {
-                return "Staff access granted to Courier Approvals, Vehicle Approvals and Document Alerts.";
-            }
-
-            return "No Staff Panel access granted.";
-        }
-
-        /* Validar a justificação e pedir confirmação */
-        function confirmDecision(newStatus) {
-            if (!selectedRow) {
-                return;
-            }
-
-            const justification = decisionReason.value.trim();
-
-            if (!justification) {
-                decisionError.textContent =
-                    "A justification is required before confirming the decision.";
-
-                decisionReason.classList.add("invalid");
-                decisionReason.focus();
-                return;
-            }
-
-            decisionError.textContent = "";
-            decisionReason.classList.remove("invalid");
-
-            const name =
-                selectedRow.querySelector(".staff-user strong").textContent;
-
-            const action =
-                newStatus === "approved"
-                    ? "approve"
-                    : "reject";
-
-            const confirmed = confirm(
-                "Are you sure you want to " +
-                action +
-                " the Staff request from " +
-                name +
-                "?"
-            );
-
-            if (!confirmed) {
-                return;
-            }
-
-            saveDecision(newStatus, justification);
-        }
-
-        /* Guardar uma nova decisão sem eliminar as anteriores */
-        function saveDecision(newStatus, justification) {
-            const decisions = getStoredDecisions();
-            const requestId = getRequestKey(selectedRow);
-
-            let requestData =
-                normalizeDecisionData(decisions[requestId]);
-
-            if (!requestData) {
-                requestData = {
-                    currentStatus: "pending",
-                    history: []
-                };
-            }
-
-            const previousStatus = requestData.currentStatus;
-
-            const decisionDate = new Date().toLocaleString("en-GB", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit"
-            });
-
-            /*
-             * Cada decisão é adicionada ao histórico.
-             * As decisões anteriores nunca são eliminadas.
-             */
-            requestData.history.push({
-                previousStatus: previousStatus,
-                decision: newStatus,
-                decidedBy: currentAdmin,
-                date: decisionDate,
-                justification: justification,
-                consequence: getAccessConsequence(newStatus)
-            });
-
-            requestData.currentStatus = newStatus;
-            decisions[requestId] = requestData;
-
-            saveStoredDecisions(decisions);
-
-            selectedRow.dataset.status = newStatus;
-
-            updateStatusBadge(selectedRow);
-            updateRowActions(selectedRow);
-            updateStatistics();
-            filterRows();
-
-            decisionReason.value = "";
-            decisionReason.classList.remove("invalid");
-
-            /* Manter o modal aberto para mostrar imediatamente o novo registo */
-            updateDialog();
-        }
-
-        dialogApprove.addEventListener("click", function () {
-            confirmDecision("approved");
-        });
-
-        dialogReject.addEventListener("click", function () {
-            confirmDecision("rejected");
-        });
-
-        decisionReason.addEventListener("input", function () {
-            if (decisionReason.value.trim()) {
-                decisionError.textContent = "";
-                decisionReason.classList.remove("invalid");
-            }
-        });
-
-        /* Pesquisa e filtro por estado */
-        function filterRows() {
-            const searchValue = staffSearch.value.toLowerCase();
-            const selectedStatus = statusFilter.value;
-
-            staffRows.forEach(function (row) {
-                const rowText =
-                    (
-                        row.textContent +
-                        " " +
-                        row.dataset.username +
-                        " " +
-                        row.dataset.nif +
-                        " " +
-                        row.dataset.requestId
-                    ).toLowerCase();
-
-                const matchesSearch =
-                    rowText.includes(searchValue);
-
-                const matchesStatus =
-                    selectedStatus === "all" ||
-                    row.dataset.status === selectedStatus;
-
-                row.style.display =
-                    matchesSearch && matchesStatus
-                        ? ""
-                        : "none";
-            });
-        }
-
-        staffSearch.addEventListener("input", filterRows);
-        statusFilter.addEventListener("change", filterRows);
-
-        /* Fechar modal e limpar dados temporários */
-        function closeStaffDialog() {
-            staffDialog.close();
-            selectedRow = null;
-            decisionReason.value = "";
-            decisionReason.classList.remove("invalid");
-            decisionError.textContent = "";
-        }
-
-        closeDialog.addEventListener("click", closeStaffDialog);
-        closeDialogButton.addEventListener("click", closeStaffDialog);
-
-        /*
-         * Restaurar decisões antes de construir os botões,
-         * para apresentar sempre o estado correto.
-         */
-        restoreDecisions();
-
-        staffRows.forEach(function (row) {
-            updateRowActions(row);
-        });
-
-        updateStatistics();
-    </script>
 
     <!-- Top bar (notifications + user menu), built by js/topbar.js -->
     <script
@@ -989,5 +662,7 @@
         data-username="admin"
         data-profile="admin_profile.html">
     </script>
+
 </body>
+
 </html>
