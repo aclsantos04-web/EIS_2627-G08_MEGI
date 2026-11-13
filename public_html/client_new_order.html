@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CMS - Create New Order</title>
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Tabler Icons (para os ícones da sidebar da equipa) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
     <!-- CSS Partilhado do Grupo -->
     <link rel="stylesheet" href="css/style.css">
     <!-- CSS Complementar do Cliente -->
@@ -14,9 +16,7 @@
 <body>
 
     <div class="app-layout">
-        <!-- Sidebar no padrão oficial do style.css -->
-        <!-- ===== SIDEBAR (the same on every Client page) =====
-             class="active" marks the page you are on. -->
+        <!-- ===== SIDEBAR (the same on every Client page) ===== -->
         <nav class="sidebar" aria-label="Client menu">
             <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
                 <svg viewBox="0 0 64 40" aria-hidden="true">
@@ -58,7 +58,6 @@
 
                         <input type="number" id="productQty" class="qty-input" placeholder="Qt" min="1" value="1">
                         
-                        <!-- Novo botão secundário da equipa -->
                         <button type="button" id="btnAddProduct" class="btn btn-secondary btn-small">Add</button>
                     </div>
 
@@ -74,10 +73,28 @@
 
                 <!-- Select Location -->
                 <section class="card location-card">
-                    <h3>Select Location</h3>
+                    <div class="location-header-row">
+                        <h3>Select Location</h3>
+                        <!-- Seletor de qual ponto o clique no mapa vai definir -->
+                        <div class="map-target-switch" role="group" aria-label="Map click target">
+                            <button type="button" id="targetOriginBtn" class="target-pill active-origin">
+                                <span class="dot dot-green"></span> Set Origin
+                            </button>
+                            <button type="button" id="targetDestBtn" class="target-pill">
+                                <span class="dot dot-red"></span> Set Destination
+                            </button>
+                        </div>
+                    </div>
                     
+                    <!-- ORIGIN -->
                     <div class="coords-section">
                         <div class="coords-subtitle">Origin</div>
+                        <div class="address-search-row">
+                            <input type="text" id="originAddress" placeholder="Search origin address (e.g. FEUP, Porto)" autocomplete="off">
+                            <button type="button" id="btnSearchOrigin" class="btn btn-secondary btn-small" title="Search address">Search</button>
+                        </div>
+                        <div id="originSuggestions" class="suggestions-list"></div>
+
                         <div class="coords-row">
                             <div class="input-block">
                                 <label for="originLat">Latitude</label>
@@ -90,8 +107,15 @@
                         </div>
                     </div>
 
+                    <!-- DESTINATION -->
                     <div class="coords-section">
                         <div class="coords-subtitle">Destination</div>
+                        <div class="address-search-row">
+                            <input type="text" id="destAddress" placeholder="Search destination address (e.g. Aliados, Porto)" autocomplete="off">
+                            <button type="button" id="btnSearchDest" class="btn btn-secondary btn-small" title="Search address">Search</button>
+                        </div>
+                        <div id="destSuggestions" class="suggestions-list"></div>
+
                         <div class="coords-row">
                             <div class="input-block">
                                 <label for="destLat">Latitude</label>
@@ -105,16 +129,23 @@
                     </div>
 
                     <div class="action-footer">
-                        <!-- Novo botão primário da equipa -->
                         <button type="submit" class="btn btn-primary">Submit Order</button>
                     </div>
                 </section>
 
-                <!-- Contentor do Mapa (integrado com o map.js) -->
+                <!-- Contentor do Mapa -->
                 <section class="card map-container-card">
-                    <div id="map"></div>
+                    <div class="map-wrapper">
+                        <div id="map"></div>
+                        <!-- Legenda visual -->
+                        <div class="map-legend-box">
+                            <div class="legend-item"><span class="dot dot-green"></span> Origin</div>
+                            <div class="legend-item"><span class="dot dot-red"></span> Destination</div>
+                            <div class="legend-item"><span class="route-line-sample"></span> Route</div>
+                        </div>
+                    </div>
                     <div class="map-footer-hint">
-                        <p class="text-muted">Click on the map or change coordinates to update route</p>
+                        <p class="text-muted" id="mapHintText">Click on the map to set <strong>Origin</strong>, search an address, or edit coordinates</p>
                     </div>
                 </section>
 
@@ -126,11 +157,10 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="js/map.js"></script>
     <script src="js/client_order.js"></script>
-<!-- Top bar (notifications + user menu), built by js/topbar.js -->
-<script src="js/topbar.js"
-        data-name="Marta Ferreira"
-        data-role="Client"
-        data-username="marta.ferreira"
-        data-profile="client_profile.html"></script>
+    <script src="js/topbar.js"
+            data-name="Marta Ferreira"
+            data-role="Client"
+            data-username="marta.ferreira"
+            data-profile="client_profile.html"></script>
 </body>
 </html>
