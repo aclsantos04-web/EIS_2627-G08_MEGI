@@ -838,6 +838,17 @@ dialog::backdrop {               /* the dark layer behind the pop-up */
     font-weight: 600;
 }
 
+/* With a profile photo (added on the profile page) */
+.topbar-avatar.has-photo {
+    overflow: hidden;
+}
+
+.topbar-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .topbar-user-text {
     display: flex;
     flex-direction: column;

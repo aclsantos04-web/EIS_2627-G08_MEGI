@@ -387,6 +387,91 @@
     font-weight: 600;
 }
 
+/* ----- Profile photo -----
+   .profile-photo holds the avatar and the camera button.
+   position: relative lets the button sit on the avatar's
+   bottom-right corner (position: absolute). */
+.cms-page .profile-photo {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.cms-page .profile-photo .profile-avatar {
+    width: 88px;
+    height: 88px;
+    font-size: 30px;
+    box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px var(--primary-light);   /* white + blue ring */
+}
+
+/* With a photo: the image fills the circle.
+   object-fit: cover crops it instead of stretching it. */
+.cms-page .profile-avatar.has-photo {
+    overflow: hidden;
+}
+
+.cms-page .profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Small round camera button */
+.cms-page .photo-button {
+    position: absolute;
+    right: -2px;
+    bottom: -2px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent-blue));
+    color: #FFFFFF;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(27, 75, 145, 0.25);
+    transition: transform 0.2s;
+}
+
+.cms-page .photo-button:hover {
+    transform: scale(1.08);
+}
+
+.cms-page .photo-button:focus-visible,
+.cms-page .link-button:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* "Change photo" / "Remove photo": buttons that look like links */
+.cms-page .photo-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.cms-page .link-button {
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--primary);
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cms-page .link-button:hover {
+    text-decoration: underline;
+}
+
+.cms-page .link-danger {
+    color: var(--error);
+}
+
 .cms-page .profile-header h2 {
     margin: 0 0 6px;
     font-size: 22px;
