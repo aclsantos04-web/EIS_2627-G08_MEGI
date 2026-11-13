@@ -86,6 +86,59 @@
             font-size: 14px;
         }
 
+        /* Link to the published website */
+        .live-site {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+            padding: 20px 22px;
+            background: rgba(255,255,255,0.96);
+            border: 1px solid rgba(27,75,145,0.15);
+            border-radius: 14px;
+            box-shadow: 0 8px 22px rgba(27,75,145,0.08);
+        }
+
+        .live-site-text {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .live-site h2 {
+            margin: 0 0 4px;
+            font-size: 17px;
+        }
+
+        .live-site-url {
+            color: var(--primary, #1B4B91);
+            font-size: 14px;
+            font-weight: 600;
+            word-break: break-all;          /* long link wraps on phones */
+        }
+
+        .live-site-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 18px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #1B4B91, #2F73B8);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 6px 16px rgba(27,75,145,0.22);
+            transition: 0.18s ease;
+        }
+
+        .live-site-button:hover {
+            color: #fff;
+            text-decoration: none;
+            transform: translateY(-1px);
+            box-shadow: 0 9px 20px rgba(27,75,145,0.28);
+        }
+
         /* Grelha de roles */
         .role-grid {
             display: grid;
@@ -246,6 +299,36 @@
     </header>
 
 
+    <!-- Link to the published website (GitHub Pages) -->
+    <section class="live-site">
+
+        <div class="warning-icon">
+            🌍
+        </div>
+
+        <div class="live-site-text">
+            <h2>Live website</h2>
+
+            <a
+                href="https://aclsantos04-web.github.io/EIS_2627-G08_MEGI/"
+                class="live-site-url"
+                target="_blank"
+                rel="noopener">
+                https://aclsantos04-web.github.io/EIS_2627-G08_MEGI/
+            </a>
+        </div>
+
+        <a
+            href="https://aclsantos04-web.github.io/EIS_2627-G08_MEGI/"
+            class="live-site-button"
+            target="_blank"
+            rel="noopener">
+            Open website <span aria-hidden="true">↗</span>
+        </a>
+
+    </section>
+
+
     <!-- Aviso -->
     <section class="evaluation-warning">
 
@@ -292,7 +375,7 @@
             <div class="page-links">
 
                 <a
-                    href="cms-home.html.html"
+                    href="cms-home.html"
                     class="page-link"
                     target="_blank">
                     <span>Home</span>
