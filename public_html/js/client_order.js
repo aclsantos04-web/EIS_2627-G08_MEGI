@@ -1,11 +1,49 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 1. INICIALIZAR O MAPA COM A NOVA FUNÇÃO DA EQUIPA
-    const originCoords = [41.1780, -8.5980];        // FEUP
-    const destCoords = [41.1496, -8.6109];          // Porto Centro
+    let orderMap = null;
 
-    if (typeof createRouteMap === 'function' && document.getElementById('map')) {
-        createRouteMap('map', originCoords, destCoords, 'Origem (FEUP)', 'Destino (Porto)');
+    function updateOrderMap() {
+        const originLat = parseFloat(document.getElementById('originLat').value);
+        const originLong = parseFloat(document.getElementById('originLong').value);
+        const destLat = parseFloat(document.getElementById('destLat').value);
+        const destLong = parseFloat(document.getElementById('destLong').value);
+
+        // Só atualiza o mapa quando todas as coordenadas são válidas
+        if (
+            isNaN(originLat) ||
+            isNaN(originLong) ||
+            isNaN(destLat) ||
+            isNaN(destLong)
+        ) {
+            return;
+        }
+
+        const originCoords = [originLat, originLong];
+        const destCoords = [destLat, destLong];
+
+        // Remove o mapa anterior antes de criar um novo
+        if (orderMap) {
+            orderMap.remove();
+        }
+
+        if (typeof createRouteMap === 'function' && document.getElementById('map')) {
+            orderMap = createRouteMap(
+                'map',
+                originCoords,
+                destCoords,
+                'Origin',
+                'Destination'
+            );
+        }
     }
+
+    // Atualiza a rota sempre que uma coordenada é alterada
+    ['originLat', 'originLong', 'destLat', 'destLong'].forEach(id => {
+        document.getElementById(id).addEventListener('change', updateOrderMap);
+    });
+
+    // Criar o mapa inicial
+    updateOrderMap();
 
     // 2. GESTÃO DOS PRODUTOS DA ENCOMENDA
     const btnAddProduct = document.getElementById('btnAddProduct');
