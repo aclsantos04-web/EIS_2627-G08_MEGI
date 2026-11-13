@@ -1,30 +1,99 @@
 
-/* MY PRODUCTS PAGE */
+/* MY PRODUCTS — Sprint 1 Demo */
 
-// Get saved products
-let products = JSON.parse(localStorage.getItem("cmsProducts") || "[]");
+(function () {
+    "use strict";
 
-// Get HTML elements
-let tableBody = document.getElementById("products-table-body");
-let noProducts = document.getElementById("no-products");
-let details = document.getElementById("product-details");
+    // Sample products used for the Sprint 1 demonstration
+    const sampleProducts = [
+        {
+            id: "demo-1",
+            name: "Product A",
+            category: "Electronics",
+            description: "Laptop and accessories",
+            weight: 5,
+            volume: 0.02
+        },
+        {
+            id: "demo-2",
+            name: "Product B",
+            category: "Home goods",
+            description: "Kitchen supplies",
+            weight: 12,
+            volume: 0.05
+        },
+        {
+            id: "demo-3",
+            name: "Product C",
+            category: "Clothing",
+            description: "Folded clothes",
+            weight: 1.5,
+            volume: 0.005
+        }
+    ];
 
-// Check if there are products
-if (products.length === 0) {
+    const tableBody =
+        document.getElementById("products-table-body");
 
-    // Show the "No products yet" message instead of an empty table
-    noProducts.hidden = false;
-    document.querySelector(".products-table-container").hidden = true;
+    const tableContainer =
+        document.querySelector(".products-table-container");
 
-} else {
+    const noProducts =
+        document.getElementById("no-products");
 
-    // Add each product to the table
-    products.forEach(function(product) {
+    const details =
+        document.getElementById("product-details");
 
-        let row = document.createElement("tr");
+    let savedProducts = [];
 
-        // Product information
-        let values = [
+    try {
+        const saved = JSON.parse(
+            localStorage.getItem("cmsProducts") || "[]"
+        );
+
+        if (Array.isArray(saved)) {
+            savedProducts = saved;
+        }
+
+    } catch (error) {
+        console.warn("Could not load saved products.", error);
+    }
+
+    // Show sample products if none have been registered
+    const showingDemo = savedProducts.length === 0;
+
+    const products = showingDemo
+        ? sampleProducts
+        : savedProducts;
+
+    // Inform the user when demo data is being displayed
+    if (showingDemo) {
+
+        const note = document.createElement("p");
+
+        note.className = "text-muted";
+
+        note.textContent =
+            "Sample products for demonstration. " +
+            "Use New Product to register your own products.";
+
+        tableContainer.insertAdjacentElement(
+            "beforebegin", note
+        );
+    }
+
+    tableBody.replaceChildren();
+
+    // Always show the table for the demo or saved products
+    tableContainer.hidden = false;
+    noProducts.hidden = true;
+
+    // Create a table row for each product
+    products.forEach(function (product) {
+
+        const row = document.createElement("tr");
+
+        const values = [
             product.name,
             product.category,
             product.description,
@@ -32,24 +101,26 @@ if (products.length === 0) {
             product.volume + " m³"
         ];
 
-        values.forEach(function(value) {
+        values.forEach(function (value) {
 
-            let cell = document.createElement("td");
+            const cell = document.createElement("td");
+
             cell.textContent = value;
-            row.appendChild(cell);
 
+            row.appendChild(cell);
         });
 
-        // Create View button
-        let actionCell = document.createElement("td");
+        // Actions column
+        const actionCell = document.createElement("td");
 
-        let button = document.createElement("button");
+        const button = document.createElement("button");
+
         button.type = "button";
-        button.className = "btn btn-primary btn-small";   // shared button style (style.css)
+        button.className = "btn btn-primary btn-small";
         button.textContent = "View";
 
-        // View product details
-        button.addEventListener("click", function() {
+        // Show details when View is clicked
+        button.addEventListener("click", function () {
 
             document.getElementById("detail-name").textContent =
                 product.name;
@@ -68,20 +139,24 @@ if (products.length === 0) {
 
             details.hidden = false;
 
+            details.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest"
+            });
         });
 
         actionCell.appendChild(button);
         row.appendChild(actionCell);
 
         tableBody.appendChild(row);
-
     });
 
-}
+    // Close product details
+    document.getElementById("close-details")
+        .addEventListener("click", function () {
 
-// Close product details
-document.getElementById("close-details").addEventListener("click", function() {
+            details.hidden = true;
 
-    details.hidden = true;
+        });
 
-});
+})();
