@@ -149,6 +149,12 @@ function orderWeight(order) {
     }, 0);
 }
 
+function orderVolume(order) {
+    return order.products.reduce(function (total, product) {
+        return total + product[1] * (product[3] || 0);
+    }, 0);
+}
+
 // Number of packages (all units together)
 function orderPackages(order) {
     return order.products.reduce(function (total, product) {

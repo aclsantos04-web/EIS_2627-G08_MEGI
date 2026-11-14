@@ -188,7 +188,7 @@ function updateFleetVehicle(plate, changes) {
 
 // Can this vehicle be used for an order? Returns "" if yes,
 // otherwise the reason (shown next to it in the vehicle list).
-function vehicleProblem(vehicle, loadKg) {
+function vehicleProblem(vehicle, loadKg, loadM3) {
     if (vehicle.approval !== "approved") {
         return "waiting for Staff approval";
     }
@@ -200,6 +200,9 @@ function vehicleProblem(vehicle, loadKg) {
     }
     if (loadKg > vehicle.maxWeightKg) {
         return "too small for " + loadKg + " kg";
+    }
+    if (loadM3 > vehicle.maxVolumeM3) {
+        return "too small for " + loadM3.toFixed(2) + " m³";
     }
     return "";
 }

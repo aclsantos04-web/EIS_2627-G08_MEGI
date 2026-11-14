@@ -244,9 +244,57 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectedProductsList = document.getElementById('selectedProductsList');
     const orderForm = document.getElementById('orderForm');
 
-    let orderItems = [
-        { name: 'Product A', weight: '5kg', vol: '0.02 m³', quantity: 2 }
+    const sampleProducts = [
+        { name: 'Product A', weight: 5, volume: 0.02 },
+        { name: 'Product B', weight: 12, volume: 0.05 },
+        { name: 'Product C', weight: 1.5, volume: 0.005 }
     ];
+
+    let savedProducts = [];
+
+    try {
+        savedProducts = JSON.parse(
+            localStorage.getItem('cmsProducts') || '[]'
+        );
+    } catch (error) {
+        savedProducts = [];
+    }
+
+    const availableProducts = sampleProducts.slice();
+
+    savedProducts.forEach(function (product) {
+        const alreadyExists = availableProducts.some(function (existingProduct) {
+            return existingProduct.name.toLowerCase() ===
+                product.name.toLowerCase();
+        });
+
+        if (!alreadyExists) {
+            availableProducts.push(product);
+        }
+    });
+
+    availableProducts.forEach(function (product) {
+        const option = document.createElement('option');
+
+        option.value = product.name;
+        option.dataset.weight = product.weight;
+        option.dataset.vol = product.volume;
+
+        option.textContent =
+            product.name +
+            ' (' +
+            product.weight +
+            ' kg | ' +
+            product.volume +
+            ' m³)';
+
+        productSelect.appendChild(option);
+    });
+
+    //let orderItems = [
+    //    { name: 'Product A', weight: '5kg', vol: '0.02 m³', quantity: 2 }
+    //];
+    let orderItems = [];
 
     function renderProductList() {
         selectedProductsList.innerHTML = '';
@@ -255,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const chip = document.createElement('div');
             chip.className = 'product-chip';
             chip.innerHTML = `
-                <span>${item.name} | ${item.weight} | ${item.vol}</span>
+                <span>${item.name} | ${item.weight} kg | ${item.vol} m³</span>
                 <div>
                     <span class="product-qty-badge">${item.quantity}</span>
                     <button type="button" class="btn-remove-item" data-index="${index}" title="Remove">✕</button>
@@ -350,7 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 destination: placeName('destAddress', destLat, destLong),
                 destinationCoords: [Number(destLat), Number(destLong)],
                 distanceKm: Math.round(distanceKm(Number(originLat), Number(originLong), Number(destLat), Number(destLong))),
-                products: orderItems.map((item) => [item.name, item.quantity, parseFloat(item.weight)])
+                products: orderItems.map((item) => [item.name, item.quantity, parseFloat(item.weight),parseFloat(item.vol)])
             });
         }
 

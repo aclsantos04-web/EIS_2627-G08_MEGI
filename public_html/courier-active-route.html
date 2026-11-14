@@ -246,7 +246,8 @@
 
         function showRoute(order) {
             const orderId = order.id;
-            const loadKg = orderWeight(order);                       // orders.js
+            const loadKg = orderWeight(order);
+            const loadM3 = orderVolume(order);  // orders.js
 
             document.getElementById("activeOrderTitle").textContent = "Active Order #" + orderId;
             document.getElementById("routeName").textContent = order.origin + " → " + order.destination;
@@ -264,7 +265,7 @@
 
             /* The courier's vehicles. Ones that can't be used are disabled. */
             loadVehicles().forEach(function (car) {                  // vehicles.js
-                const problem = vehicleProblem(car, loadKg);          // vehicles.js
+                const problem = vehicleProblem(car, loadKg,loadM3);          // vehicles.js
                 const option = document.createElement("option");
                 option.value = car.plate;
                 option.textContent = car.type + " - " + car.plate + (problem ? " (" + problem + ")" : "");
