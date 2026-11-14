@@ -242,8 +242,22 @@ function getActiveOrder() {
 
 // Accept: the order is his, still "Initiated" until he starts
 function acceptOrder(id) {
+    if (getActiveOrder() !== null) {
+        return false;
+    }
+
+    const order = getOrder(id);
+
+    if (!order ||
+        order.status !== "Initiated" ||
+        order.courier !== null) {
+        return false;
+    }
+
     updateOrder(id, { courier: COURIER_NAME });
     writeOrderStorage("cmsActiveOrder", id);
+
+    return true;
 }
 
 // Start: a vehicle is chosen and the order is "In Progress"

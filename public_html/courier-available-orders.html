@@ -161,8 +161,14 @@
                 selectionError.textContent = "Please select an order first.";
                 return;
             }
-            acceptOrder(selectedOrder);                         // orders.js
+            
+            if (!acceptOrder(selectedOrder)) { // orders.js
+                selectionError.textContent =
+                    "You already have an active order.";
+                return;
+            }
             window.location.href = "courier-active-route.html";
+            
         });
     </script>
 
