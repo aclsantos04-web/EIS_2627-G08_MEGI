@@ -30,7 +30,7 @@
    1. SAMPLE ORDERS (one object = one row of the ORDER table)
    status:  "Initiated" | "In Progress" | "Completed" | "Cancelled"
    courier: null while no courier has accepted it
-   products: [name, quantity, weight of one unit in kg]
+   products:  [name, quantity, weight of one unit in kg, volume of one unit in m³]
    --------------------------------------------------------- */
 const COURIER_NAME = "Diogo Silva";          // the courier of the demo
 
@@ -42,7 +42,7 @@ const SAMPLE_ORDERS = [
         distanceKm: 70, status: "Completed",
         courier: "Diogo Silva", vehicle: "AA-12-BC",
         deliveredOn: "2026-10-15", podType: "signature",
-        products: [["Books", 1, 5], ["Shoes", 1, 3]]
+        products: [["Books", 1, 5, 0.01], ["Shoes", 1, 3, 0.02]]
     },
     {
         id: 1002, client: "Marta Ferreira", created: "2026-10-18",
@@ -50,7 +50,7 @@ const SAMPLE_ORDERS = [
         destination: "Porto", destinationCoords: [41.1496, -8.6109],
         distanceKm: 55, status: "In Progress",
         courier: "Sara Lima", vehicle: "31-PQ-07",
-        products: [["Laptop", 1, 3]]
+        products: [["Laptop", 1, 3, 0.015]]
     },
     {
         id: 1003, client: "Marta Ferreira", created: "2026-10-20",
@@ -58,7 +58,7 @@ const SAMPLE_ORDERS = [
         destination: "Coimbra", destinationCoords: [40.2033, -8.4103],
         distanceKm: 205, status: "Initiated",
         courier: null, vehicle: null,
-        products: [["Kitchen set", 1, 12]]
+        products: [["Kitchen set", 1, 12, 0.08]]
     },
     {
         id: 1004, client: "Marta Ferreira", created: "2026-10-21",
@@ -66,7 +66,7 @@ const SAMPLE_ORDERS = [
         destination: "Braga", destinationCoords: [41.5454, -8.4265],
         distanceKm: 60, status: "Cancelled",
         courier: null, vehicle: null,
-        products: [["Office chair", 1, 7]]
+        products: [["Office chair", 1, 7, 0.15]]
     },
     {
         id: 1005, client: "Carlos Mendes", created: "2026-11-12",
@@ -74,7 +74,7 @@ const SAMPLE_ORDERS = [
         destination: "Porto", destinationCoords: [41.1579, -8.6291],
         distanceKm: 9, status: "Initiated",
         courier: null, vehicle: null,
-        products: [["Clothes", 2, 3]]
+        products: [["Clothes", 2, 3, 0.04]]
     },
     {
         id: 1006, client: "Carlos Mendes", created: "2026-11-13",
@@ -82,7 +82,7 @@ const SAMPLE_ORDERS = [
         destination: "Guimarães", destinationCoords: [41.4425, -8.2918],
         distanceKm: 55, status: "Initiated",
         courier: null, vehicle: null,
-        products: [["Bookshelf", 1, 30], ["Desk lamp", 2, 2]]
+        products: [["Bookshelf", 1, 30, 0.35], ["Desk lamp", 2, 2, 0.02]]
     }
 ];
 
