@@ -74,6 +74,36 @@
             <form id="register-form" novalidate>
 
                 <div class="register-fields">
+                    
+                    
+<!-- FULL NAME -->
+
+<div class="form-group">
+    <label for="reg-name">Full Name</label>
+    <input type="text"
+           id="reg-name"
+           name="fullName"
+           placeholder="Enter your full name"
+           autocomplete="name"
+           minlength="2"
+           required>
+</div>
+
+<!-- PHONE NUMBER -->
+
+<div class="form-group">
+    <label for="reg-phone">Phone Number</label>
+    <input type="tel"
+           id="reg-phone"
+           name="phone"
+           placeholder="e.g. 912345678"
+           inputmode="numeric"
+           autocomplete="tel"
+           maxlength="9"
+           pattern="[0-9]{9}"
+           required>
+</div>
+
 
                     <!-- USERNAME -->
 

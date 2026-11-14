@@ -1,15 +1,18 @@
 
-/* REGISTER FORM VALIDATION */
-
-/* NIF - ONLY NUMBERS */
+/* ==========================================
+   CMS - REGISTER
+   Form validation and role navigation
+========================================== */
 
 const nifInput = document.getElementById("reg-nif");
+
+/* Allow only 9 numeric digits in NIF */
 
 nifInput.addEventListener("input", function () {
     this.value = this.value.replace(/\D/g, "").slice(0, 9);
 });
 
-/* Check Portuguese NIF */
+/* Validate Portuguese NIF */
 
 function isValidNIF(nif) {
 
@@ -24,31 +27,47 @@ function isValidNIF(nif) {
     }
 
     const remainder = sum % 11;
-
-    const checkDigit =
-        remainder < 2 ? 0 : 11 - remainder;
+    const checkDigit = remainder < 2 ? 0 : 11 - remainder;
 
     return checkDigit === Number(nif[8]);
 }
 
-document.getElementById("register-form").addEventListener("submit", function(event) {
+/* Register form */
+
+document.getElementById("register-form")
+    .addEventListener("submit", function (event) {
 
     event.preventDefault();
 
     let valid = true;
 
-    // Get form fields
-    let username = document.getElementById("reg-username");
-    let email = document.getElementById("reg-email");
-    let nif = document.getElementById("reg-nif");
-    let role = document.getElementById("reg-role");
-    let password = document.getElementById("reg-password");
-    let confirmPassword = document.getElementById("reg-confirm");
+    /* Form fields */
 
-    let fields = [username, email, nif, role, password, confirmPassword];
+    const fullName = document.getElementById("reg-name");
+    const phone = document.getElementById("reg-phone");
+    const username = document.getElementById("reg-username");
+    const email = document.getElementById("reg-email");
+    const nif = document.getElementById("reg-nif");
+    const role = document.getElementById("reg-role");
+    const password = document.getElementById("reg-password");
+    const confirmPassword = document.getElementById("reg-confirm");
 
-    // Clear previous errors
-    fields.forEach(function(field) {
+    const fields = [
+        fullName,
+        phone,
+        username,
+        email,
+        nif,
+        role,
+        password,
+        confirmPassword
+    ];
+
+    const message = document.getElementById("register-message");
+
+    /* Clear previous validation messages */
+
+    fields.forEach(function (field) {
 
         let error = document.getElementById(field.id + "-error");
 
@@ -64,87 +83,210 @@ document.getElementById("register-form").addEventListener("submit", function(eve
         field.classList.remove("register-invalid");
     });
 
-    // Hide general message
-    let message = document.getElementById("register-message");
-
     if (message) {
         message.style.display = "none";
-        message.textContent = "";
+        message.replaceChildren();
     }
 
-    // Function to show errors under each field
+    /* Show red message under invalid field */
+
     function showError(field, text) {
 
-        document.getElementById(field.id + "-error").textContent = text;
+        const error = document.getElementById(field.id + "-error");
+
+        error.textContent = text;
+        error.classList.add("register-field-error");
 
         field.classList.add("register-invalid");
 
         valid = false;
     }
 
-    // Username validation
-    if (username.value.trim() === "") {
-        showError(username, "Username is required.");
+    /* FULL NAME */
+
+    if (fullName.value.trim().length < 2) {
+        showError(
+            fullName,
+            "Please enter your full name."
+        );
     }
 
-    // Email validation
-    let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    /* PHONE NUMBER */
+
+    if (!/^[0-9]{9}$/.test(phone.value.trim())) {
+        showError(
+            phone,
+            "Phone number must contain exactly 9 digits."
+        );
+    }
+
+    /* USERNAME */
+
+    if (username.value.trim() === "") {
+        showError(
+            username,
+            "Username is required."
+        );
+    }
+
+    /* EMAIL */
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (email.value.trim() === "") {
-        showError(email, "Email is required.");
+        showError(
+            email,
+            "Email is required."
+        );
     } else if (!emailPattern.test(email.value.trim())) {
-        showError(email, "Please enter a valid email address.");
+        showError(
+            email,
+            "Please enter a valid email address."
+        );
     }
 
-   
-// NIF validation
-const nifValue = nif.value.trim();
+    /* NIF */
 
-if (!/^[0-9]{9}$/.test(nifValue)) {
+    const nifValue = nif.value.trim();
 
-    showError(nif, "NIF must contain exactly 9 digits.");
+    if (!/^[0-9]{9}$/.test(nifValue)) {
+        showError(
+            nif,
+            "NIF must contain exactly 9 digits."
+        );
+    } else if (!isValidNIF(nifValue)) {
+        showError(
+            nif,
+            "Please enter a valid Portuguese NIF."
+        );
+    }
 
-} else if (!isValidNIF(nifValue)) {
+    /* ROLE */
 
-    showError(nif, "Please enter a valid Portuguese NIF.");
-
-}
-
-
-    // Role validation
     if (role.value === "") {
-        showError(role, "Please select a role.");
+        showError(
+            role,
+            "Please select a role."
+        );
     }
 
-    // Password validation
+    /* PASSWORD */
+
     if (password.value.trim() === "") {
-        showError(password, "Password is required.");
+        showError(
+            password,
+            "Password is required."
+        );
     } else if (password.value.length < 8) {
-        showError(password, "Password must contain at least 8 characters.");
+        showError(
+            password,
+            "Password must contain at least 8 characters."
+        );
     }
 
-    // Confirm password validation
+    /* CONFIRM PASSWORD */
+
     if (confirmPassword.value === "") {
-        showError(confirmPassword, "Please confirm your password.");
+        showError(
+            confirmPassword,
+            "Please confirm your password."
+        );
     } else if (password.value !== confirmPassword.value) {
-        showError(confirmPassword, "Passwords do not match.");
+        showError(
+            confirmPassword,
+            "Passwords do not match."
+        );
     }
 
-    // Stop submission if there are errors
+    /* STOP IF ANY FIELD IS INVALID */
+
     if (!valid) {
         return;
     }
 
-    // Successful validation
+    /* SUCCESS - ROLE NAVIGATION */
+
+    const rolePages = {
+        client: "client_new_order.html",
+        courier: "courier-available-orders.html",
+        staff: "staff_courier_approvals.html"
+    };
+
+    const roleNames = {
+        client: "Client",
+        courier: "Courier",
+        staff: "Staff"
+    };
+
     if (message) {
 
-        if (role.value === "staff") {
-            message.textContent = "Form validated! Staff approval by Admin is required. Demo mode.";
-        } else {
-            message.textContent = "Form validated successfully! Demo mode.";
-        }
+        const text = document.createElement("p");
+
+        
+
+        
+if (role.value === "courier") {
+
+    text.textContent =
+        "Form validated successfully! " +
+        "Courier accounts require Staff approval. " ;
+
+} else if (role.value === "staff") {
+
+    text.textContent =
+        "Form validated successfully! " +
+        "Staff accounts require Admin approval. " ;
+
+} else {
+
+    text.textContent =
+        "Form validated successfully! " +
+        "You can now preview the Client area.";
+
+}
+
+
+        const link = document.createElement("a");
+
+        link.href = rolePages[role.value];
+
+        
+link.textContent =
+    role.value === "client"
+        ? "Go to Client Area →"
+        : "Preview " + roleNames[role.value] + " Area →";
+
+
+        link.className = "register-button";
+
+        link.style.display = "block";
+        link.style.textAlign = "center";
+        link.style.textDecoration = "none";
+        link.style.marginTop = "15px";
+
+        message.appendChild(text);
+        message.appendChild(link);
 
         message.style.display = "block";
+        
+document.querySelector('#register-form button[type="submit"]').style.display = "none";
+
     }
+
+});
+
+
+/* Hide previous success message when Role changes */
+
+document.getElementById("reg-role").addEventListener("change", function () {
+    const message = document.getElementById("register-message");
+
+    if (message) {
+        message.style.display = "none";
+        message.replaceChildren();
+    }
+    
+    
+document.querySelector('#register-form button[type="submit"]').style.display = "";
 
 });
