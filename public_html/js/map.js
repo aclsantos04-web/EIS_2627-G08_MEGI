@@ -244,6 +244,17 @@ function createRouteMap(mapId, originCoords, destinationCoords, originName, dest
         .catch(function (error) {
             console.error("Error calculating route:", error);
 
+            const distanceElement = document.getElementById("routeDistance");
+            const durationElement = document.getElementById("routeDuration");
+
+            if (distanceElement) {
+                distanceElement.textContent = "Not available";
+            }
+
+            if (durationElement) {
+                durationElement.textContent = "Not available";
+            }
+
             /*
              * Se o serviço de rotas falhar,
              * mostrar uma linha direta entre os dois pontos.
