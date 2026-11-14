@@ -1099,3 +1099,50 @@ dialog::backdrop {               /* the dark layer behind the pop-up */
         grid-template-columns: 1fr;
     }
 }
+
+
+/* ---------- 15. COURIER ORDERS: Available Orders and Active Route (orders.js) ---------- */
+.order-card.is-selected {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary), 0 10px 27px rgba(27, 75, 145, 0.12);
+}
+
+.accept-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 24px;
+}
+
+#activeOrderBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+#activeOrderBox[hidden] {
+    display: none;
+}
+
+.vehicle-hint {
+    display: block;
+    margin-top: 6px;
+    color: #555555;
+    font-size: 12px;
+}
+
+.page-intro {                    /* grey sentence under a page title */
+    margin: -14px 0 24px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.route-status-line {             /* "In Progress · AA-12-BC" on Active Route */
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+}

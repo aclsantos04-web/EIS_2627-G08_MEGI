@@ -222,6 +222,7 @@ documentForm.addEventListener("submit", function (event) {
     } else {
         vehicle.inspectionExpiry = newDate;
     }
+    vehicle.updatedDocument = documentType;               // Staff see it in Document Alerts
 
     saveVehicles(vehicles);                               // vehicles.js
 

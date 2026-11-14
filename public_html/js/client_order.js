@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const orderForm = document.getElementById('orderForm');
 
     let orderItems = [
-        { name: 'Product A', weight: '5kg', vol: '0.02 m²', quantity: 2 }
+        { name: 'Product A', weight: '5kg', vol: '0.02 m³', quantity: 2 }
     ];
 
     function renderProductList() {
@@ -335,9 +335,41 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        alert('Order submitted successfully! (Status: Initiated)');
+        /* Guardar a encomenda (orders.js): fica "Initiated" e aparece
+           logo em My Orders e nas Available Orders dos couriers */
+        const placeName = (input, lat, long) => {
+            const text = document.getElementById(input).value.trim();
+            return text !== '' ? text.split(',')[0] : lat + ', ' + long;
+        };
+        let newOrder = null;
+        if (typeof createOrder === 'function') {
+            newOrder = createOrder({
+                client: 'Marta Ferreira',
+                origin: placeName('originAddress', originLat, originLong),
+                originCoords: [Number(originLat), Number(originLong)],
+                destination: placeName('destAddress', destLat, destLong),
+                destinationCoords: [Number(destLat), Number(destLong)],
+                distanceKm: Math.round(distanceKm(Number(originLat), Number(originLong), Number(destLat), Number(destLong))),
+                products: orderItems.map((item) => [item.name, item.quantity, parseFloat(item.weight)])
+            });
+        }
+
+        alert('Order ' + (newOrder ? '#' + newOrder.id + ' ' : '') + 'submitted successfully! (Status: Initiated)');
         window.location.href = 'my-orders.html';
     });
 
     renderProductList();
 });
+
+
+/* Distância em linha reta entre dois pontos (fórmula de Haversine), em km.
+   Usada só para mostrar uma distância aproximada aos couriers. */
+function distanceKm(lat1, long1, lat2, long2) {
+    const toRadians = (degrees) => degrees * Math.PI / 180;
+    const earthRadius = 6371;
+    const dLat = toRadians(lat2 - lat1);
+    const dLong = toRadians(long2 - long1);
+    const a = Math.sin(dLat / 2) ** 2 +
+        Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * Math.sin(dLong / 2) ** 2;
+    return 2 * earthRadius * Math.asin(Math.sqrt(a));
+}

@@ -38,19 +38,69 @@ const topbarSettings = document.currentScript.dataset;
    --------------------------------------------------------- */
 const ROLE_NOTIFICATIONS = {
     Client: [
-        { icon: "ti-truck", text: "Order #1002 is now In Progress.", link: "my-orders.html" },
-        { icon: "ti-circle-check", text: "Order #1001 was delivered. Proof of delivery available.", link: "client_orders.html" }
-    ],
-    Staff: [
-        { icon: "ti-user-check", text: "4 couriers are waiting for approval.", link: "staff_courier_approvals.html" },
-        { icon: "ti-truck", text: "5 vehicles are waiting for approval.", link: "staff_vehicle_approvals.html" },
-        { icon: "ti-alert-triangle", text: "4 vehicle documents need a review.", link: "staff_alerts.html" }
-    ],
-    Admin: [
-        { icon: "ti-user-check", text: "4 staff registrations are waiting for approval.", link: "admin-staff.html" }
+        { icon: "ti-truck", text: "Order #1002 is on its way (In Progress).", link: "client_orders.html?order=1002" },
+        { icon: "ti-circle-check", text: "Order #1001 was delivered. Proof of delivery available.", link: "client_orders.html?order=1001" }
     ],
     Courier: []
 };
+
+// "3 couriers are waiting" / "1 courier is waiting"
+function countText(count, singular, plural, verbOne, verbMany) {
+    return count + " " + (count === 1 ? singular + " " + verbOne : plural + " " + verbMany);
+}
+
+// Staff: counted from accounts.js and vehicles.js when the page
+// loads them, so the numbers match the Staff pages exactly.
+// (3, 3 and 5 are the sample numbers, for pages that don't.)
+function getStaffNotifications() {
+    let couriers = 3;
+    let vehicles = 3;
+    let documents = 5;
+    if (typeof getPendingCouriers === "function") {
+        couriers = getPendingCouriers().length;
+    }
+    if (typeof getFleet === "function") {
+        const fleet = getFleet();
+        vehicles = fleet.filter(function (vehicle) {
+            return vehicle.approval === "pending";
+        }).length;
+        documents = 0;
+        fleet.forEach(function (vehicle) {
+            if (vehicle.approval !== "approved") {
+                return;
+            }
+            if (vehicle.updatedDocument) {
+                documents += 1;
+            }
+            ["insuranceExpiry", "inspectionExpiry"].forEach(function (key) {
+                if (getDocumentState(vehicle[key]).type !== "success" &&
+                        vehicle.updatedDocument + "Expiry" !== key) {
+                    documents += 1;
+                }
+            });
+        });
+    }
+    const list = [];
+    if (couriers > 0) {
+        list.push({ icon: "ti-user-check", text: countText(couriers, "courier", "couriers", "is", "are") + " waiting for approval.", link: "staff_courier_approvals.html" });
+    }
+    if (vehicles > 0) {
+        list.push({ icon: "ti-truck", text: countText(vehicles, "vehicle", "vehicles", "is", "are") + " waiting for approval.", link: "staff_vehicle_approvals.html" });
+    }
+    if (documents > 0) {
+        list.push({ icon: "ti-alert-triangle", text: (documents === 1 ? "1 vehicle document needs" : documents + " vehicle documents need") + " a review.", link: "staff_alerts.html" });
+    }
+    return list;
+}
+
+// Admin: staff registrations waiting (accounts.js), 4 in the sample
+function getAdminNotifications() {
+    const pending = typeof getPendingStaff === "function" ? getPendingStaff().length : 4;
+    if (pending === 0) {
+        return [];
+    }
+    return [{ icon: "ti-user-check", text: countText(pending, "staff registration", "staff registrations", "is", "are") + " waiting for approval.", link: "admin-staff.html" }];
+}
 
 // Courier: one notification for every document that is expired or
 // expires soon. Uses loadVehicles() and getDocumentState() from
@@ -61,6 +111,9 @@ function getCourierNotifications() {
     }
     const notifications = [];
     loadVehicles().forEach(function (vehicle) {
+        if (vehicle.approval !== "approved") {
+            return;                                  // not in use: no document alerts
+        }
         [["Insurance", vehicle.insuranceExpiry], ["Inspection", vehicle.inspectionExpiry]].forEach(function (pair) {
             const state = getDocumentState(pair[1]);
             if (state.type !== "success") {
@@ -78,6 +131,12 @@ function getCourierNotifications() {
 function getNotifications(role) {
     if (role === "Courier") {
         return getCourierNotifications();
+    }
+    if (role === "Staff") {
+        return getStaffNotifications();
+    }
+    if (role === "Admin") {
+        return getAdminNotifications();
     }
     return ROLE_NOTIFICATIONS[role] || [];
 }

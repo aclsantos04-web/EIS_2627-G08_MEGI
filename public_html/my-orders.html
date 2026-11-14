@@ -68,60 +68,9 @@
                         </tr>
                     </thead>
 
-                    <tbody>
-
-                        <tr>
-                            <td>#1001</td>
-                            <td>Porto</td>
-                            <td>Aveiro</td>
-                            <td><span class="badge badge-success">Completed</span></td>
-                            <td>15/10/2026</td>
-                            <td>
-                                <a href="client_orders.html?order=1001" class="btn btn-primary btn-small">
-                                    View
-                                </a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>#1002</td>
-                            <td>Braga</td>
-                            <td>Porto</td>
-                            <td><span class="badge badge-info">In Progress</span></td>
-                            <td>18/10/2026</td>
-                            <td>
-                                <a href="client_orders.html?order=1002" class="btn btn-primary btn-small">
-                                    View
-                                </a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>#1003</td>
-                            <td>Lisboa</td>
-                            <td>Coimbra</td>
-                            <td><span class="badge badge-warning">Initiated</span></td>
-                            <td>20/10/2026</td>
-                            <td>
-                                <a href="client_orders.html?order=1003" class="btn btn-primary btn-small">
-                                    View
-                                </a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>#1004</td>
-                            <td>Viana do Castelo</td>
-                            <td>Braga</td>
-                            <td><span class="badge badge-danger">Cancelled</span></td>
-                            <td>21/10/2026</td>
-                            <td>
-                                <a href="client_orders.html?order=1004" class="btn btn-primary btn-small">
-                                    View
-                                </a>
-                            </td>
-                        </tr>
-
+                    <tbody id="orderRows">
+                        <!-- Filled by js/my-orders.js from js/orders.js, so the
+                             status changes when a courier accepts or delivers an order. -->
                     </tbody>
 
                 </table>
@@ -133,6 +82,9 @@
     </div>
 
 <!-- Top bar (notifications + user menu), built by js/topbar.js -->
+<script src="js/orders.js"></script>
+<script src="js/my-orders.js"></script>
+
 <script src="js/topbar.js"
         data-name="Marta Ferreira"
         data-role="Client"

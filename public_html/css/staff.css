@@ -234,3 +234,31 @@ table td .badge {
     color: #777777;
     font-style: italic;
 }
+
+/* ---------- Data-driven Staff pages (accounts.js / vehicles.js) ---------- */
+.app-content .page-intro {
+    margin: -14px 0 22px;
+    font-size: 14px;
+}
+
+.staff-feedback {
+    margin: 0 0 18px;
+}
+
+.staff-feedback[hidden] {
+    display: none;
+}
+
+/* Date with its badge under it (Vehicle Approvals, Document Alerts) */
+.date-with-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.vehicle-model {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+}

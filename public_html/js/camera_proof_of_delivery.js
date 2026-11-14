@@ -35,7 +35,10 @@ let capturedPhoto = null;
 
 /* ID da encomenda recebido no URL */
 const urlParams = new URLSearchParams(window.location.search);
-const orderId = urlParams.get("order") || "1001";
+// The order comes from the link (?order=1003, sent by Active Route)
+// or, if the page was opened from the menu, from the active order (orders.js)
+const activeForProof = typeof getActiveOrder === "function" ? getActiveOrder() : null;
+const orderId = urlParams.get("order") || (activeForProof !== null ? String(activeForProof.id) : "");
 
 
 /* Mostrar assinatura */
@@ -270,6 +273,12 @@ confirmButton.addEventListener("click", function () {
     }
 
     localStorage.setItem("savedPodOrder", orderId);
+
+    /* A encomenda passa a "Completed" (orders.js): aparece em
+       Completed Orders e o cliente vê o novo estado e a prova */
+    if (typeof completeOrder === "function") {
+        completeOrder(orderId, proofType);
+    }
 
     stopCamera();
 

@@ -1,0 +1,306 @@
+/* =========================================================
+   CLIENT.CSS — Estilos específicos da Área de Cliente
+   ========================================================= */
+
+.order-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 20px;
+    max-width: 1080px;
+}
+
+.order-grid .card {
+    margin-bottom: 0;
+    background-color: #ffffff;
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Secção de Produtos */
+.product-input-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.product-input-row select {
+    flex: 1;
+}
+
+.qty-input {
+    width: 70px;
+    text-align: center;
+}
+
+.product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.product-chip {
+    background-color: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.product-qty-badge {
+    background-color: var(--surface);
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+}
+
+.btn-remove-item {
+    background: none;
+    border: none;
+    color: var(--danger);
+    font-weight: bold;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1;
+}
+
+.btn-remove-item:hover {
+    opacity: 0.7;
+}
+
+/* Secção de Notas */
+.notes-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.notes-card textarea {
+    flex: 1;
+    min-height: 130px;
+    resize: none;
+}
+
+/* Secção de Localização e Pesquisa de Morada */
+.location-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.location-header-row h3 {
+    margin: 0;
+}
+
+.map-target-switch {
+    display: flex;
+    gap: 6px;
+}
+
+.target-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background-color: var(--card);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.target-pill.active-origin {
+    background-color: var(--success-bg);
+    border-color: var(--success);
+    color: var(--success);
+}
+
+.target-pill.active-dest {
+    background-color: var(--danger-bg);
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+.coords-section {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.coords-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 8px;
+    padding-bottom: 0;
+}
+
+.coords-subtitle {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+
+.address-search-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.address-search-row input {
+    flex: 1;
+    font-size: 14px;
+    padding: 8px 10px;
+}
+
+/* Lista de Sugestões de Moradas */
+.suggestions-list {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-item {
+    padding: 8px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    text-align: left;
+    background: #ffffff;
+    color: var(--text);
+    transition: background-color 0.15s ease;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: var(--primary-light);
+    color: var(--primary);
+}
+
+.coords-row {
+    display: flex;
+    gap: 12px;
+}
+
+.input-block {
+    flex: 1;
+}
+
+.input-block label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+
+.input-block input {
+    padding: 8px 10px;
+    font-size: 14px;
+}
+
+.action-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+/* Contentor do Mapa + Legenda */
+.map-container-card {
+    display: flex;
+    flex-direction: column;
+    padding: 14px;
+}
+
+.map-wrapper {
+    position: relative;
+    flex: 1;
+    min-height: 310px;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    min-height: 310px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    cursor: crosshair;
+    z-index: 1;
+}
+
+.map-legend-box {
+    position: absolute;
+    bottom: 24px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 500;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text);
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot-green {
+    background-color: #2E8B57;
+}
+
+.dot-red {
+    background-color: #D9383A;
+}
+
+.route-line-sample {
+    width: 12px;
+    height: 4px;
+    background-color: var(--primary);
+    border-radius: 2px;
+    display: inline-block;
+}
+
+.map-footer-hint {
+    text-align: center;
+    padding-top: 10px;
+}
+
+.map-footer-hint p {
+    margin: 0;
+    font-size: 13px;
+}
+
+@media (max-width: 860px) {
+    .order-grid {
+        grid-template-columns: 1fr;
+    }
+}

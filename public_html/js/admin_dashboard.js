@@ -16,13 +16,15 @@
      documents  -> VEHICLE insurance / inspection expiry dates
    --------------------------------------------------------- */
 const dashboardData = {
-    month: "October 2026",
+    month: "November 2026",
 
     users: {
-        clients: 100,
+        clients: 320,                // same numbers as the home page
         couriers: 27,
         staff: 6,
-        pendingStaff: 4              // staff accounts waiting for the Admin
+        // staff accounts waiting for the Admin: counted from accounts.js,
+        // so it always matches the Staff Approvals page
+        pendingStaff: typeof getPendingStaff === "function" ? getPendingStaff().length : 4
     },
 
     orders: {                        // orders created this month, by status
@@ -47,8 +49,8 @@ const dashboardData = {
     averageDeliveryDays: 1.8,
 
     expiringDocuments: {             // expired or expiring in 3 days or less
-        insurance: 2,
-        inspection: 1
+        insurance: 2,                // CD-34-EF and 78-LM-33 (Staff → Document Alerts)
+        inspection: 2                // GH-56-IJ and 55-RT-90
     },
 
     averageLoad: 0.30                // 30% of vehicle capacity used on average

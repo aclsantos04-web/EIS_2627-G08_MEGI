@@ -8,20 +8,34 @@
 
 
 /* ---------------------------------------------------------
-   1. SAMPLE DATA
-   Same story as the other pages: courier Diogo Silva, his
-   vehicles (AA-12-BC, CD-34-EF, GH-56-IJ) and order #1001
-   Porto → Aveiro, completed on 15/10/2026 (as on the
-   client's My Orders page).
+   1. THE COURIER'S DELIVERED ORDERS
+   - from js/orders.js: #1001 (Marta, Porto → Aveiro) and any
+     order Diogo finishes with a Proof of Delivery
+   - plus some older deliveries for other clients (below)
    podType: "signature" | "photo"   (Proof of Delivery type)
    --------------------------------------------------------- */
-const completedOrders = [
-    { id: 1001, origin: "Porto",    destination: "Aveiro",     deliveredOn: "2026-10-15", vehicle: "AA-12-BC", packages: 2, weightKg: 8,   podType: "signature" },
+const pastDeliveries = [
     { id: 998,  origin: "Braga",    destination: "Porto",      deliveredOn: "2026-10-12", vehicle: "CD-34-EF", packages: 1, weightKg: 3,   podType: "photo" },
     { id: 994,  origin: "Aveiro",   destination: "Coimbra",    deliveredOn: "2026-10-08", vehicle: "GH-56-IJ", packages: 6, weightKg: 140, podType: "signature" },
     { id: 990,  origin: "Porto",    destination: "Matosinhos", deliveredOn: "2026-10-02", vehicle: "AA-12-BC", packages: 3, weightKg: 12,  podType: "photo" },
     { id: 985,  origin: "Gaia",     destination: "Porto",      deliveredOn: "2026-09-28", vehicle: "CD-34-EF", packages: 1, weightKg: 2,   podType: "signature" }
 ];
+
+// Orders from orders.js, turned into the same shape as the list above
+const fromOrders = getCourierCompletedOrders().map(function (order) {     // orders.js
+    return {
+        id: order.id,
+        origin: order.origin,
+        destination: order.destination,
+        deliveredOn: order.deliveredOn,
+        vehicle: order.vehicle,
+        packages: orderPackages(order),
+        weightKg: orderWeight(order),
+        podType: order.podType
+    };
+});
+
+const completedOrders = fromOrders.concat(pastDeliveries);
 
 // Newest first. sort() compares two orders at a time;
 // localeCompare() works because dates are "YYYY-MM-DD".
@@ -159,17 +173,17 @@ document.getElementById("orderSearch").addEventListener("input", renderTable);
 
 /* ---------------------------------------------------------
    4. PROOF OF DELIVERY POP-UP
-   The signature drawn on the Proof of Delivery page is saved
-   in localStorage as "savedSignature" (the same key the
-   client's order page reads), so we show it here for
-   signature orders. Photos need a server to be stored, so
-   Sprint 1 shows a message instead.
+   The Proof of Delivery page saves the signature or photo of
+   each order as "signature_ID" or "photo_ID", so we show it
+   here. The older sample orders have no stored image.
    --------------------------------------------------------- */
 const podDialog = document.getElementById("podDialog");
 
-function getSavedSignature() {
+// The proof saved for THIS order (courier-proof-delivery.html
+// saves "signature_ID" or "photo_ID")
+function getSavedProof(order) {
     try {
-        return localStorage.getItem("savedSignature");
+        return localStorage.getItem((order.podType === "photo" ? "photo_" : "signature_") + order.id);
     } catch (error) {
         return null;
     }
@@ -188,17 +202,17 @@ function openPodDialog(order) {
 
     const preview = document.getElementById("podPreview");
     preview.innerHTML = "";
-    const savedSignature = getSavedSignature();
+    const savedSignature = getSavedProof(order);
 
-    if (order.podType === "signature" && savedSignature !== null) {
+    if (savedSignature !== null) {
         const image = document.createElement("img");
         image.setAttribute("src", savedSignature);
-        image.setAttribute("alt", "Client signature for order " + formatOrderId(order.id));
+        image.setAttribute("alt", "Proof of delivery for order " + formatOrderId(order.id));
         preview.append(image);
     } else if (order.podType === "signature") {
-        preview.textContent = "✍️ No signature saved in this browser yet. Sign one on the Proof of Delivery page to see it here.";
+        preview.textContent = "✍️ Signed by the recipient. (Sample order: the image is not stored.)";
     } else {
-        preview.textContent = "📷 Photo of the delivered package (photos are stored on the server from Sprint 2).";
+        preview.textContent = "📷 Photo of the delivered package. (Sample order: the image is not stored.)";
     }
 
     podDialog.showModal();

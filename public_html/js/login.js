@@ -1,55 +1,103 @@
+/* =========================================================
+   login.js — LOGIN FORM
+   1. Check the fields are filled in (validation)
+   2. Find the account (username or email) in accounts.js
+   3. Pending or rejected accounts can't come in yet
+   4. Everyone else goes to their role's area
 
-/* LOGIN FORM VALIDATION */
+   Sprint 1 has no server, so any password is accepted for
+   the demo accounts. In Sprint 2 the server will check the
+   password against password_hash in the USER table.
+   Needs js/accounts.js to be loaded first.
+   ========================================================= */
 
-document.getElementById("login-form").addEventListener("submit", function(event) {
+const loginForm = document.getElementById("login-form");
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
+const usernameError = document.getElementById("username-error");
+const passwordError = document.getElementById("password-error");
+const loginMessage = document.getElementById("login-message");
 
-    event.preventDefault();
 
-    // Get form elements
-    let username = document.getElementById("username");
-    let password = document.getElementById("password");
+/* ---------- Small helpers ---------- */
 
-    let usernameError = document.getElementById("username-error");
-    let passwordError = document.getElementById("password-error");
-    let message = document.getElementById("login-message");
+function showFieldError(input, errorElement, text) {
+    errorElement.textContent = text;
+    input.classList.add("input-error");
+}
 
-    let valid = true;
-
-    // Clear previous errors
+function clearLoginErrors() {
     usernameError.textContent = "";
     passwordError.textContent = "";
+    usernameInput.classList.remove("input-error");
+    passwordInput.classList.remove("input-error");
+    loginMessage.textContent = "";
+    loginMessage.style.display = "none";
+}
 
-    username.classList.remove("input-error");
-    password.classList.remove("input-error");
+function showLoginMessage(text) {
+    loginMessage.textContent = text;
+    loginMessage.style.display = "block";
+}
 
-    message.textContent = "";
-    message.style.display = "none";
+// Errors disappear as soon as the user starts typing again
+[usernameInput, passwordInput].forEach(function (input) {
+    input.addEventListener("input", clearLoginErrors);
+});
 
-    // Validate username
-    if (username.value.trim() === "") {
 
-        usernameError.textContent = "Email or username is required.";
-        username.classList.add("input-error");
+/* ---------- Coming back from Register ----------
+   register.js sends new clients here with ?user=their.username,
+   so the username is already filled in. */
+const sentUsername = new URLSearchParams(window.location.search).get("user");
+if (sentUsername) {
+    usernameInput.value = sentUsername;
+    passwordInput.focus();
+}
 
+
+/* ---------- Submit ---------- */
+
+loginForm.addEventListener("submit", function (event) {
+    event.preventDefault();                     // don't reload the page
+    clearLoginErrors();
+
+    // 1. Required fields (every error shows at once)
+    let valid = true;
+    if (usernameInput.value.trim() === "") {
+        showFieldError(usernameInput, usernameError, "Email or username is required.");
         valid = false;
     }
-
-    // Validate password
-    if (password.value.trim() === "") {
-
-        passwordError.textContent = "Password is required.";
-        password.classList.add("input-error");
-
+    if (passwordInput.value.trim() === "") {
+        showFieldError(passwordInput, passwordError, "Password is required.");
         valid = false;
     }
-
-    // Stop if there are errors
     if (!valid) {
         return;
     }
 
-    // Successful validation
-    message.textContent = "Fields validated successfully! Demo mode.";
-    message.style.display = "block";
+    // 2. Does the account exist?
+    const account = findAccount(usernameInput.value);            // accounts.js
+    if (account === undefined) {
+        showFieldError(usernameInput, usernameError,
+            "No account found with this email or username. Try a demo account below.");
+        return;
+    }
 
+    // 3. Waiting for approval, or rejected?
+    const status = getAccountStatus(account);                     // accounts.js
+    if (status === "pending") {
+        const approver = account.role === "staff" ? "the Admin" : "Staff";
+        showLoginMessage("Your " + ROLE_NAMES[account.role].toLowerCase() +
+            " account is waiting for approval by " + approver +
+            ". You can log in as soon as it is approved.");
+        return;
+    }
+    if (status === "rejected") {
+        showLoginMessage("This account was not approved. Please contact CMS support.");
+        return;
+    }
+
+    // 4. Go to the role's area
+    window.location.href = ROLE_HOME[account.role];
 });

@@ -3,45 +3,16 @@
    The order to show comes from the link, e.g.
        client_orders.html?order=1002
    (the "View" buttons on My Orders link here).
-   1. Sample orders (the same four as on My Orders)
+   1. Orders: from js/orders.js (shared with the courier pages)
    2. Read which order was asked for
    3. Fill the page: title, status steps, information, map
    4. Proof of Delivery pop-up (<dialog>)
    ========================================================= */
 
 /* ---------------------------------------------------------
-   1. SAMPLE ORDERS — same data as the My Orders table.
-   Coordinates = [latitude, longitude] of each city.
-   status: "Initiated" | "In Progress" | "Completed" | "Cancelled"
-   In Sprint 2 this will come from the database (ORDER table).
+   1. THE ORDERS come from js/orders.js (getOrder), the same
+   data as My Orders and the courier pages.
    --------------------------------------------------------- */
-const CLIENT_ORDERS = {
-    "1001": {
-        origin: "Porto", originCoords: [41.1496, -8.6109],
-        destination: "Aveiro", destinationCoords: [40.6405, -8.6538],
-        status: "Completed", date: "15/10/2026", courier: "Diogo Silva",
-        products: ["Books (1 unit, 5 kg)", "Shoes (1 unit, 3 kg)"]
-    },
-    "1002": {
-        origin: "Braga", originCoords: [41.5454, -8.4265],
-        destination: "Porto", destinationCoords: [41.1496, -8.6109],
-        status: "In Progress", date: "18/10/2026", courier: "Diogo Silva",
-        products: ["Laptop (1 unit, 3 kg)"]
-    },
-    "1003": {
-        origin: "Lisboa", originCoords: [38.7223, -9.1393],
-        destination: "Coimbra", destinationCoords: [40.2033, -8.4103],
-        status: "Initiated", date: "20/10/2026", courier: "Not assigned yet",
-        products: ["Kitchen set (1 unit, 12 kg)"]
-    },
-    "1004": {
-        origin: "Viana do Castelo", originCoords: [41.6932, -8.8329],
-        destination: "Braga", destinationCoords: [41.5454, -8.4265],
-        status: "Cancelled", date: "21/10/2026", courier: "—",
-        products: ["Office chair (1 unit, 7 kg)"]
-    }
-};
-
 const STATUS_STEPS = ["Initiated", "In Progress", "Completed"];
 
 
@@ -54,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
        --------------------------------------------------------- */
     const parameters = new URLSearchParams(window.location.search);
     const orderId = parameters.get('order') || '1001';
-    const order = CLIENT_ORDERS[orderId];
+    const order = getOrder(orderId);                     // orders.js
 
     // Unknown number: a clear message instead of a broken page
     if (order === undefined) {
@@ -73,16 +44,19 @@ document.addEventListener('DOMContentLoaded', () => {
        3. FILL THE PAGE
        --------------------------------------------------------- */
     document.title = 'CMS - Order #' + orderId;
-    document.getElementById('orderTitle').textContent = 'Order #' + orderId + ' · ' + order.date;
+    document.getElementById('orderTitle').textContent = 'Order #' + orderId + ' · ' + orderDate(order.created);
     document.getElementById('originValue').textContent = order.origin + ' (' + order.originCoords.join(' ; ') + ')';
     document.getElementById('destinationValue').textContent = order.destination + ' (' + order.destinationCoords.join(' ; ') + ')';
-    document.getElementById('courierValue').textContent = order.courier;
+    const courierText = order.courier === null
+        ? (order.status === 'Cancelled' ? '—' : 'Not assigned yet')
+        : order.courier + (order.vehicle ? ' (' + order.vehicle + ')' : '');
+    document.getElementById('courierValue').textContent = courierText;
 
     const productsList = document.getElementById('productsList');
     productsList.innerHTML = '';
     order.products.forEach((product) => {
         const item = document.createElement('li');
-        item.textContent = product;
+        item.textContent = productText(product);         // orders.js
         productsList.append(item);
     });
 
@@ -100,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         podAction.append(note);
     }
     document.getElementById('podOrder').textContent = '#' + orderId;
-    document.getElementById('podCourier').textContent = order.courier;
+    document.getElementById('podCourier').textContent = order.courier || '—';
 
     // Map with the route between the two cities (map.js)
     const mapElement = document.getElementById('map');
@@ -118,7 +92,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnViewPod && podDialog) {
         btnViewPod.addEventListener('click', () => {
-            const savedSignature = localStorage.getItem('savedSignature');
+            // The proof saved by the courier for THIS order
+            // (courier-proof-delivery.html saves signature_ID or photo_ID)
+            let savedSignature = null;
+            try {
+                savedSignature = localStorage.getItem('signature_' + orderId) ||
+                    localStorage.getItem('photo_' + orderId);
+            } catch (error) {
+                savedSignature = null;
+            }
             signatureContainer.innerHTML = '';
 
             if (savedSignature) {
@@ -132,7 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 const empty = document.createElement('span');
                 empty.className = 'text-muted';
-                empty.textContent = '✍️ No signature or photo saved yet.';
+                empty.textContent = order.deliveredOn
+                    ? '✍️ Signed by the recipient on ' + orderDate(order.deliveredOn) + '. (Sample order: the image is not stored.)'
+                    : '✍️ No signature or photo saved yet.';
                 signatureContainer.append(empty);
             }
             podDialog.showModal();

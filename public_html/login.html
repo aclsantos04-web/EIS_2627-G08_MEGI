@@ -11,6 +11,7 @@
    
 <link rel="stylesheet" href="css/cms-lara.css">
 <link rel="stylesheet" href="css/public-header.css">
+<link rel="stylesheet" href="css/demo-access.css">
 
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,7 +67,7 @@
 
             <h1>Welcome Back!</h1>
 
-            <form id="login-form" novalidate=>
+            <form id="login-form" novalidate>
 
                 <label for="username">Email or username</label>
                 <input type="text" id="username"
@@ -101,9 +102,48 @@
 
             </form>
 
+            <!-- ===== DEMO ACCOUNTS =====
+                 One click opens each role's area (plain links, no
+                 JavaScript needed). Typing the same username in the
+                 form above also works (js/login.js). -->
+            <section class="demo-access" id="demo" aria-labelledby="demoTitle">
+                <p class="demo-divider"><span id="demoTitle">or explore a demo account</span></p>
+
+                <div class="demo-grid">
+                    <a href="my-orders.html" class="demo-card">
+                        <span class="demo-icon" aria-hidden="true">📦</span>
+                        <strong>Client</strong>
+                        <small>Marta · orders &amp; products</small>
+                    </a>
+                    <a href="courier-available-orders.html" class="demo-card">
+                        <span class="demo-icon" aria-hidden="true">🚚</span>
+                        <strong>Courier</strong>
+                        <small>Diogo · routes &amp; vehicles</small>
+                    </a>
+                    <a href="staff_courier_approvals.html" class="demo-card">
+                        <span class="demo-icon" aria-hidden="true">📋</span>
+                        <strong>Staff</strong>
+                        <small>Rita · approvals &amp; alerts</small>
+                    </a>
+                    <a href="admin_dashboard.html" class="demo-card">
+                        <span class="demo-icon" aria-hidden="true">💼</span>
+                        <strong>Admin</strong>
+                        <small>Carlos · dashboard &amp; staff</small>
+                    </a>
+                </div>
+
+                <p class="demo-hint">
+                    Or log in with <code>marta.ferreira</code>, <code>diogo.silva</code>,
+                    <code>rita.almeida</code> or <code>admin</code> and any password.
+                </p>
+
+                <p class="demo-register">New here? <a href="register.html">Create an account</a></p>
+            </section>
+
         </section>
 
     </main>
+<script src="js/accounts.js"></script>
 <script src="js/login.js"></script>
 
 <!-- PASSWORD RESET POPUP -->

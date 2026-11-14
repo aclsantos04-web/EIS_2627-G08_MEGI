@@ -11,6 +11,7 @@
    
 <link rel="stylesheet" href="css/cms-lara.css">
 <link rel="stylesheet" href="css/public-header.css">
+<link rel="stylesheet" href="css/demo-access.css">
 
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,7 +55,7 @@
             Login
         </a>
 
-        <a href="register.html"
+        <a href="register.html" aria-current="page"
            class="public-btn public-btn-outline">
             Get Started
         </a>
@@ -194,9 +195,25 @@
 
             </form>
 
+            <!-- ===== AFTER REGISTERING =====
+                 register.js hides the form and fills this box:
+                 - Client: can log in straight away
+                 - Courier: waits for Staff approval
+                 - Staff: waits for Admin approval -->
+            <div id="register-result" class="register-result" hidden aria-live="polite">
+                <div id="result-icon" class="result-icon" aria-hidden="true"></div>
+                <h2 id="result-title"></h2>
+                <p id="result-text"></p>
+                <ol class="result-steps" id="result-steps" aria-label="Account steps"></ol>
+                <div class="result-actions" id="result-actions"></div>
+            </div>
+
+            <p class="demo-register" id="register-login-link">Already have an account? <a href="login.html">Log in</a></p>
+
         </section>
 
     </main>
+    <script src="js/accounts.js"></script>
     <script src="js/register.js"></script>
 </body>
 </html>

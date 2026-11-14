@@ -198,95 +198,128 @@ document.getElementById("register-form")
         );
     }
 
+    /* USERNAME AND EMAIL MUST BE NEW (accounts.js) */
+
+    if (username.value.trim() !== "" && findAccount(username.value)) {
+        showError(
+            username,
+            "This username is already taken."
+        );
+    }
+
+    if (emailPattern.test(email.value.trim()) && findAccount(email.value)) {
+        showError(
+            email,
+            "An account with this email already exists. Log in instead."
+        );
+    }
+
     /* STOP IF ANY FIELD IS INVALID */
 
     if (!valid) {
         return;
     }
 
-    /* SUCCESS - ROLE NAVIGATION */
+    /* SUCCESS - SAVE THE ACCOUNT AND SHOW WHAT HAPPENS NEXT */
 
-    const rolePages = {
-        client: "client_new_order.html",
-        courier: "courier-available-orders.html",
-        staff: "staff_courier_approvals.html"
-    };
+    const account = registerAccount({            // accounts.js
+        username: username.value.trim(),
+        name: fullName.value.trim(),
+        email: email.value.trim(),
+        phone: phone.value.trim(),
+        nif: nifValue,
+        role: role.value
+    });
 
-    const roleNames = {
-        client: "Client",
-        courier: "Courier",
-        staff: "Staff"
-    };
+    showRegisterResult(account);
+});
 
-    if (message) {
 
-        const text = document.createElement("p");
+/* ==========================================
+   AFTER REGISTERING
+   The form is replaced by a box that explains
+   the next step for each role:
+   - Client:  account ready, log in now
+   - Courier: Staff must approve the account
+   - Staff:   the Admin must approve the account
+   (the rules from the brief and the forum)
+========================================== */
 
-        
+function showRegisterResult(account) {
 
-        
-if (role.value === "courier") {
+    const form = document.getElementById("register-form");
+    const result = document.getElementById("register-result");
+    const icon = document.getElementById("result-icon");
+    const title = document.getElementById("result-title");
+    const text = document.getElementById("result-text");
+    const steps = document.getElementById("result-steps");
+    const actions = document.getElementById("result-actions");
 
-    text.textContent =
-        "Form validated successfully! " +
-        "Courier accounts require Staff approval. " ;
+    const firstName = account.name.split(" ")[0];
 
-} else if (role.value === "staff") {
+    if (account.role === "client") {
 
-    text.textContent =
-        "Form validated successfully! " +
-        "Staff accounts require Admin approval. " ;
+        icon.textContent = "✅";
+        icon.className = "result-icon is-ready";
+        title.textContent = "Welcome, " + firstName + "!";
+        text.textContent =
+            "Your client account is ready. Log in to place your " +
+            "first order and follow it until it is delivered.";
 
-} else {
+        addSteps(steps, ["Registered", "Log in"], 1);
+        addLink(actions, "Log in now", "login.html?user=" +
+            encodeURIComponent(account.username), true);
 
-    text.textContent =
-        "Form validated successfully! " +
-        "You can now preview the Client area.";
+    } else {
 
+        const approver = account.role === "courier" ? "Staff" : "the Admin";
+        const page = account.role === "courier"
+            ? "Courier Approvals"
+            : "Staff Approvals";
+
+        icon.textContent = "⏳";
+        icon.className = "result-icon is-waiting";
+        title.textContent = "Account created, waiting for approval";
+        text.textContent =
+            "Thanks, " + firstName + "! " + capitalize(approver) +
+            " will review your " + account.role + " account before you can log in. " +
+            "Your request now appears on the " + page + " page.";
+
+        addSteps(steps, ["Registered", "Approval by " + approver, "Log in"], 1);
+        addLink(actions, "Back to home", "cms-home.html", true);
+        addLink(actions, "Go to login", "login.html", false);
+    }
+
+    form.hidden = true;
+    document.getElementById("register-login-link").hidden = true;
+    result.hidden = false;
+    result.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
+/* Steps list: the ones before "current" are done,
+   "current" is highlighted, the rest are still to come */
+function addSteps(list, names, current) {
+    list.replaceChildren();
+    names.forEach(function (name, index) {
+        const item = document.createElement("li");
+        item.textContent = (index < current ? "✓ " : "") + name;
+        if (index < current) {
+            item.className = "done";
+        } else if (index === current) {
+            item.className = "now";
+        }
+        list.append(item);
+    });
+}
 
-        const link = document.createElement("a");
+function addLink(container, text, href, isPrimary) {
+    const link = document.createElement("a");
+    link.textContent = text;
+    link.href = href;
+    link.className = isPrimary ? "result-primary" : "result-secondary";
+    container.append(link);
+}
 
-        link.href = rolePages[role.value];
-
-        
-link.textContent =
-    role.value === "client"
-        ? "Go to Client Area →"
-        : "Preview " + roleNames[role.value] + " Area →";
-
-
-        link.className = "register-button";
-
-        link.style.display = "block";
-        link.style.textAlign = "center";
-        link.style.textDecoration = "none";
-        link.style.marginTop = "15px";
-
-        message.appendChild(text);
-        message.appendChild(link);
-
-        message.style.display = "block";
-        
-document.querySelector('#register-form button[type="submit"]').style.display = "none";
-
-    }
-
-});
-
-
-/* Hide previous success message when Role changes */
-
-document.getElementById("reg-role").addEventListener("change", function () {
-    const message = document.getElementById("register-message");
-
-    if (message) {
-        message.style.display = "none";
-        message.replaceChildren();
-    }
-    
-    
-document.querySelector('#register-form button[type="submit"]').style.display = "";
-
-});
+function capitalize(text) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+}

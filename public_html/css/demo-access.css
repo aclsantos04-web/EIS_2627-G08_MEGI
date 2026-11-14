@@ -1,0 +1,255 @@
+/* =========================================================
+   demo-access.css — DEMO ACCOUNTS AND REGISTER RESULT
+   Used by: login.html (the four demo cards)
+            register.html (the box shown after registering)
+   Same blues, fonts and gradients as the rest of the CMS.
+   ========================================================= */
+
+
+/* ---------- Login page: a bit wider, to fit the cards ---------- */
+.login-container {
+    max-width: 460px;
+}
+
+
+/* ---------- "or explore a demo account" line ----------
+   The text sits on a thin line: ::before and ::after are the
+   two halves of the line, the text is in the middle (flexbox). */
+.demo-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 26px 0 16px;
+    color: #61758a;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.demo-divider::before,
+.demo-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #dae7f2;
+}
+
+
+/* ---------- The four cards (2 x 2) ---------- */
+.demo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.demo-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 14px 14px 12px;
+    border: 1px solid #c5e0f0;
+    border-radius: 12px;
+    background: #FFFFFF;
+    color: #17212b;
+    font-family: 'Inter', Arial, sans-serif;
+    text-decoration: none;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+/* Gradient line on top, like the other cards of the site */
+.demo-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #1B4B91, #2F73B8, #7FC7F2);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.demo-card:hover,
+.demo-card:focus-visible {
+    transform: translateY(-2px);
+    border-color: #2F73B8;
+    box-shadow: 0 10px 22px rgba(27, 75, 145, 0.14);
+    outline: none;
+}
+
+.demo-card:hover::before,
+.demo-card:focus-visible::before {
+    opacity: 1;
+}
+
+.demo-icon {
+    font-size: 22px;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.demo-card strong {
+    font-family: 'Poppins', Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1B4B91;
+}
+
+.demo-card small {
+    color: #61758a;
+    font-size: 12px;
+}
+
+
+/* ---------- Text under the cards ---------- */
+.demo-hint,
+.demo-register {
+    margin: 14px 0 0;
+    color: #61758a;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.demo-hint code {
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: #eaf4fb;
+    color: #1B4B91;
+    font-size: 11.5px;
+}
+
+.demo-register {
+    font-size: 13px;
+}
+
+.demo-register a {
+    color: #1B4B91;
+    font-weight: 600;
+}
+
+
+/* ---------- Register: the box shown after creating an account ---------- */
+.register-result {
+    text-align: center;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+.register-result[hidden] {
+    display: none;
+}
+
+.result-icon {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    margin: 4px auto 18px;
+    border-radius: 50%;
+    font-size: 30px;
+}
+
+.result-icon.is-ready {        /* client: can log in now */
+    background: #e7f5ed;
+}
+
+.result-icon.is-waiting {      /* courier / staff: waiting for approval */
+    background: #fff4dc;
+}
+
+.register-result h2 {
+    margin: 0 0 10px;
+    color: #17212b;
+    font-family: 'Poppins', Arial, sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.register-result p {
+    margin: 0 auto 10px;
+    max-width: 440px;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* The three steps: Registered → Approval → Log in */
+.result-steps {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin: 20px 0 24px;
+    padding: 0;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.result-steps li {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #eef3f8;
+    color: #61758a;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.result-steps li.done {
+    background: #e7f5ed;
+    color: #236345;
+}
+
+.result-steps li.now {
+    background: linear-gradient(135deg, #1B4B91, #2F73B8);
+    color: #FFFFFF;
+}
+
+.result-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.result-actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 160px;
+    padding: 12px 20px;
+    border: 2px solid #1B4B91;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.result-actions .result-primary {
+    background: linear-gradient(135deg, #1B4B91, #2F73B8);
+    color: #FFFFFF;
+}
+
+.result-actions .result-secondary {
+    background: #FFFFFF;
+    color: #1B4B91;
+}
+
+
+/* ---------- Phones ---------- */
+@media (max-width: 420px) {
+    .demo-grid {
+        gap: 8px;
+    }
+
+    .demo-card {
+        padding: 12px 10px 10px;
+    }
+}
+
+.register-container form[hidden],
+.register-container p[hidden] {
+    display: none;
+}

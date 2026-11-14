@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,6 +38,10 @@
             <header class="page-header">
                 <h1>Courier Approvals</h1>
             </header>
+            <p class="text-muted page-intro">Couriers can only accept orders after Staff validate their account.</p>
+
+            <!-- Confirmation after Approve / Reject (js/staff_approvals.js) -->
+            <div class="alert alert-success staff-feedback" id="staffFeedback" role="status" hidden></div>
 
             <!-- Tabela com a classe padrão .table-wrap do style.css -->
             <div class="table-wrap">
@@ -51,58 +55,20 @@
                         </tr>
                     </thead>
                     <tbody id="courierTableBody">
-                        <tr data-id="1">
-                            <td><strong>Diogo Silva</strong></td>
-                            <td>diogo.silva@feup.pt</td>
-                            <td>2026-10-12</td>
-                            <td>
-                                <div class="table-actions">
-                                    <button type="button" class="btn btn-small btn-success btn-approve">Approve</button>
-                                    <button type="button" class="btn btn-small btn-danger btn-reject">Reject</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr data-id="2">
-                            <td><strong>Tiago Ferreira</strong></td>
-                            <td>tiago.ferreira@hotmail.com</td>
-                            <td>2026-10-18</td>
-                            <td>
-                                <div class="table-actions">
-                                    <button type="button" class="btn btn-small btn-success btn-approve">Approve</button>
-                                    <button type="button" class="btn btn-small btn-danger btn-reject">Reject</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr data-id="3">
-                            <td><strong>Inês Santos</strong></td>
-                            <td>ines.santos@outlook.com</td>
-                            <td>2026-10-22</td>
-                            <td>
-                                <div class="table-actions">
-                                    <button type="button" class="btn btn-small btn-success btn-approve">Approve</button>
-                                    <button type="button" class="btn btn-small btn-danger btn-reject">Reject</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr data-id="4">
-                            <td><strong>Miguel Rocha</strong></td>
-                            <td>miguel.rocha@yahoo.com</td>
-                            <td>2026-10-25</td>
-                            <td>
-                                <div class="table-actions">
-                                    <button type="button" class="btn btn-small btn-success btn-approve">Approve</button>
-                                    <button type="button" class="btn btn-small btn-danger btn-reject">Reject</button>
-                                </div>
-                            </td>
-                        </tr>
+                        <!-- Filled by js/staff_approvals.js from js/accounts.js:
+                             the sample couriers waiting for approval plus anyone
+                             who registered as a courier on this browser. -->
                     </tbody>
                 </table>
             </div>
         </main>
     </div>
 
+    <script src="js/accounts.js"></script>
     <script src="js/staff_approvals.js"></script>
 <!-- Top bar (notifications + user menu), built by js/topbar.js -->
+<!-- Shared data, so the top bar counts match the pages -->
+<script src="js/vehicles.js"></script>
 <script src="js/topbar.js"
         data-name="Rita Almeida"
         data-role="Staff"

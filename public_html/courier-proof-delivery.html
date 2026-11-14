@@ -212,6 +212,10 @@
             <div class="page-header">
                 <h1>Proof of Delivery</h1>
             </div>
+            <p class="page-intro" id="proofOrderLine"></p>
+
+            <!-- Shown when there is no delivery in progress -->
+            <div id="noDelivery" class="card" hidden></div>
 
             <section class="proof-container">
 
@@ -347,6 +351,32 @@
     </div>
 
     <!-- JS da assinatura -->
+    <!-- Shared data, and which order this proof is for -->
+    <script src="js/validation.js"></script>
+    <script src="js/orders.js"></script>
+    <script>
+        /* The proof can only be given for an order that is In Progress */
+        (function () {
+            const wanted = new URLSearchParams(window.location.search).get("order");
+            const active = getActiveOrder();                             // orders.js
+            const order = wanted ? getOrder(wanted) : active;
+            if (order && order.status === "In Progress") {
+                document.getElementById("proofOrderLine").textContent =
+                    "Order #" + order.id + " · " + order.origin + " → " + order.destination +
+                    " · " + orderLoadText(order) + " · for " + order.client;
+                return;
+            }
+            document.querySelector(".proof-container").hidden = true;
+            const box = document.getElementById("noDelivery");
+            box.hidden = false;
+            box.append(createEmptyState(                                // validation.js
+                "ti-signature",
+                "No delivery in progress",
+                "Start a delivery on Active Route first. When you arrive, press Complete Delivery to sign or take a photo here.",
+                { text: "Go to Active Route", href: "courier-active-route.html" }
+            ));
+        })();
+    </script>
     <script src="js/signature.js"></script>
 
     <!-- JS da câmara e Proof of Delivery -->

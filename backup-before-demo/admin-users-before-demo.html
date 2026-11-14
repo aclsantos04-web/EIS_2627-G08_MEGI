@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - User List</title>
+
+    <!-- Estilos comuns do projeto -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Apenas estilos específicos desta página -->
+    <style>
+        .users-card {
+            padding: 24px;
+        }
+
+        .users-card-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .users-card-header h2 {
+            margin-bottom: 4px;
+        }
+
+        .users-card-header p {
+            margin: 0;
+        }
+
+        .user-tools {
+            display: flex;
+            gap: 10px;
+        }
+
+        .user-tools input {
+            width: 220px;
+        }
+
+        .user-tools select {
+            width: 150px;
+        }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(
+                135deg,
+                var(--primary),
+                var(--accent-blue)
+            );
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .user-actions {
+            white-space: nowrap;
+        }
+
+        .users-card .table-wrap {
+            margin-bottom: 0;
+        }
+
+        .user-dialog-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .user-dialog-header h2 {
+            margin: 0;
+        }
+
+        .dialog-close {
+            width: 34px;
+            height: 34px;
+            padding: 0;
+            border: none;
+            border-radius: 50%;
+            background: var(--page-soft);
+            color: var(--primary);
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .dialog-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .dialog-user .user-avatar {
+            width: 52px;
+            height: 52px;
+            font-size: 15px;
+        }
+
+        .dialog-user h3 {
+            margin: 0 0 3px;
+        }
+
+        .dialog-user p {
+            margin: 0;
+        }
+
+        @media (max-width: 760px) {
+            .users-card-header {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .user-tools {
+                flex-direction: column;
+            }
+
+            .user-tools input,
+            .user-tools select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- Sidebar -->
+    <nav class="sidebar" aria-label="Admin menu">
+
+        <a href="index.html"
+           class="sidebar-logo"
+           aria-label="CMS – go to homepage">
+
+            <svg viewBox="0 0 64 40" aria-hidden="true">
+                <rect x="2" y="4" width="34" height="24"
+                      fill="currentColor"/>
+
+                <path d="M38 12h12l10 10v6H38z"
+                      fill="currentColor"/>
+
+                <circle cx="14" cy="32" r="5"
+                        fill="#fff"
+                        stroke="currentColor"
+                        stroke-width="3"/>
+
+                <circle cx="48" cy="32" r="5"
+                        fill="#fff"
+                        stroke="currentColor"
+                        stroke-width="3"/>
+            </svg>
+
+            CMS
+        </a>
+
+        <div class="sidebar-role">
+            <span class="role-icon" aria-hidden="true">💼</span>
+            Admin Panel
+        </div>
+
+        <a href="admin-staff.html">
+            <i class="ti ti-user-check" aria-hidden="true"></i>
+            Staff Approvals
+        </a>
+
+        <a href="admin-users.html" class="active">
+            <i class="ti ti-users" aria-hidden="true"></i>
+            Users
+        </a>
+
+        <a href="admin_dashboard.html">
+            <i class="ti ti-layout-dashboard" aria-hidden="true"></i>
+            Dashboard
+        </a>
+
+        <a href="admin_profile.html">
+            <i class="ti ti-user" aria-hidden="true"></i>
+            Profile
+        </a>
+
+        <a href="login.html" class="logout">
+            <i class="ti ti-logout" aria-hidden="true"></i>
+            Log out
+        </a>
+
+    </nav>
+
+
+    <!-- Conteúdo principal -->
+    <main class="app-content">
+
+        <div class="page-header">
+            <div>
+                <h1>User List</h1>
+                <p class="text-muted">
+                    View and manage registered CMS users.
+                </p>
+            </div>
+        </div>
+
+
+        <!-- Lista de utilizadores -->
+        <section class="card users-card">
+
+            <div class="users-card-header">
+
+                <div>
+                    <h2>Registered Users</h2>
+
+                    <p class="text-muted">
+                        Select a user to view or edit their account information.
+                    </p>
+                </div>
+
+                <div class="user-tools">
+
+                    <input
+                        type="search"
+                        id="userSearch"
+                        placeholder="Search users...">
+
+                    <select id="typeFilter">
+                        <option value="all">All types</option>
+                        <option value="client">Client</option>
+                        <option value="courier">Courier</option>
+                        <option value="staff">Staff</option>
+                        <option value="admin">Admin</option>
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Registration Date</th>
+                            <th>Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="usersTable">
+
+                        <tr data-type="courier">
+
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar">JS</div>
+                                    <strong>João Silva</strong>
+                                </div>
+                            </td>
+
+                            <td>joao.silva@cms.com</td>
+
+                            <td>02/11/2026</td>
+
+                            <td>
+                                <span class="badge badge-info">
+                                    Courier
+                                </span>
+                            </td>
+
+                            <td class="user-actions">
+                                <button
+                                    type="button"
+                                    class="btn btn-outline btn-small edit-user">
+                                    <i class="ti ti-edit"></i>
+                                    Edit
+                                </button>
+                            </td>
+
+                        </tr>
+
+
+                        <tr data-type="staff">
+
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar">ML</div>
+                                    <strong>Maria Lopes</strong>
+                                </div>
+                            </td>
+
+                            <td>maria.lopes@cms.com</td>
+
+                            <td>04/11/2026</td>
+
+                            <td>
+                                <span class="badge badge-info">
+                                    Staff
+                                </span>
+                            </td>
+
+                            <td class="user-actions">
+                                <button
+                                    type="button"
+                                    class="btn btn-outline btn-small edit-user">
+                                    <i class="ti ti-edit"></i>
+                                    Edit
+                                </button>
+                            </td>
+
+                        </tr>
+
+
+                        <tr data-type="client">
+
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar">CM</div>
+                                    <strong>Carlos Mendes</strong>
+                                </div>
+                            </td>
+
+                            <td>carlos.mendes@cms.com</td>
+
+                            <td>06/11/2026</td>
+
+                            <td>
+                                <span class="badge badge-info">
+                                    Client
+                                </span>
+                            </td>
+
+                            <td class="user-actions">
+                                <button
+                                    type="button"
+                                    class="btn btn-outline btn-small edit-user">
+                                    <i class="ti ti-edit"></i>
+                                    Edit
+                                </button>
+                            </td>
+
+                        </tr>
+
+
+                        <tr data-type="courier">
+
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar">AR</div>
+                                    <strong>Ana Ribeiro</strong>
+                                </div>
+                            </td>
+
+                            <td>ana.ribeiro@cms.com</td>
+
+                            <td>08/11/2026</td>
+
+                            <td>
+                                <span class="badge badge-info">
+                                    Courier
+                                </span>
+                            </td>
+
+                            <td class="user-actions">
+                                <button
+                                    type="button"
+                                    class="btn btn-outline btn-small edit-user">
+                                    <i class="ti ti-edit"></i>
+                                    Edit
+                                </button>
+                            </td>
+
+                        </tr>
+
+
+                        <tr data-type="client">
+
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar">RF</div>
+                                    <strong>Rita Ferreira</strong>
+                                </div>
+                            </td>
+
+                            <td>rita.ferreira@cms.com</td>
+
+                            <td>10/11/2026</td>
+
+                            <td>
+                                <span class="badge badge-info">
+                                    Client
+                                </span>
+                            </td>
+
+                            <td class="user-actions">
+                                <button
+                                    type="button"
+                                    class="btn btn-outline btn-small edit-user">
+                                    <i class="ti ti-edit"></i>
+                                    Edit
+                                </button>
+                            </td>
+
+                        </tr>
+
+
+                        <tr data-type="admin">
+
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar">CP</div>
+                                    <strong>Carlos Pinto</strong>
+                                </div>
+                            </td>
+
+                            <td>admin@cms.pt</td>
+
+                            <td>01/09/2026</td>
+
+                            <td>
+                                <span class="badge badge-info">
+                                    Admin
+                                </span>
+                            </td>
+
+                            <td class="user-actions">
+                                <button
+                                    type="button"
+                                    class="btn btn-outline btn-small edit-user">
+                                    <i class="ti ti-edit"></i>
+                                    Edit
+                                </button>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- Janela para editar utilizador -->
+        <dialog id="userDialog">
+
+            <div class="user-dialog-header">
+
+                <h2>User Information</h2>
+
+                <button
+                    type="button"
+                    id="closeDialog"
+                    class="dialog-close"
+                    aria-label="Close">
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="dialog-user">
+
+                <div
+                    class="user-avatar"
+                    id="dialogAvatar">
+                    JS
+                </div>
+
+                <div>
+                    <h3 id="dialogName">
+                        João Silva
+                    </h3>
+
+                    <p
+                        class="text-muted"
+                        id="dialogSubtitle">
+                        Courier account
+                    </p>
+                </div>
+
+            </div>
+
+
+            <form id="userForm">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="editName">
+                            Full name
+                        </label>
+
+                        <input
+                            id="editName"
+                            type="text"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="editEmail">
+                            Email
+                        </label>
+
+                        <input
+                            id="editEmail"
+                            type="email"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="editType">
+                            User type
+                        </label>
+
+                        <select id="editType">
+
+                            <option value="client">
+                                Client
+                            </option>
+
+                            <option value="courier">
+                                Courier
+                            </option>
+
+                            <option value="staff">
+                                Staff
+                            </option>
+
+                            <option value="admin">
+                                Admin
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="editDate">
+                            Registration date
+                        </label>
+
+                        <input
+                            id="editDate"
+                            type="text"
+                            readonly>
+
+                        <span class="text-muted">
+                            Registration date cannot be changed.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        id="cancelEdit"
+                        class="btn btn-outline">
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </dialog>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    const usersTable =
+        document.getElementById("usersTable");
+
+    const userRows =
+        usersTable.querySelectorAll("tr");
+
+    const userSearch =
+        document.getElementById("userSearch");
+
+    const typeFilter =
+        document.getElementById("typeFilter");
+
+    const userDialog =
+        document.getElementById("userDialog");
+
+    const userForm =
+        document.getElementById("userForm");
+
+    const dialogAvatar =
+        document.getElementById("dialogAvatar");
+
+    const dialogName =
+        document.getElementById("dialogName");
+
+    const dialogSubtitle =
+        document.getElementById("dialogSubtitle");
+
+    const editName =
+        document.getElementById("editName");
+
+    const editEmail =
+        document.getElementById("editEmail");
+
+    const editType =
+        document.getElementById("editType");
+
+    const editDate =
+        document.getElementById("editDate");
+
+    const closeDialog =
+        document.getElementById("closeDialog");
+
+    const cancelEdit =
+        document.getElementById("cancelEdit");
+
+    let selectedRow = null;
+
+
+    /* Abrir dados do utilizador */
+    document.querySelectorAll(".edit-user")
+        .forEach(function (button) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    selectedRow =
+                        button.closest("tr");
+
+                    const name =
+                        selectedRow
+                            .querySelector(".user-cell strong")
+                            .textContent;
+
+                    const email =
+                        selectedRow.children[1]
+                            .textContent.trim();
+
+                    const date =
+                        selectedRow.children[2]
+                            .textContent.trim();
+
+                    const type =
+                        selectedRow.dataset.type;
+
+
+                    editName.value = name;
+                    editEmail.value = email;
+                    editDate.value = date;
+                    editType.value = type;
+
+
+                    const names =
+                        name.split(" ");
+
+                    dialogAvatar.textContent =
+                        names[0].charAt(0) +
+                        names[names.length - 1].charAt(0);
+
+
+                    dialogName.textContent =
+                        name;
+
+                    dialogSubtitle.textContent =
+                        capitalize(type) +
+                        " account";
+
+
+                    userDialog.showModal();
+
+                }
+            );
+
+        });
+
+
+    /* Guardar alterações */
+    userForm.addEventListener(
+        "submit",
+        function (event) {
+
+            event.preventDefault();
+
+            if (!selectedRow) {
+                return;
+            }
+
+
+            const newName =
+                editName.value.trim();
+
+            const newEmail =
+                editEmail.value.trim();
+
+            const newType =
+                editType.value;
+
+
+            selectedRow
+                .querySelector(".user-cell strong")
+                .textContent =
+                newName;
+
+
+            selectedRow.children[1]
+                .textContent =
+                newEmail;
+
+
+            selectedRow.dataset.type =
+                newType;
+
+
+            selectedRow.children[3]
+                .querySelector(".badge")
+                .textContent =
+                capitalize(newType);
+
+
+            /* Atualizar iniciais */
+            const names =
+                newName.split(" ");
+
+            const initials =
+                names[0].charAt(0) +
+                names[names.length - 1].charAt(0);
+
+
+            selectedRow
+                .querySelector(".user-avatar")
+                .textContent =
+                initials;
+
+
+            userDialog.close();
+
+            selectedRow = null;
+
+            filterUsers();
+
+        }
+    );
+
+
+    /* Pesquisa e filtro */
+    function filterUsers() {
+
+        const search =
+            userSearch.value
+                .toLowerCase();
+
+        const selectedType =
+            typeFilter.value;
+
+
+        userRows.forEach(
+            function (row) {
+
+                const text =
+                    row.textContent
+                        .toLowerCase();
+
+                const matchesSearch =
+                    text.includes(search);
+
+                const matchesType =
+                    selectedType === "all" ||
+                    row.dataset.type ===
+                    selectedType;
+
+
+                row.style.display =
+                    matchesSearch &&
+                    matchesType
+                        ? ""
+                        : "none";
+
+            }
+        );
+
+    }
+
+
+    userSearch.addEventListener(
+        "input",
+        filterUsers
+    );
+
+
+    typeFilter.addEventListener(
+        "change",
+        filterUsers
+    );
+
+
+    /* Fechar popup */
+    function closeUserDialog() {
+
+        userDialog.close();
+
+        selectedRow = null;
+
+    }
+
+
+    closeDialog.addEventListener(
+        "click",
+        closeUserDialog
+    );
+
+
+    cancelEdit.addEventListener(
+        "click",
+        closeUserDialog
+    );
+
+
+    /* Primeira letra maiúscula */
+    function capitalize(text) {
+
+        return (
+            text.charAt(0).toUpperCase() +
+            text.slice(1)
+        );
+
+    }
+
+</script>
+
+
+<!-- Topbar comum das páginas Admin -->
+<script
+    src="js/topbar.js"
+    data-name="Carlos Pinto"
+    data-role="Admin"
+    data-username="admin"
+    data-profile="admin_profile.html">
+</script>
+
+</body>
+</html>
