@@ -164,7 +164,7 @@
             
             if (!acceptOrder(selectedOrder)) { // orders.js
                 selectionError.textContent =
-                    "You already have an active order.";
+                    "This order is no longer available or you already have an active order.";
                 return;
             }
             window.location.href = "courier-active-route.html";
