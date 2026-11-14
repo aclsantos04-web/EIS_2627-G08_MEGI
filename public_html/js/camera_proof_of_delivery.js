@@ -57,46 +57,39 @@ const order =
 const proofContainer = document.querySelector(".proof-container");
 const noDelivery = document.getElementById("noDelivery");
 
-/* O POD só pode ser feito para a única entrega em curso */
-const validProofOrder =
+/* A encomenda do POD tem de ser a única encomenda ativa do Courier */
+const validActiveOrder =
+    activeForProof &&
     order &&
-    order.status === "In Progress" &&
-    order.courier === COURIER_NAME &&
-    order.vehicle;
-
+    String(order.id) === String(activeForProof.id) &&
+    order.courier === COURIER_NAME;
 
 /* Sem encomenda ativa */
 if (!activeForProof) {
-    if (proofContainer) {
-        proofContainer.hidden = true;
-    }
+    proofContainer.hidden = true;
 
-    if (noDelivery) {
-        noDelivery.hidden = false;
+    noDelivery.hidden = false;
+    noDelivery.className = "card";
 
-        noDelivery.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-state-icon">
-                    <i class="ti ti-route-off"></i>
-                </div>
-
-                <h2>No active order</h2>
-
-                <p>
-                    Accept an order on Available Orders to start a route
-                    before registering Proof of Delivery.
-                </p>
-
-                <a href="courier-available-orders.html"
-                   class="btn btn-primary">
-                    See available orders
-                </a>
-            </div>
-        `;
-    }
+    noDelivery.append(
+        createEmptyState(
+            "ti-route-off",
+            "No active order",
+            "Accept an order on Available Orders to see its route, choose a vehicle and start the delivery.",
+            {
+                text: "See available orders",
+                href: "courier-available-orders.html"
+            }
+        )
+    );
 }
 
-/* Existe encomenda ativa, mas ainda não foi escolhido um veículo */
+/* URL inválido ou encomenda diferente da active order */
+else if (!validActiveOrder) {
+    window.location.href = "courier-active-route.html";
+}
+
+/* Existe encomenda ativa, mas falta selecionar veículo */
 else if (!order.vehicle) {
     proofContainer.hidden = true;
 
@@ -116,7 +109,7 @@ else if (!order.vehicle) {
     );
 }
 
-/* Existe veículo, mas a entrega ainda não foi iniciada */
+/* O veículo foi selecionado, mas a entrega ainda não começou */
 else if (order.status !== "In Progress") {
     proofContainer.hidden = true;
 
