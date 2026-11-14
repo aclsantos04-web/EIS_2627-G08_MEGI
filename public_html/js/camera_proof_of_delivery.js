@@ -35,10 +35,18 @@ let capturedPhoto = null;
 
 /* ID da encomenda recebido no URL */
 const urlParams = new URLSearchParams(window.location.search);
+
 // The order comes from the link (?order=1003, sent by Active Route)
 // or, if the page was opened from the menu, from the active order (orders.js)
-const activeForProof = typeof getActiveOrder === "function" ? getActiveOrder() : null;
-const orderId = urlParams.get("order") || (activeForProof !== null ? String(activeForProof.id) : "");
+const activeForProof =
+    typeof getActiveOrder === "function"
+        ? getActiveOrder()
+        : null;
+
+const orderId =
+    urlParams.get("order") ||
+    (activeForProof !== null ? String(activeForProof.id) : "");
+
 
 /* Obter dados completos da encomenda */
 const order =
@@ -46,8 +54,90 @@ const order =
         ? getOrder(orderId)
         : null;
 
+const proofContainer = document.querySelector(".proof-container");
+const noDelivery = document.getElementById("noDelivery");
+
+/* O POD só pode ser feito para a única entrega em curso */
+const validProofOrder =
+    order &&
+    order.status === "In Progress" &&
+    order.courier === COURIER_NAME &&
+    order.vehicle;
+
+
+/* Sem encomenda ativa */
+if (!activeForProof) {
+    if (proofContainer) {
+        proofContainer.hidden = true;
+    }
+
+    if (noDelivery) {
+        noDelivery.hidden = false;
+
+        noDelivery.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="ti ti-route-off"></i>
+                </div>
+
+                <h2>No active order</h2>
+
+                <p>
+                    Accept an order on Available Orders to start a route
+                    before registering Proof of Delivery.
+                </p>
+
+                <a href="courier-available-orders.html"
+                   class="btn btn-primary">
+                    See available orders
+                </a>
+            </div>
+        `;
+    }
+}
+
+/* Existe encomenda ativa, mas ainda não foi escolhido um veículo */
+else if (!order.vehicle) {
+    proofContainer.hidden = true;
+
+    noDelivery.hidden = false;
+    noDelivery.className = "card";
+
+    noDelivery.append(
+        createEmptyState(
+            "ti-truck",
+            "Vehicle required",
+            "Select and confirm a vehicle on Active Route before registering Proof of Delivery.",
+            {
+                text: "Go to Active Route",
+                href: "courier-active-route.html"
+            }
+        )
+    );
+}
+
+/* Existe veículo, mas a entrega ainda não foi iniciada */
+else if (order.status !== "In Progress") {
+    proofContainer.hidden = true;
+
+    noDelivery.hidden = false;
+    noDelivery.className = "card";
+
+    noDelivery.append(
+        createEmptyState(
+            "ti-player-play",
+            "Delivery not started",
+            "Start the delivery on Active Route before registering Proof of Delivery.",
+            {
+                text: "Go to Active Route",
+                href: "courier-active-route.html"
+            }
+        )
+    );
+}
+
 /* Preencher o resumo da encomenda no Proof of Delivery */
-if (order) {
+else {
     const podOrderNumber = document.getElementById("podOrderNumber");
     const podStatus = document.getElementById("podStatus");
     const podRoute = document.getElementById("podRoute");
@@ -73,7 +163,8 @@ if (order) {
         const packageCount = orderPackages(order);
 
         podPackages.textContent =
-            packageCount + (packageCount === 1 ? " package" : " packages");
+            packageCount +
+            (packageCount === 1 ? " package" : " packages");
     }
 
     if (podWeight && typeof orderWeight === "function") {
@@ -93,11 +184,15 @@ if (order) {
 
         order.products.forEach(function (product) {
             const item = document.createElement("li");
-            item.textContent = product[0] + " × " + product[1];
+
+            item.textContent =
+                product[0] + " × " + product[1];
+
             podProducts.appendChild(item);
         });
     }
 }
+
 
 /* Mostrar assinatura */
 signatureTab.addEventListener("click", function () {
@@ -113,6 +208,7 @@ signatureTab.addEventListener("click", function () {
     proofError.textContent = "";
 
     stopCamera();
+    updateConfirmButton();
 });
 
 
@@ -128,6 +224,8 @@ photoTab.addEventListener("click", function () {
 
     clearSignatureButton.hidden = true;
     proofError.textContent = "";
+
+    updateConfirmButton();
 });
 
 
@@ -150,7 +248,7 @@ openCameraButton.addEventListener("click", async function () {
         photoPreview.style.display = "none";
 
         photoText.textContent =
-                "Position the camera and capture the delivery photo.";
+            "Position the camera and capture the delivery photo.";
 
         proofError.textContent = "";
 
@@ -158,7 +256,7 @@ openCameraButton.addEventListener("click", async function () {
         console.error(error);
 
         proofError.textContent =
-                "Camera access is not available or permission was denied.";
+            "Camera access is not available or permission was denied.";
     }
 });
 
@@ -175,11 +273,11 @@ captureButton.addEventListener("click", function () {
     const context = photoCanvas.getContext("2d");
 
     context.drawImage(
-            cameraPreview,
-            0,
-            0,
-            photoCanvas.width,
-            photoCanvas.height
+        cameraPreview,
+        0,
+        0,
+        photoCanvas.width,
+        photoCanvas.height
     );
 
     capturedPhoto = photoCanvas.toDataURL("image/jpeg", 0.8);
@@ -259,6 +357,7 @@ function signatureIsEmpty() {
     return signatureCanvas.toDataURL() === emptyCanvas.toDataURL();
 }
 
+
 /* Ativar confirmação quando existe uma prova válida */
 function updateConfirmButton() {
     if (proofType === "signature") {
@@ -268,24 +367,28 @@ function updateConfirmButton() {
     }
 }
 
+
+/* Atualizar botão depois de desenhar a assinatura */
 signatureCanvas.addEventListener("mouseup", updateConfirmButton);
 signatureCanvas.addEventListener("mouseleave", updateConfirmButton);
 signatureCanvas.addEventListener("touchend", updateConfirmButton);
 
+
+/* Desativar confirmação depois de limpar a assinatura */
 clearSignatureButton.addEventListener("click", function () {
     confirmButton.disabled = true;
 });
 
+
 /* Confirmar entrega */
 confirmButton.addEventListener("click", function () {
     proofError.textContent = "";
-    updateConfirmButton();
 
     /* Entrega comprovada com assinatura */
     if (proofType === "signature") {
         if (signatureIsEmpty()) {
             proofError.textContent =
-                    "Please provide a signature before confirming the delivery.";
+                "Please provide a signature before confirming the delivery.";
             return;
         }
 
@@ -297,20 +400,20 @@ confirmButton.addEventListener("click", function () {
 
             /* Assinatura associada à encomenda */
             localStorage.setItem(
-                    "signature_" + orderId,
-                    signatureImage
+                "signature_" + orderId,
+                signatureImage
             );
 
             localStorage.setItem(
-                    "podType_" + orderId,
-                    "signature"
+                "podType_" + orderId,
+                "signature"
             );
 
         } catch (error) {
             console.error(error);
 
             proofError.textContent =
-                    "The signature could not be saved.";
+                "The signature could not be saved.";
             return;
         }
     }
@@ -319,32 +422,32 @@ confirmButton.addEventListener("click", function () {
     if (proofType === "photo") {
         if (!capturedPhoto) {
             proofError.textContent =
-                    "Please take or choose a photo before confirming the delivery.";
+                "Please take or choose a photo before confirming the delivery.";
             return;
         }
 
         try {
             /* Fotografia associada à encomenda */
             localStorage.setItem(
-                    "photo_" + orderId,
-                    capturedPhoto
+                "photo_" + orderId,
+                capturedPhoto
             );
 
             localStorage.setItem(
-                    "savedDeliveryPhoto",
-                    capturedPhoto
+                "savedDeliveryPhoto",
+                capturedPhoto
             );
 
             localStorage.setItem(
-                    "podType_" + orderId,
-                    "photo"
+                "podType_" + orderId,
+                "photo"
             );
 
         } catch (error) {
             console.error(error);
 
             proofError.textContent =
-                    "The photo could not be saved. Try using a smaller image.";
+                "The photo could not be saved. Try using a smaller image.";
             return;
         }
     }
@@ -360,13 +463,13 @@ confirmButton.addEventListener("click", function () {
     stopCamera();
 
     alert(
-            "Order #" +
-            orderId +
-            " completed successfully."
+        "Order #" +
+        orderId +
+        " completed successfully."
     );
 
     window.location.href =
-            "courier-completed-orders.html";
+        "courier-completed-orders.html";
 });
 
 
@@ -375,8 +478,8 @@ function returnToActiveRoute() {
     stopCamera();
 
     window.location.href =
-            "courier-active-route.html?order=" +
-            orderId;
+        "courier-active-route.html?order=" +
+        orderId;
 }
 
 
@@ -385,7 +488,9 @@ cancelButton.addEventListener("click", returnToActiveRoute);
 
 
 /* Fechar no X */
-closeButton.addEventListener("click", returnToActiveRoute);
+if (closeButton) {
+    closeButton.addEventListener("click", returnToActiveRoute);
+}
 
 
 /* Desligar a câmara se a página for fechada */
