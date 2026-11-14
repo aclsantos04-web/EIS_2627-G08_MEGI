@@ -1,0 +1,452 @@
+/* =========================================================
+   COURIER - PROOF OF DELIVERY
+   Page-specific styles only.
+   Shared styles are defined in style.css and courier.css.
+   ========================================================= */
+
+
+/* ---------- Page header ---------- */
+
+.cms-page .pod-page-header {
+    margin-bottom: 14px;
+}
+
+.cms-page .pod-page-header h1 {
+    margin-bottom: 4px;
+}
+
+.cms-page .pod-page-header p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+
+/* ---------- Main POD card ---------- */
+
+.cms-page .proof-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 18px 22px;
+    background-color: #FFFFFF;
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: 17px;
+    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.065);
+}
+
+
+/* ---------- Order heading ---------- */
+
+.cms-page .pod-order-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.cms-page .pod-order-icon {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background-color: var(--page-soft);
+    color: var(--primary);
+    font-size: 19px;
+}
+
+.cms-page .pod-order-heading h2 {
+    margin: 0;
+    font-size: 23px;
+}
+
+.cms-page .pod-order-heading .badge {
+    margin-left: 3px;
+}
+
+
+/* ---------- Route summary ---------- */
+
+.cms-page .pod-route-summary {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px 14px;
+    background-color: #FFFFFF;
+    border: 1px solid rgba(27, 75, 145, 0.20);
+    border-radius: 11px;
+}
+
+.cms-page .pod-route-main {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-title);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.cms-page .pod-route-main i,
+.cms-page .pod-route-metric i {
+    color: var(--primary);
+    font-size: 18px;
+}
+
+.cms-page .pod-route-metric {
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    border-left: 1px solid rgba(27, 75, 145, 0.15);
+    font-size: 13px;
+}
+
+
+/* ---------- Order information ---------- */
+
+.cms-page .pod-information-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 14px;
+    background-color: var(--page-soft);
+    border-radius: 11px;
+    overflow: hidden;
+}
+
+.cms-page .pod-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 10px 14px;
+}
+
+.cms-page .pod-info-item + .pod-info-item {
+    border-left: 1px solid rgba(27, 75, 145, 0.15);
+}
+
+.cms-page .pod-info-icon {
+    margin-top: 2px;
+    color: var(--primary);
+    font-size: 18px;
+}
+
+.cms-page .pod-info-content {
+    min-width: 0;
+}
+
+.cms-page .pod-info-label {
+    display: block;
+    margin-bottom: 1px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.cms-page .pod-info-value {
+    display: block;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.cms-page .pod-products {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cms-page .pod-products li {
+    line-height: 1.4;
+}
+
+.cms-page .pod-products li + li {
+    margin-top: 2px;
+}
+
+
+/* ---------- Proof method ---------- */
+
+.cms-page .proof-method {
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+}
+
+.cms-page .proof-method h3 {
+    margin: 0 0 2px;
+    font-size: 18px;
+}
+
+.cms-page .proof-method-intro {
+    margin: 0 0 10px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.cms-page .proof-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.cms-page .proof-tab {
+    padding: 7px 14px;
+    border: 1px solid #8795A8;
+    border-radius: 999px;
+    background-color: #FFFFFF;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cms-page .proof-tab:hover {
+    border-color: var(--primary);
+}
+
+.cms-page .proof-tab.active {
+    background-color: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+
+/* ---------- Signature ---------- */
+
+.cms-page #signatureCanvas {
+    display: block;
+    width: 100%;
+    height: 135px;
+    background-color: #FFFFFF;
+    border: 1px solid #8795A8;
+    border-radius: 11px;
+    cursor: crosshair;
+    touch-action: none;
+}
+
+
+/* ---------- Photo ---------- */
+
+.cms-page .photo-area {
+    min-height: 175px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #FFFFFF;
+    border: 1px dashed #8795A8;
+    border-radius: 11px;
+    text-align: center;
+}
+
+.cms-page #cameraPreview {
+    width: 100%;
+    max-height: 220px;
+    border-radius: 8px;
+    background-color: #000000;
+    object-fit: cover;
+}
+
+.cms-page #photoCanvas,
+.cms-page #deliveryPhoto {
+    display: none;
+}
+
+.cms-page #photoPreview {
+    display: none;
+    max-width: 100%;
+    max-height: 190px;
+    border-radius: 8px;
+    object-fit: contain;
+}
+
+.cms-page .photo-area p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.cms-page .photo-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+
+/* ---------- Error message ---------- */
+
+.cms-page #proofError {
+    min-height: 16px;
+    margin: 5px 0 0;
+    color: var(--danger);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+/* ---------- Bottom actions ---------- */
+
+.cms-page .proof-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 7px;
+}
+
+.cms-page .proof-actions-right {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.cms-page .proof-hint {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 0;
+    color: var(--muted);
+    font-size: 12px;
+    text-align: center;
+}
+
+.cms-page .proof-hint i {
+    color: var(--primary);
+    font-size: 15px;
+}
+
+.cms-page #confirmDelivery:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+
+/* ---------- Close button ---------- */
+
+.cms-page .proof-close {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text);
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.cms-page .proof-close:hover {
+    background-color: var(--page-soft);
+    color: var(--primary);
+}
+
+
+/* ---------- No active delivery ---------- */
+
+.cms-page #noDelivery {
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 900px) {
+
+    .cms-page .pod-route-summary {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .cms-page .pod-route-main {
+        grid-column: 1 / -1;
+        margin-bottom: 8px;
+    }
+
+    .cms-page .pod-route-metric:first-of-type {
+        border-left: none;
+    }
+
+    .cms-page .pod-information-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cms-page .pod-info-item + .pod-info-item {
+        border-left: none;
+        border-top: 1px solid rgba(27, 75, 145, 0.15);
+    }
+}
+
+
+@media (max-width: 760px) {
+
+    .cms-page .proof-container {
+        padding: 16px;
+    }
+
+    .cms-page .pod-order-heading {
+        flex-wrap: wrap;
+    }
+
+    .cms-page .pod-route-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .cms-page .pod-route-main {
+        grid-column: auto;
+        margin-bottom: 0;
+    }
+
+    .cms-page .pod-route-metric {
+        justify-content: flex-start;
+        padding-top: 8px;
+        margin-top: 8px;
+        border-left: none;
+        border-top: 1px solid rgba(27, 75, 145, 0.15);
+    }
+
+    .cms-page .proof-tabs {
+        grid-template-columns: 1fr;
+    }
+
+    .cms-page #signatureCanvas {
+        height: 125px;
+    }
+
+    .cms-page .proof-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cms-page .proof-hint {
+        order: 2;
+    }
+
+    .cms-page .proof-actions-right {
+        width: 100%;
+        margin-left: 0;
+        flex-direction: column;
+    }
+
+    .cms-page .proof-actions .btn,
+    .cms-page .photo-actions .btn {
+        width: 100%;
+    }
+
+    .cms-page .photo-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+}

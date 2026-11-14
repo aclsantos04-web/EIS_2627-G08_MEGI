@@ -40,6 +40,64 @@ const urlParams = new URLSearchParams(window.location.search);
 const activeForProof = typeof getActiveOrder === "function" ? getActiveOrder() : null;
 const orderId = urlParams.get("order") || (activeForProof !== null ? String(activeForProof.id) : "");
 
+/* Obter dados completos da encomenda */
+const order =
+    orderId && typeof getOrder === "function"
+        ? getOrder(orderId)
+        : null;
+
+/* Preencher o resumo da encomenda no Proof of Delivery */
+if (order) {
+    const podOrderNumber = document.getElementById("podOrderNumber");
+    const podStatus = document.getElementById("podStatus");
+    const podRoute = document.getElementById("podRoute");
+    const podPackages = document.getElementById("podPackages");
+    const podWeight = document.getElementById("podWeight");
+    const podClient = document.getElementById("podClient");
+    const podVehicle = document.getElementById("podVehicle");
+    const podProducts = document.getElementById("podProducts");
+
+    if (podOrderNumber) {
+        podOrderNumber.textContent = "#" + order.id;
+    }
+
+    if (podStatus) {
+        podStatus.textContent = order.status;
+    }
+
+    if (podRoute) {
+        podRoute.textContent = order.origin + " → " + order.destination;
+    }
+
+    if (podPackages && typeof orderPackages === "function") {
+        const packageCount = orderPackages(order);
+
+        podPackages.textContent =
+            packageCount + (packageCount === 1 ? " package" : " packages");
+    }
+
+    if (podWeight && typeof orderWeight === "function") {
+        podWeight.textContent = orderWeight(order) + " kg";
+    }
+
+    if (podClient) {
+        podClient.textContent = order.client || "Not available";
+    }
+
+    if (podVehicle) {
+        podVehicle.textContent = order.vehicle || "Not assigned";
+    }
+
+    if (podProducts) {
+        podProducts.innerHTML = "";
+
+        order.products.forEach(function (product) {
+            const item = document.createElement("li");
+            item.textContent = product[0] + " × " + product[1];
+            podProducts.appendChild(item);
+        });
+    }
+}
 
 /* Mostrar assinatura */
 signatureTab.addEventListener("click", function () {
