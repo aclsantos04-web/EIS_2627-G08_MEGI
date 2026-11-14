@@ -162,10 +162,17 @@ function orderPackages(order) {
     }, 0);
 }
 
-// "2 packages · 8 kg"
+// "2 packages · 8 kg · 0.12 m³"
 function orderLoadText(order) {
     const packages = orderPackages(order);
-    return packages + (packages === 1 ? " package" : " packages") + " · " + orderWeight(order) + " kg";
+
+    return packages +
+        (packages === 1 ? " package" : " packages") +
+        " · " +
+        orderWeight(order) +
+        " kg · " +
+        orderVolume(order).toFixed(2) +
+        " m³";
 }
 
 // "Books (1 unit, 5 kg)"

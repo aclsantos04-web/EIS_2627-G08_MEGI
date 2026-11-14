@@ -1,0 +1,87 @@
+.users-card {
+    padding: 24px;
+}
+
+.users-card-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.users-card-header h2 {
+    margin-bottom: 4px;
+}
+
+.users-card-header p {
+    margin: 0;
+}
+
+.user-tools {
+    display: flex;
+    gap: 10px;
+}
+
+.user-tools input {
+    width: 220px;
+}
+
+.user-tools select {
+    width: 150px;
+}
+
+.user-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(
+        135deg,
+        var(--primary),
+        var(--accent-blue)
+    );
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.users-card .table-wrap {
+    margin-bottom: 0;
+}
+
+@media (max-width: 760px) {
+    .users-card-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .user-tools {
+        flex-direction: column;
+    }
+
+    .user-tools input,
+    .user-tools select {
+        width: 100%;
+    }
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-actions .btn {
+    padding: 7px 12px;
+    font-size: 13px;
+}
