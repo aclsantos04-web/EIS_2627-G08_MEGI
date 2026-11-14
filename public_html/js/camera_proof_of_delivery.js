@@ -183,6 +183,7 @@ captureButton.addEventListener("click", function () {
     );
 
     capturedPhoto = photoCanvas.toDataURL("image/jpeg", 0.8);
+    updateConfirmButton();
 
     photoPreview.src = capturedPhoto;
     photoPreview.style.display = "block";
@@ -214,6 +215,7 @@ photoInput.addEventListener("change", function () {
 
     reader.addEventListener("load", function () {
         capturedPhoto = reader.result;
+        updateConfirmButton();
 
         photoPreview.src = capturedPhoto;
         photoPreview.style.display = "block";
@@ -257,10 +259,27 @@ function signatureIsEmpty() {
     return signatureCanvas.toDataURL() === emptyCanvas.toDataURL();
 }
 
+/* Ativar confirmação quando existe uma prova válida */
+function updateConfirmButton() {
+    if (proofType === "signature") {
+        confirmButton.disabled = signatureIsEmpty();
+    } else {
+        confirmButton.disabled = !capturedPhoto;
+    }
+}
+
+signatureCanvas.addEventListener("mouseup", updateConfirmButton);
+signatureCanvas.addEventListener("mouseleave", updateConfirmButton);
+signatureCanvas.addEventListener("touchend", updateConfirmButton);
+
+clearSignatureButton.addEventListener("click", function () {
+    confirmButton.disabled = true;
+});
 
 /* Confirmar entrega */
 confirmButton.addEventListener("click", function () {
     proofError.textContent = "";
+    updateConfirmButton();
 
     /* Entrega comprovada com assinatura */
     if (proofType === "signature") {

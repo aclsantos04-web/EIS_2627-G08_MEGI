@@ -18,9 +18,14 @@ document.addEventListener("DOMContentLoaded", function () {
     // Obter as coordenadas exatas do rato dentro do Canvas
     function getCoordinates(event) {
         const rect = canvas.getBoundingClientRect();
+        const point = event.touches ? event.touches[0] : event;
+
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+
         return {
-            x: (event.clientX || (event.touches && event.touches[0].clientX)) - rect.left,
-            y: (event.clientY || (event.touches && event.touches[0].clientY)) - rect.top
+            x: (point.clientX - rect.left) * scaleX,
+            y: (point.clientY - rect.top) * scaleY
         };
     }
 
