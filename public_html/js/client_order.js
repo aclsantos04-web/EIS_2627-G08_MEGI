@@ -666,8 +666,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 originCoords: [Number(originLat), Number(originLong)],
                 destination: placeName('destAddress', destLat, destLong),
                 destinationCoords: [Number(destLat), Number(destLong)],
-                distanceKm: Math.round(calcStraightDistanceKm(
-                    Number(originLat), Number(originLong), Number(destLat), Number(destLong))),
+                // The SAME distance the price was calculated with (the road route
+                // from OSRM, or the straight line if the route couldn't be loaded),
+                // so the order's distance always explains its price
+                distanceKm: currentRouteKm,
                 service: selectedService,
                 price: Math.round(price * 100) / 100,
                 products: orderItems.map((item) => [item.name, item.quantity, item.weight, item.vol]),
