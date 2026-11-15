@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CMS - Apply as Courier</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cms-lara.css">
+
+    <style>
+        body {
+            margin: 0;
+        }
+
+        main.application-page {
+            width: 100%;
+            max-width: none;
+            min-height: calc(100vh - 82px);
+
+            margin: 0;
+            padding: 48px 5% 70px;
+
+            box-sizing: border-box;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(255, 255, 255, 0.45) 0,
+                    rgba(255, 255, 255, 0.45) 220px,
+                    transparent 221px
+                ),
+                #cbe5f5;
+        }
+
+        .application-intro {
+            width: min(1120px, 100%);
+            margin: 0 auto 34px;
+        }
+
+        .application-intro .eyebrow {
+            margin: 0 0 12px;
+            color: #4e6478;
+            font-size: 15px;
+        }
+
+        .application-intro h1 {
+            margin: 0 0 8px;
+            font-size: 42px;
+        }
+
+        .application-intro > p:last-child {
+            margin: 0;
+            color: #566878;
+            font-size: 16px;
+        }
+
+        .application-card {
+            width: min(1120px, 100%);
+            margin: 0 auto;
+            padding: 36px;
+
+            box-sizing: border-box;
+
+            background: #ffffff;
+
+            border-radius: 16px;
+            border-top: 5px solid #2b66ad;
+
+            box-shadow:
+                0 10px 28px rgba(25, 55, 85, 0.08);
+        }
+
+        .application-card h2 {
+            margin: 0 0 6px;
+        }
+
+        .application-card > p {
+            margin: 0 0 28px;
+        }
+
+        .application-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .application-card .form-group {
+            margin-bottom: 20px;
+        }
+
+        .application-card label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        .application-card textarea {
+            width: 100%;
+            min-height: 110px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .application-card input[type="file"] {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .application-confirmation {
+            display: flex !important;
+            align-items: flex-start;
+            gap: 10px;
+
+            margin: 4px 0 24px;
+
+            font-weight: 400 !important;
+            color: #566878;
+        }
+
+        .application-confirmation input {
+            width: auto;
+            margin-top: 3px;
+        }
+
+        .application-submit {
+            width: 100%;
+        }
+
+        .application-feedback {
+            margin-top: 18px;
+            padding: 12px 16px;
+
+            background: #eaf7ef;
+            color: #25613d;
+
+            border: 1px solid #bcdcc8;
+            border-radius: 8px;
+
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .application-feedback[hidden] {
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            .application-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .application-intro h1 {
+                font-size: 34px;
+            }
+
+            .application-card {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <header
+        style="
+            min-height: 82px;
+            padding: 0 36px;
+
+            display: flex;
+            align-items: center;
+            gap: 30px;
+
+            background: #ffffff;
+            border-bottom: 1px solid #e4e8ed;
+        "
+    >
+
+        <a
+            href="index.html"
+            style="
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                color: #17212d;
+                text-decoration: none;
+
+                font-size: 30px;
+                font-weight: 800;
+            "
+        >
+
+            <svg
+                width="48"
+                height="34"
+                viewBox="0 0 64 40"
+                aria-hidden="true"
+                style="display: block;"
+            >
+                <rect
+                    x="4"
+                    y="6"
+                    width="30"
+                    height="21"
+                    rx="1"
+                    fill="currentColor"
+                />
+
+                <path
+                    d="M36 13h12l10 10v4H36z"
+                    fill="currentColor"
+                />
+
+                <circle
+                    cx="17"
+                    cy="31"
+                    r="5"
+                    fill="currentColor"
+                />
+
+                <circle
+                    cx="49"
+                    cy="31"
+                    r="5"
+                    fill="currentColor"
+                />
+            </svg>
+
+            <span>CMS</span>
+
+        </a>
+
+
+        <nav
+            style="
+                display: flex;
+                align-items: center;
+                gap: 28px;
+            "
+        >
+
+            <a
+                href="index.html"
+                style="
+                    color: #223044;
+                    text-decoration: none;
+                    font-weight: 600;
+                "
+            >
+                Home
+            </a>
+
+            <a
+                href="team.html"
+                style="
+                    color: #223044;
+                    text-decoration: none;
+                    font-weight: 600;
+                "
+            >
+                Meet the Team
+            </a>
+
+        </nav>
+
+
+        <div
+            style="
+                margin-left: auto;
+
+                display: flex;
+                align-items: center;
+                gap: 14px;
+            "
+        >
+
+            <a
+                href="login.html"
+                class="btn btn-primary"
+            >
+                Login
+            </a>
+
+            <a
+                href="register.html"
+                class="btn btn-outline"
+            >
+                Get Started
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main class="application-page">
+
+        <section class="application-intro">
+
+            <p class="eyebrow">
+                Join CMS
+            </p>
+
+            <h1>
+                Apply as a Courier
+            </h1>
+
+            <p>
+                Join our courier network and help connect
+                people, packages and possibilities.
+            </p>
+
+        </section>
+
+
+        <section class="application-card">
+
+            <h2>
+                Courier Application
+            </h2>
+
+            <p class="text-muted">
+                Tell us a little about yourself.
+            </p>
+
+
+            <form id="courierApplication">
+
+                <div class="application-grid">
+
+                    <div class="form-group">
+
+                        <label for="courierName">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="courierName"
+                            name="courierName"
+                            placeholder="e.g. Diogo Silva"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="courierEmail">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="courierEmail"
+                            name="courierEmail"
+                            placeholder="name@example.com"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="courierPhone">
+                            Phone
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="courierPhone"
+                            name="courierPhone"
+                            placeholder="+351 912 345 678"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="courierLocation">
+                            Location
+                        </label>
+
+                        <input
+                            type="text"
+                            id="courierLocation"
+                            name="courierLocation"
+                            placeholder="e.g. Porto"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="licenceCategory">
+                            Driving Licence Category
+                        </label>
+
+                        <select
+                            id="licenceCategory"
+                            name="licenceCategory"
+                            required
+                        >
+
+                            <option value="">
+                                Select a category
+                            </option>
+
+                            <option value="A">
+                                A
+                            </option>
+
+                            <option value="A1">
+                                A1
+                            </option>
+
+                            <option value="A2">
+                                A2
+                            </option>
+
+                            <option value="B">
+                                B
+                            </option>
+
+                            <option value="C">
+                                C
+                            </option>
+
+                            <option value="C1">
+                                C1
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="licenceExpiry">
+                            Driving Licence Expiry Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="licenceExpiry"
+                            name="licenceExpiry"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="hasVehicle">
+                        Do you currently have a vehicle available?
+                    </label>
+
+                    <select
+                        id="hasVehicle"
+                        name="hasVehicle"
+                        required
+                    >
+
+                        <option value="">
+                            Select an option
+                        </option>
+
+                        <option value="yes">
+                            Yes
+                        </option>
+
+                        <option value="no">
+                            No
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="courierExperience">
+                        Previous Experience
+                    </label>
+
+                    <textarea
+                        id="courierExperience"
+                        name="courierExperience"
+                        rows="4"
+                        placeholder="Tell us briefly about any previous delivery or driving experience."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="courierCV">
+                        CV
+                    </label>
+
+                    <input
+                        type="file"
+                        id="courierCV"
+                        name="courierCV"
+                        accept=".pdf,.doc,.docx"
+                        required
+                    >
+
+                    <small class="text-muted">
+                        Accepted formats: PDF, DOC or DOCX.
+                    </small>
+
+                </div>
+
+
+                <label class="application-confirmation">
+
+                    <input
+                        type="checkbox"
+                        required
+                    >
+
+                    <span>
+                        I confirm that the information provided
+                        is correct and may be reviewed as part
+                        of my application.
+                    </span>
+
+                </label>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary application-submit"
+                >
+                    Submit Application
+                </button>
+
+
+                <div
+                    id="applicationFeedback"
+                    class="application-feedback"
+                    hidden
+                >
+                    Application submitted successfully.
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        const courierApplication =
+            document.getElementById("courierApplication");
+
+        const applicationFeedback =
+            document.getElementById("applicationFeedback");
+
+
+        courierApplication.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+                applicationFeedback.hidden = false;
+
+                courierApplication.reset();
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
