@@ -1,15 +1,11 @@
 /* =========================================================
-   CLIENT.CSS — Estilos específicos da Área de Cliente
+   CLIENT.CSS — Estilos Completos da Área de Cliente
    ========================================================= */
 
-.order-grid {
-    display: grid;
-    grid-template-columns: 1.15fr 1fr;
-    gap: 20px;
-    max-width: 1080px;
-}
-
-.order-grid .card {
+/* Cartões brancos com destaque azul no topo */
+.order-grid .card,
+.status-tracker-container,
+.order-details-grid .card {
     margin-bottom: 0;
     background-color: #ffffff;
     border: 1px solid var(--border);
@@ -17,12 +13,35 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-/* Secção de Produtos */
+.back-to-list {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.back-to-list:hover {
+    text-decoration: underline;
+}
+
+/* ---------------------------------------------------------
+   1. CREATE NEW ORDER (client_new_order.html)
+   --------------------------------------------------------- */
+.order-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 20px;
+    max-width: 1080px;
+}
+
 .product-input-row {
     display: flex;
     gap: 10px;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
 }
 
 .product-input-row select {
@@ -38,6 +57,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-top: 12px;
 }
 
 .product-chip {
@@ -69,11 +89,20 @@
     line-height: 1;
 }
 
-.btn-remove-item:hover {
-    opacity: 0.7;
+.cargo-totals-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--muted);
 }
 
-/* Secção de Notas */
+.cargo-totals-row strong {
+    color: var(--text);
+}
+
 .notes-card {
     display: flex;
     flex-direction: column;
@@ -85,7 +114,6 @@
     resize: none;
 }
 
-/* Secção de Localização e Pesquisa de Morada */
 .location-header-row {
     display: flex;
     justify-content: space-between;
@@ -116,7 +144,6 @@
     background-color: var(--card);
     color: var(--muted);
     cursor: pointer;
-    transition: all 0.15s ease;
 }
 
 .target-pill.active-origin {
@@ -139,7 +166,7 @@
 
 .coords-section:last-of-type {
     border-bottom: none;
-    margin-bottom: 8px;
+    margin-bottom: 0;
     padding-bottom: 0;
 }
 
@@ -162,7 +189,6 @@
     padding: 8px 10px;
 }
 
-/* Lista de Sugestões de Moradas */
 .suggestions-list {
     display: flex;
     flex-direction: column;
@@ -181,11 +207,6 @@
     text-align: left;
     background: #ffffff;
     color: var(--text);
-    transition: background-color 0.15s ease;
-}
-
-.suggestion-item:last-child {
-    border-bottom: none;
 }
 
 .suggestion-item:hover {
@@ -196,6 +217,7 @@
 .coords-row {
     display: flex;
     gap: 12px;
+    margin-top: 6px;
 }
 
 .input-block {
@@ -213,13 +235,24 @@
     font-size: 14px;
 }
 
-.action-footer {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 12px;
+/* Inline Error Messages (No Alerts) */
+.error-message {
+    display: none;
+    color: var(--danger);
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 4px;
 }
 
-/* Contentor do Mapa + Legenda */
+input.invalid,
+select.invalid {
+    border-color: var(--danger) !important;
+    background-color: var(--danger-bg);
+}
+
+/* ---------------------------------------------------------
+   2. MAPA E LEGENDA
+   --------------------------------------------------------- */
 .map-container-card {
     display: flex;
     flex-direction: column;
@@ -229,16 +262,15 @@
 .map-wrapper {
     position: relative;
     flex: 1;
-    min-height: 310px;
+    min-height: 290px;
 }
 
 #map {
     width: 100%;
     height: 100%;
-    min-height: 310px;
+    min-height: 290px;
     border-radius: 8px;
     border: 1px solid var(--border);
-    cursor: crosshair;
     z-index: 1;
 }
 
@@ -273,13 +305,8 @@
     display: inline-block;
 }
 
-.dot-green {
-    background-color: #2E8B57;
-}
-
-.dot-red {
-    background-color: #D9383A;
-}
+.dot-green { background-color: #2E8B57; }
+.dot-red   { background-color: #D9383A; }
 
 .route-line-sample {
     width: 12px;
@@ -299,30 +326,300 @@
     font-size: 13px;
 }
 
-@media (max-width: 860px) {
-    .order-grid {
-        grid-template-columns: 1fr;
-    }
+/* ---------------------------------------------------------
+   3. CHOOSE A DELIVERY SERVICE (SKETCH LAYOUT)
+   --------------------------------------------------------- */
+.service-selection-wrapper {
+    grid-column: 1 / -1;
+    margin-top: 8px;
 }
 
+.service-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.service-section-header > i {
+    font-size: 26px;
+    color: var(--primary);
+}
+
+.service-section-header h3 {
+    margin: 0 0 2px 0;
+    font-size: 18px;
+    color: var(--text);
+}
+
+.service-section-header p {
+    margin: 0;
+    font-size: 13px;
+}
+
+.service-locked-hint {
+    background-color: var(--warning-bg);
+    color: var(--warning);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+.service-options-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.service-options-grid.is-disabled {
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+.service-option-card {
+    position: relative;
+    background-color: #ffffff;
+    border: 1.5px solid #dce5f0;
+    border-radius: 14px;
+    padding: 20px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 2px 8px rgba(16, 27, 52, 0.03);
+    transition: all 0.2s ease;
+}
+
+.service-option-card:hover {
+    border-color: #93b8e8;
+    transform: translateY(-2px);
+}
+
+.service-option-card.selected {
+    border: 2px solid #1d63c6;
+    background: linear-gradient(180deg, #f3f8ff 0%, #eaf3ff 100%);
+    box-shadow: 0 6px 18px rgba(29, 99, 198, 0.12);
+}
+
+.service-check-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #1d63c6;
+    color: #ffffff;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.service-option-card.selected .service-check-badge {
+    display: flex;
+}
+
+.service-card-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.service-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background-color: #edf2f8;
+    color: #4f6785;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.service-option-card[data-service="Standard"] .service-icon {
+    background-color: #e7f1fd;
+    color: #2563eb;
+}
+
+.service-option-card.selected .service-icon {
+    background-color: #d6e7fc;
+    color: #1d63c6;
+}
+
+.service-card-top h4 {
+    margin: 0 0 2px 0;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.service-sub {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.service-divider {
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.06);
+}
+
+.service-eta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.service-eta i {
+    font-size: 19px;
+    color: #6b7f99;
+}
+
+.service-eta small {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.service-eta strong {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.service-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.service-price-pill {
+    background-color: #eef2f7;
+    color: var(--text);
+    font-weight: 800;
+    font-size: 16px;
+    padding: 8px 18px;
+    border-radius: 999px;
+}
+
+.service-option-card.selected .service-price-pill {
+    background-color: #1d63c6;
+    color: #ffffff;
+}
+
+.service-select-btn {
+    padding: 8px 22px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1.5px solid #b8c9de;
+    background-color: #ffffff;
+    color: #2c4a70;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.service-select-btn:hover {
+    border-color: #1d63c6;
+    color: #1d63c6;
+}
+
+.service-select-btn.is-selected {
+    background-color: #cfe2fc;
+    border-color: #b7d4fa;
+    color: #164ea0;
+}
+
+/* Barra Inferior de Resumo + Botão Create Order */
+.order-summary-bar {
+    margin-top: 18px;
+    padding: 18px 24px;
+    background-color: #ffffff;
+    border: 1px solid #dce5f0;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(16, 27, 52, 0.04);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
+.summary-metrics {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    flex-wrap: wrap;
+}
+
+.summary-sep {
+    width: 1px;
+    height: 34px;
+    background-color: #e4ebf3;
+}
+
+.summary-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.summary-item i {
+    font-size: 24px;
+    color: #5b789c;
+}
+
+.summary-item small {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.summary-item strong {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.btn-create-order {
+    background-color: #1d63c6;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 13px 26px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(29, 99, 198, 0.25);
+    transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.btn-create-order:hover {
+    background-color: #154d9e;
+    transform: translateY(-1px);
+}
 
 /* ---------------------------------------------------------
-   ORDER DETAILS (client_orders.html)
-   Status steps and the two-column layout. (Restored: these
-   rules had been lost in an earlier merge.)
+   4. ORDER DETAILS / VIEW ORDER (client_orders.html)
    --------------------------------------------------------- */
 .status-tracker-container {
-    background-color: var(--card);
-    padding: 24px 32px;
+    padding: 32px 48px;
     margin-bottom: 24px;
+    max-width: 1080px;
 }
 
 .status-tracker {
     position: relative;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    max-width: 650px;
+    align-items: flex-start;
+    max-width: 560px;
     margin: 0 auto;
 }
 
@@ -332,8 +629,9 @@
     top: 18px;
     left: 0;
     width: 100%;
-    height: 4px;
-    background-color: var(--border);
+    height: 6px;
+    background-color: #E6EAF0;
+    border-radius: 999px;
     z-index: 1;
 }
 
@@ -341,37 +639,43 @@
     position: absolute;
     top: 18px;
     left: 0;
-    width: 100%;
-    height: 4px;
+    height: 6px;
     background-color: var(--success);
+    border-radius: 999px;
     z-index: 2;
+    transition: width 0.4s ease, background-color 0.3s ease;
 }
 
 .step {
     position: relative;
     z-index: 3;
+    width: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    overflow: visible;
 }
 
 .step-circle {
-    width: 36px;
-    height: 36px;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
-    background-color: var(--bg);
-    border: 3px solid var(--border);
+    background-color: #FFFFFF;
+    border: 3px solid #D5DCE6;
+    box-shadow: 0 0 0 5px #FFFFFF;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
     color: var(--muted);
 }
 
 .step-label {
-    font-size: 14px;
+    white-space: nowrap;
+    margin-top: 10px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--muted);
 }
@@ -379,26 +683,51 @@
 .step.completed .step-circle {
     background-color: var(--success);
     border-color: var(--success);
-    color: #ffffff;
+    color: #FFFFFF;
+    box-shadow: 0 0 0 5px #FFFFFF, 0 4px 10px rgba(46, 107, 52, 0.25);
 }
 
 .step.completed .step-label {
     color: var(--success);
+    font-weight: 700;
 }
 
-/* Grelha de Detalhes da Encomenda */
+.step.current .step-circle {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #FFFFFF;
+    box-shadow: 0 0 0 4px #FFFFFF, 0 0 0 8px var(--primary-light);
+}
+
+.step.current .step-label {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.step.cancelled .step-circle {
+    background-color: var(--danger);
+    border-color: var(--danger);
+    color: #FFFFFF;
+    box-shadow: 0 0 0 5px #FFFFFF, 0 4px 10px rgba(161, 38, 38, 0.25);
+}
+
+.step.cancelled .step-label {
+    color: var(--danger);
+    font-weight: 700;
+}
+
 .order-details-grid {
     display: grid;
-    grid-template-columns: 1fr 1.15fr;
+    grid-template-columns: 1fr 1.25fr;
     gap: 24px;
-    max-width: 1050px;
+    max-width: 1080px;
+    align-items: start;
 }
 
 .order-info-card {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    margin-bottom: 0;
 }
 
 .info-group {
@@ -429,7 +758,6 @@
     margin-bottom: 4px;
 }
 
-/* Coluna Direita e Botão de Comprovativo */
 .map-action-column {
     display: flex;
     flex-direction: column;
@@ -441,7 +769,6 @@
     justify-content: flex-end;
 }
 
-/* Modal / Preview do e-POD */
 .pod-preview-box {
     margin: 16px 0;
     border: 2px dashed var(--border);
@@ -461,40 +788,14 @@
     justify-content: center;
 }
 
-
-
-@media (max-width: 760px) {
-    .order-details-grid {
+@media (max-width: 900px) {
+    .order-grid,
+    .order-details-grid,
+    .service-options-grid {
         grid-template-columns: 1fr;
     }
-}
 
-/* ===================================================
-   ORDER DETAILS: back link, cancelled step, not found
-   =================================================== */
-.back-to-list {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 12px;
-    font-weight: 600;
-}
-
-.step.cancelled .step-circle {
-    background-color: var(--danger);
-    border-color: var(--danger);
-    color: #ffffff;
-}
-
-.step.cancelled .step-label {
-    color: var(--danger);
-}
-
-.step.current .step-circle {          /* the step the order is on now */
-    border-color: var(--primary);
-    color: var(--primary);
-}
-
-.step.current .step-label {
-    color: var(--primary);
+    .summary-sep {
+        display: none;
+    }
 }

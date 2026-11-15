@@ -1,6 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
     /* =========================================================
-       1. MAPA INTERATIVO (CLIQUE NO MAPA + MORADA + COORDENADAS)
+       HELPER FUNCTIONS FOR INLINE ERROR MESSAGES (NO ALERTS)
+       ========================================================= */
+    function showFieldError(errorId, inputEl, message) {
+        const errorEl = document.getElementById(errorId);
+        if (errorEl) {
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+        }
+        if (inputEl) {
+            inputEl.classList.add('invalid');
+        }
+    }
+
+    function clearFieldError(errorId, inputEl) {
+        const errorEl = document.getElementById(errorId);
+        if (errorEl) {
+            errorEl.textContent = '';
+            errorEl.style.display = 'none';
+        }
+        if (inputEl) {
+            inputEl.classList.remove('invalid');
+        }
+    }
+
+    /* =========================================================
+       1. INTERACTIVE MAP + ADDRESS SEARCH + ROUTE DISTANCE
        ========================================================= */
     const originLatInput = document.getElementById('originLat');
     const originLongInput = document.getElementById('originLong');
@@ -17,9 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const targetOriginBtn = document.getElementById('targetOriginBtn');
     const targetDestBtn = document.getElementById('targetDestBtn');
     const mapHintText = document.getElementById('mapHintText');
+    const legendDistance = document.getElementById('legendDistance');
 
-    // Controla se o próximo clique no mapa altera 'origin' ou 'destination'
     let clickMode = 'origin';
+    let currentRouteKm = 4;
 
     function setClickMode(mode) {
         clickMode = mode;
@@ -37,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
     targetOriginBtn.addEventListener('click', () => setClickMode('origin'));
     targetDestBtn.addEventListener('click', () => setClickMode('destination'));
 
-    // Ícones personalizados (Verde para Origem, Vermelho para Destino)
     const greenIcon = new L.Icon({
         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
@@ -56,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
         shadowSize: [41, 41]
     });
 
-    // Inicializar mapa Leaflet
     const initialOrigin = [parseFloat(originLatInput.value) || 41.1780, parseFloat(originLongInput.value) || -8.5980];
     const initialDest = [parseFloat(destLatInput.value) || 41.1496, parseFloat(destLongInput.value) || -8.6109];
 
@@ -71,20 +95,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const destMarker = L.marker(initialDest, { icon: redIcon }).addTo(map).bindPopup('Destination');
     let routeLayer = null;
 
-    // Atualiza marcadores e calcula rota real via OSRM
+    function calcStraightDistanceKm(lat1, lon1, lat2, lon2) {
+        const R = 6371;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
     function updateRouteAndMarkers(fitMap = true) {
         const oLat = parseFloat(originLatInput.value);
         const oLng = parseFloat(originLongInput.value);
         const dLat = parseFloat(destLatInput.value);
         const dLng = parseFloat(destLongInput.value);
 
-        if (isNaN(oLat) || isNaN(oLng) || isNaN(dLat) || isNaN(dLng)) return;
+        if (isNaN(oLat) || isNaN(oLng) || isNaN(dLat) || isNaN(dLng)) {
+            updateServicePricing();
+            return;
+        }
 
         const oCoords = [oLat, oLng];
         const dCoords = [dLat, dLng];
 
         originMarker.setLatLng(oCoords);
         destMarker.setLatLng(dCoords);
+
+        // Set initial straight distance immediately before OSRM responds
+        currentRouteKm = Math.max(1, Math.round(calcStraightDistanceKm(oLat, oLng, dLat, dLng)));
+        if (legendDistance) legendDistance.textContent = `${currentRouteKm} km`;
+        updateServicePricing();
 
         const routeURL = `https://router.project-osrm.org/route/v1/driving/${oLng},${oLat};${dLng},${dLat}?overview=full&geometries=geojson`;
 
@@ -99,11 +140,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     routeLayer = L.geoJSON(data.routes[0].geometry, {
                         style: { color: '#1B4B91', weight: 5, opacity: 0.85 }
                     }).addTo(map);
+                    currentRouteKm = Math.max(1, Math.round(data.routes[0].distance / 1000));
                 } else {
                     routeLayer = L.polyline([oCoords, dCoords], {
                         color: '#1B4B91', weight: 4, dashArray: '8, 8'
                     }).addTo(map);
                 }
+
+                if (legendDistance) legendDistance.textContent = `${currentRouteKm} km`;
+                updateServicePricing();
 
                 if (fitMap) {
                     map.fitBounds(routeLayer.getBounds(), { padding: [35, 35] });
@@ -117,20 +162,17 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    // Reverse Geocoding: preenche o nome da rua quando o utilizador clica no mapa
     function fillAddressFromCoords(lat, lng, targetInput) {
         fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
             .then(res => res.json())
             .then(data => {
                 if (data && data.display_name) {
-                    const shortAddr = data.display_name.split(',').slice(0, 3).join(',');
-                    targetInput.value = shortAddr;
+                    targetInput.value = data.display_name.split(',').slice(0, 3).join(',');
                 }
             })
             .catch(() => {});
     }
 
-    // Evento de clique no mapa
     map.on('click', (e) => {
         const lat = e.latlng.lat.toFixed(4);
         const lng = e.latlng.lng.toFixed(4);
@@ -138,6 +180,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (clickMode === 'origin') {
             originLatInput.value = lat;
             originLongInput.value = lng;
+            clearFieldError('originLatError', originLatInput);
+            clearFieldError('originLongError', originLongInput);
             originSuggestions.innerHTML = '';
             fillAddressFromCoords(lat, lng, originAddrInput);
             updateRouteAndMarkers(false);
@@ -145,6 +189,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             destLatInput.value = lat;
             destLongInput.value = lng;
+            clearFieldError('destLatError', destLatInput);
+            clearFieldError('destLongError', destLongInput);
             destSuggestions.innerHTML = '';
             fillAddressFromCoords(lat, lng, destAddrInput);
             updateRouteAndMarkers(false);
@@ -152,11 +198,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Forward Geocoding: pesquisar coordenadas em Portugal e listar sugestões
-    function searchAddress(query, addrInput, latField, lngField, suggestionsBox, btnElement) {
+    function searchAddress(query, addrInput, errorId, latField, lngField, suggestionsBox, btnElement) {
+        clearFieldError(errorId, addrInput);
         const trimmed = query.trim();
+
         if (!trimmed) {
-            alert('Please enter an address to search.');
+            showFieldError(errorId, addrInput, 'Please enter an address to search.');
             return;
         }
 
@@ -171,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(res => res.json())
             .then(results => {
                 if (!results || results.length === 0) {
-                    alert('No address found in Portugal. Try adding the city (e.g. "Rua de Santa Catarina, Porto").');
+                    showFieldError(errorId, addrInput, 'No address found in Portugal. Try adding the city (e.g. "Aliados, Porto").');
                     return;
                 }
 
@@ -191,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             })
             .catch(() => {
-                alert('Error connecting to address search service.');
+                showFieldError(errorId, addrInput, 'Unable to reach the address search service right now.');
             })
             .finally(() => {
                 btnElement.textContent = originalText;
@@ -204,18 +251,24 @@ document.addEventListener('DOMContentLoaded', () => {
         lngField.value = parseFloat(place.lon).toFixed(4);
         addrInput.value = place.display_name.split(',').slice(0, 3).join(',');
         suggestionsBox.innerHTML = '';
+        clearFieldError('originLatError', originLatInput);
+        clearFieldError('originLongError', originLongInput);
+        clearFieldError('destLatError', destLatInput);
+        clearFieldError('destLongError', destLongInput);
         updateRouteAndMarkers(true);
     }
 
     btnSearchOrigin.addEventListener('click', () => {
-        searchAddress(originAddrInput.value, originAddrInput, originLatInput, originLongInput, originSuggestions, btnSearchOrigin);
+        searchAddress(originAddrInput.value, originAddrInput, 'originAddrError', originLatInput, originLongInput, originSuggestions, btnSearchOrigin);
     });
 
     btnSearchDest.addEventListener('click', () => {
-        searchAddress(destAddrInput.value, destAddrInput, destLatInput, destLongInput, destSuggestions, btnSearchDest);
+        searchAddress(destAddrInput.value, destAddrInput, 'destAddrError', destLatInput, destLongInput, destSuggestions, btnSearchDest);
     });
 
-    // Permitir pesquisar carregando na tecla Enter dentro do campo de morada
+    originAddrInput.addEventListener('input', () => clearFieldError('originAddrError', originAddrInput));
+    destAddrInput.addEventListener('input', () => clearFieldError('destAddrError', destAddrInput));
+
     [originAddrInput, destAddrInput].forEach((input, idx) => {
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
@@ -226,75 +279,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Atualizar o mapa se o utilizador editar manualmente os inputs de Latitude/Longitude
     [originLatInput, originLongInput, destLatInput, destLongInput].forEach(input => {
         input.addEventListener('change', () => updateRouteAndMarkers(true));
+        input.addEventListener('input', () => {
+            clearFieldError(input.id + 'Error', input);
+            updateServicePricing();
+        });
     });
-
-    // Desenha a rota inicial ao abrir a página
-    updateRouteAndMarkers(true);
 
 
     /* =========================================================
-       2. GESTÃO DOS PRODUTOS DA ENCOMENDA
+       2. PACKAGE PRODUCTS MANAGEMENT (WEIGHT & VOLUME IN m³)
        ========================================================= */
     const btnAddProduct = document.getElementById('btnAddProduct');
     const productSelect = document.getElementById('productSelect');
     const productQty = document.getElementById('productQty');
     const selectedProductsList = document.getElementById('selectedProductsList');
-    const orderForm = document.getElementById('orderForm');
+    const totalWeightDisplay = document.getElementById('totalWeightDisplay');
+    const totalVolumeDisplay = document.getElementById('totalVolumeDisplay');
 
-    const sampleProducts = [
-        { name: 'Product A', weight: 5, volume: 0.02 },
-        { name: 'Product B', weight: 12, volume: 0.05 },
-        { name: 'Product C', weight: 1.5, volume: 0.005 }
+    let orderItems = [
+        { name: 'Product A', weight: 5, vol: 0.02, quantity: 2 }
     ];
 
-    let savedProducts = [];
-
-    try {
-        savedProducts = JSON.parse(
-            localStorage.getItem('cmsProducts') || '[]'
-        );
-    } catch (error) {
-        savedProducts = [];
-    }
-
-    const availableProducts = sampleProducts.slice();
-
-    savedProducts.forEach(function (product) {
-        const alreadyExists = availableProducts.some(function (existingProduct) {
-            return existingProduct.name.toLowerCase() ===
-                product.name.toLowerCase();
+    function getCargoTotals() {
+        let totalWeight = 0;
+        let totalVol = 0;
+        orderItems.forEach(item => {
+            totalWeight += item.weight * item.quantity;
+            totalVol += item.vol * item.quantity;
         });
-
-        if (!alreadyExists) {
-            availableProducts.push(product);
-        }
-    });
-
-    availableProducts.forEach(function (product) {
-        const option = document.createElement('option');
-
-        option.value = product.name;
-        option.dataset.weight = product.weight;
-        option.dataset.vol = product.volume;
-
-        option.textContent =
-            product.name +
-            ' (' +
-            product.weight +
-            ' kg | ' +
-            product.volume +
-            ' m³)';
-
-        productSelect.appendChild(option);
-    });
-
-    //let orderItems = [
-    //    { name: 'Product A', weight: '5kg', vol: '0.02 m³', quantity: 2 }
-    //];
-    let orderItems = [];
+        return { totalWeight, totalVol };
+    }
 
     function renderProductList() {
         selectedProductsList.innerHTML = '';
@@ -312,112 +328,227 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedProductsList.appendChild(chip);
         });
 
+        const { totalWeight, totalVol } = getCargoTotals();
+        if (totalWeightDisplay) totalWeightDisplay.textContent = `${totalWeight.toFixed(1)} kg`;
+        if (totalVolumeDisplay) totalVolumeDisplay.textContent = `${totalVol.toFixed(3)} m³`;
+
         document.querySelectorAll('.btn-remove-item').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const idx = e.target.getAttribute('data-index');
                 orderItems.splice(idx, 1);
                 renderProductList();
+                updateServicePricing();
             });
         });
+
+        if (orderItems.length > 0) {
+            clearFieldError('productError', productSelect);
+        }
     }
 
     btnAddProduct.addEventListener('click', () => {
+        clearFieldError('productError', productSelect);
+        clearFieldError('productError', productQty);
+
         const selectedOption = productSelect.options[productSelect.selectedIndex];
         const productName = selectedOption.value;
         const qty = parseInt(productQty.value, 10);
 
         if (!productName) {
-            alert('Please select a product from the list.');
+            showFieldError('productError', productSelect, 'Please select a product from the list.');
             return;
         }
 
         if (isNaN(qty) || qty <= 0) {
-            alert('Quantity must be at least 1 unit.');
+            showFieldError('productError', productQty, 'Quantity must be at least 1 unit.');
             return;
         }
 
         orderItems.push({
             name: productName,
-            weight: selectedOption.getAttribute('data-weight'),
-            vol: selectedOption.getAttribute('data-vol'),
+            weight: parseFloat(selectedOption.getAttribute('data-weight')),
+            vol: parseFloat(selectedOption.getAttribute('data-vol')),
             quantity: qty
         });
 
         renderProductList();
+        updateServicePricing();
         productSelect.selectedIndex = 0;
         productQty.value = 1;
     });
 
+    productSelect.addEventListener('change', () => clearFieldError('productError', productSelect));
+    productQty.addEventListener('input', () => clearFieldError('productError', productQty));
+
 
     /* =========================================================
-       3. SUBMISSÃO E VALIDAÇÕES DO FORMULÁRIO (SPRINT 1)
+       3. DELIVERY SERVICE SELECTION (MATCHING cms-home.html FORMULA)
        ========================================================= */
+    const serviceCards = document.querySelectorAll('.service-option-card');
+    const serviceButtons = document.querySelectorAll('.service-select-btn');
+    const serviceOptionsGrid = document.getElementById('serviceOptionsGrid');
+    const serviceLockedHint = document.getElementById('serviceLockedHint');
+
+    const priceStandardEl = document.getElementById('priceStandard');
+    const priceExpressEl = document.getElementById('priceExpress');
+    const priceSameDayEl = document.getElementById('priceSameDay');
+
+    const summaryDistanceEl = document.getElementById('summaryDistance');
+    const summaryEtaEl = document.getElementById('summaryEta');
+    const summaryPriceEl = document.getElementById('summaryPrice');
+
+    let selectedService = 'Express';
+
+    // Exact same multipliers as cms-home.html
+    const SERVICE_CONFIG = {
+        'Standard': { multiplier: 1.0, eta: '2 – 3 business days', priceEl: priceStandardEl },
+        'Express':  { multiplier: 1.5, eta: 'Next business day',   priceEl: priceExpressEl },
+        'Same Day': { multiplier: 2.2, eta: '4 – 6 hours',         priceEl: priceSameDayEl }
+    };
+
+    function hasValidInputsForPricing() {
+        const oLat = parseFloat(originLatInput.value);
+        const oLng = parseFloat(originLongInput.value);
+        const dLat = parseFloat(destLatInput.value);
+        const dLng = parseFloat(destLongInput.value);
+        return orderItems.length > 0 && !isNaN(oLat) && !isNaN(oLng) && !isNaN(dLat) && !isNaN(dLng);
+    }
+
+    function updateServicePricing() {
+        if (!hasValidInputsForPricing()) {
+            if (serviceOptionsGrid) serviceOptionsGrid.classList.add('is-disabled');
+            if (serviceLockedHint) serviceLockedHint.hidden = false;
+            if (summaryDistanceEl) summaryDistanceEl.textContent = '-- km';
+            if (summaryPriceEl) summaryPriceEl.textContent = '€--.--';
+            return;
+        }
+
+        if (serviceOptionsGrid) serviceOptionsGrid.classList.remove('is-disabled');
+        if (serviceLockedHint) serviceLockedHint.hidden = true;
+
+        const { totalWeight } = getCargoTotals();
+
+        // Exact same pricing formula as cms-home.html
+        const distanceFee =
+            currentRouteKm > 300 ? 10 :
+            currentRouteKm > 100 ? 6 :
+            currentRouteKm > 0 ? 3 : 0;
+
+        const standardPrice = 4.50 + (0.90 * totalWeight) + distanceFee;
+
+        const prices = {};
+        Object.keys(SERVICE_CONFIG).forEach(name => {
+            const calculated = standardPrice * SERVICE_CONFIG[name].multiplier;
+            prices[name] = calculated;
+            if (SERVICE_CONFIG[name].priceEl) {
+                SERVICE_CONFIG[name].priceEl.textContent = `€${calculated.toFixed(2)}`;
+            }
+        });
+
+        if (summaryDistanceEl) summaryDistanceEl.textContent = `${currentRouteKm} km`;
+        if (selectedService && SERVICE_CONFIG[selectedService]) {
+            if (summaryEtaEl) summaryEtaEl.textContent = SERVICE_CONFIG[selectedService].eta;
+            if (summaryPriceEl) summaryPriceEl.textContent = `€${prices[selectedService].toFixed(2)}`;
+        }
+    }
+
+    function selectDeliveryService(serviceName) {
+        selectedService = serviceName;
+        clearFieldError('serviceError', null);
+
+        serviceCards.forEach(card => {
+            const isMatch = card.getAttribute('data-service') === serviceName;
+            card.classList.toggle('selected', isMatch);
+        });
+
+        serviceButtons.forEach(btn => {
+            const isMatch = btn.getAttribute('data-service') === serviceName;
+            btn.textContent = isMatch ? '✓ Selected' : 'Select';
+            btn.classList.toggle('is-selected', isMatch);
+        });
+
+        updateServicePricing();
+    }
+
+    serviceCards.forEach(card => {
+        card.addEventListener('click', () => {
+            selectDeliveryService(card.getAttribute('data-service'));
+        });
+    });
+
+
+    /* =========================================================
+       4. FORM SUBMISSION & INLINE VALIDATIONS (NO ALERTS)
+       ========================================================= */
+    const orderForm = document.getElementById('orderForm');
+
     orderForm.addEventListener('submit', (e) => {
         e.preventDefault();
+        let isValid = true;
+
+        clearFieldError('productError', productSelect);
+        clearFieldError('originLatError', originLatInput);
+        clearFieldError('originLongError', originLongInput);
+        clearFieldError('destLatError', destLatInput);
+        clearFieldError('destLongError', destLongInput);
+        clearFieldError('serviceError', null);
+
+        if (orderItems.length === 0) {
+            showFieldError('productError', productSelect, 'Please add at least one product to the order.');
+            isValid = false;
+        }
 
         const originLat = originLatInput.value.trim();
         const originLong = originLongInput.value.trim();
         const destLat = destLatInput.value.trim();
         const destLong = destLongInput.value.trim();
 
-        if (orderItems.length === 0) {
-            alert('Error: You must add at least one product to the order.');
-            return;
-        }
-
-        if (!originLat || !originLong || !destLat || !destLong) {
-            alert('Error: All Latitude and Longitude fields (Origin and Destination) are required.');
-            return;
-        }
-
         const latRegex = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$/;
         const longRegex = /^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/;
 
-        if (!latRegex.test(originLat) || !latRegex.test(destLat)) {
-            alert('Error: Invalid Latitude (must be between -90 and 90).');
-            return;
+        if (!originLat) {
+            showFieldError('originLatError', originLatInput, 'Origin latitude is required.');
+            isValid = false;
+        } else if (!latRegex.test(originLat)) {
+            showFieldError('originLatError', originLatInput, 'Latitude must be between -90 and 90.');
+            isValid = false;
         }
 
-        if (!longRegex.test(originLong) || !longRegex.test(destLong)) {
-            alert('Error: Invalid Longitude (must be between -180 and 180).');
-            return;
+        if (!originLong) {
+            showFieldError('originLongError', originLongInput, 'Origin longitude is required.');
+            isValid = false;
+        } else if (!longRegex.test(originLong)) {
+            showFieldError('originLongError', originLongInput, 'Longitude must be between -180 and 180.');
+            isValid = false;
         }
 
-        /* Guardar a encomenda (orders.js): fica "Initiated" e aparece
-           logo em My Orders e nas Available Orders dos couriers */
-        const placeName = (input, lat, long) => {
-            const text = document.getElementById(input).value.trim();
-            return text !== '' ? text.split(',')[0] : lat + ', ' + long;
-        };
-        let newOrder = null;
-        if (typeof createOrder === 'function') {
-            newOrder = createOrder({
-                client: 'Marta Ferreira',
-                origin: placeName('originAddress', originLat, originLong),
-                originCoords: [Number(originLat), Number(originLong)],
-                destination: placeName('destAddress', destLat, destLong),
-                destinationCoords: [Number(destLat), Number(destLong)],
-                distanceKm: Math.round(distanceKm(Number(originLat), Number(originLong), Number(destLat), Number(destLong))),
-                products: orderItems.map((item) => [item.name, item.quantity, parseFloat(item.weight),parseFloat(item.vol)])
-            });
+        if (!destLat) {
+            showFieldError('destLatError', destLatInput, 'Destination latitude is required.');
+            isValid = false;
+        } else if (!latRegex.test(destLat)) {
+            showFieldError('destLatError', destLatInput, 'Latitude must be between -90 and 90.');
+            isValid = false;
         }
 
-        alert('Order ' + (newOrder ? '#' + newOrder.id + ' ' : '') + 'submitted successfully! (Status: Initiated)');
+        if (!destLong) {
+            showFieldError('destLongError', destLongInput, 'Destination longitude is required.');
+            isValid = false;
+        } else if (!longRegex.test(destLong)) {
+            showFieldError('destLongError', destLongInput, 'Longitude must be between -180 and 180.');
+            isValid = false;
+        }
+
+        if (!selectedService) {
+            showFieldError('serviceError', null, 'Please select a delivery service (Standard, Express, or Same Day).');
+            isValid = false;
+        }
+
+        if (!isValid) return;
+
         window.location.href = 'my-orders.html';
     });
 
+    // Initial render
     renderProductList();
+    updateRouteAndMarkers(true);
 });
-
-
-/* Distância em linha reta entre dois pontos (fórmula de Haversine), em km.
-   Usada só para mostrar uma distância aproximada aos couriers. */
-function distanceKm(lat1, long1, lat2, long2) {
-    const toRadians = (degrees) => degrees * Math.PI / 180;
-    const earthRadius = 6371;
-    const dLat = toRadians(lat2 - lat1);
-    const dLong = toRadians(long2 - long1);
-    const a = Math.sin(dLat / 2) ** 2 +
-        Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * Math.sin(dLong / 2) ** 2;
-    return 2 * earthRadius * Math.asin(Math.sqrt(a));
-}
