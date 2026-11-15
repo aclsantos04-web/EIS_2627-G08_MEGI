@@ -46,7 +46,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
             if (vehicle.updatedDocument) {
-                const dateText = vehicle[vehicle.updatedDocument + "Expiry"];
+                // The date of the NEW certificate (not active until validated)
+                const dateText = vehicle.pendingExpiry || vehicle[vehicle.updatedDocument + "Expiry"];
                 alerts.push({
                     vehicle: vehicle,
                     kind: "upload",
@@ -218,7 +219,12 @@ document.addEventListener("DOMContentLoaded", function () {
     btnValidateDoc.addEventListener("click", function () {
         if (alertBeingReviewed !== null) {
             const vehicle = alertBeingReviewed.vehicle;
-            updateFleetVehicle(vehicle.plate, { updatedDocument: null });
+            // Validated: the new date becomes the real expiry date
+            const changes = { updatedDocument: null, pendingExpiry: null };
+            if (vehicle.pendingExpiry) {
+                changes[alertBeingReviewed.documentType + "Expiry"] = vehicle.pendingExpiry;
+            }
+            updateFleetVehicle(vehicle.plate, changes);                    // vehicles.js
             showFeedback(
                 "New " + DOCUMENT_NAMES[alertBeingReviewed.documentType].toLowerCase() +
                 " for " + vehicle.plate + " has been validated.",
@@ -233,10 +239,13 @@ document.addEventListener("DOMContentLoaded", function () {
     btnRejectDoc.addEventListener("click", function () {
         if (alertBeingReviewed !== null) {
             const vehicle = alertBeingReviewed.vehicle;
-            updateFleetVehicle(vehicle.plate, { updatedDocument: null });
+            // Rejected: the new date is thrown away and the old one stays.
+            // If the old one is expired, the alert comes back in the table.
+            updateFleetVehicle(vehicle.plate, { updatedDocument: null, pendingExpiry: null });
             showFeedback(
                 "Uploaded " + DOCUMENT_NAMES[alertBeingReviewed.documentType].toLowerCase() +
-                " for " + vehicle.plate + " was rejected. " + vehicle.courier + " has been asked to re-upload.",
+                " for " + vehicle.plate + " was rejected, so the previous expiry date still counts. " +
+                vehicle.courier + " has been asked to re-upload.",
                 true
             );
             alertBeingReviewed = null;

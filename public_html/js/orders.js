@@ -36,7 +36,7 @@ const COURIER_NAME = "Diogo Silva";          // the courier of the demo
 
 const SAMPLE_ORDERS = [
     {
-        id: 1001, client: "Marta Ferreira", created: "2026-10-15",
+        id: 1001, client: "Marta Ferreira", created: "2026-10-15", service: "Standard",
         origin: "Porto", originCoords: [41.1496, -8.6109],
         destination: "Aveiro", destinationCoords: [40.6405, -8.6538],
         distanceKm: 70, status: "Completed",
@@ -45,7 +45,7 @@ const SAMPLE_ORDERS = [
         products: [["Books", 1, 5, 0.01], ["Shoes", 1, 3, 0.02]]
     },
     {
-        id: 1002, client: "Marta Ferreira", created: "2026-10-18",
+        id: 1002, client: "Marta Ferreira", created: "2026-10-18", service: "Express",
         origin: "Braga", originCoords: [41.5454, -8.4265],
         destination: "Porto", destinationCoords: [41.1496, -8.6109],
         distanceKm: 55, status: "In Progress",
@@ -53,7 +53,7 @@ const SAMPLE_ORDERS = [
         products: [["Laptop", 1, 3, 0.015]]
     },
     {
-        id: 1003, client: "Marta Ferreira", created: "2026-10-20",
+        id: 1003, client: "Marta Ferreira", created: "2026-10-20", service: "Standard",
         origin: "Lisboa", originCoords: [38.7223, -9.1393],
         destination: "Coimbra", destinationCoords: [40.2033, -8.4103],
         distanceKm: 205, status: "Initiated",
@@ -61,7 +61,7 @@ const SAMPLE_ORDERS = [
         products: [["Kitchen set", 1, 12, 0.08]]
     },
     {
-        id: 1004, client: "Marta Ferreira", created: "2026-10-21",
+        id: 1004, client: "Marta Ferreira", created: "2026-10-21", service: "Standard",
         origin: "Viana do Castelo", originCoords: [41.6932, -8.8329],
         destination: "Braga", destinationCoords: [41.5454, -8.4265],
         distanceKm: 60, status: "Cancelled",
@@ -69,7 +69,7 @@ const SAMPLE_ORDERS = [
         products: [["Office chair", 1, 7, 0.15]]
     },
     {
-        id: 1005, client: "Carlos Mendes", created: "2026-11-12",
+        id: 1005, client: "Carlos Mendes", created: "2026-11-12", service: "Same Day",
         origin: "Matosinhos", originCoords: [41.1821, -8.6891],
         destination: "Porto", destinationCoords: [41.1579, -8.6291],
         distanceKm: 9, status: "Initiated",
@@ -77,7 +77,7 @@ const SAMPLE_ORDERS = [
         products: [["Clothes", 2, 3, 0.04]]
     },
     {
-        id: 1006, client: "Carlos Mendes", created: "2026-11-13",
+        id: 1006, client: "Carlos Mendes", created: "2026-11-13", service: "Express",
         origin: "Porto", originCoords: [41.1579, -8.6291],
         destination: "Guimarães", destinationCoords: [41.4425, -8.2918],
         distanceKm: 55, status: "Initiated",
@@ -173,6 +173,19 @@ function orderLoadText(order) {
         " kg · " +
         orderVolume(order).toFixed(2) +
         " m³";
+}
+
+// Delivery service (chosen on New Order) and how fast it is
+const SERVICE_ETAS = {
+    "Standard": "2 – 3 business days",
+    "Express": "Next business day",
+    "Same Day": "4 – 6 hours"
+};
+
+// "Express · next business day"
+function serviceText(order) {
+    const service = order.service || "Standard";
+    return service + " · " + SERVICE_ETAS[service].charAt(0).toLowerCase() + SERVICE_ETAS[service].slice(1);
 }
 
 // "Books (1 unit, 5 kg)"

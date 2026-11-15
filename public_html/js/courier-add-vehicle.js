@@ -36,13 +36,23 @@ function checkPlate() {
         return false;
     }
 
-    // The same plate can't be registered twice.
-    // some() returns true if at least one vehicle matches.
-    const alreadyExists = loadVehicles().some(function (vehicle) {
+    // A plate identifies ONE real vehicle, so it can't be registered
+    // twice in the whole system, by this courier or by another one.
+    // getFleet() (vehicles.js) = every courier's vehicles, the same
+    // list Staff see. find() returns the first vehicle with this plate,
+    // or undefined if there is none.
+    // (In Sprint 2 the database enforces this: license_plate is the
+    // key of the VEHICLE table.)
+    const owner = getFleet().find(function (vehicle) {
         return vehicle.plate === plate;
     });
-    if (alreadyExists) {
-        showError("plate", "This vehicle is already registered.");
+    if (owner !== undefined) {
+        // Two messages: own vehicle (probably forgotten) or someone
+        // else's (a typo, or a case for Staff). We never say WHO owns
+        // it, because a courier shouldn't see other couriers' data.
+        showError("plate", owner.courier === "Diogo Silva"
+            ? "You have already registered this vehicle."
+            : "This plate is already registered by another courier.");
         return false;
     }
     return true;

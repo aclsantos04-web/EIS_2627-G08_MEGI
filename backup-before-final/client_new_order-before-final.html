@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Create New Order</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+    <!-- Shared Team CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Client Specific CSS -->
+    <link rel="stylesheet" href="css/client.css">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- ===== SIDEBAR (the same on every Client page) ===== -->
+        <nav class="sidebar" aria-label="Client menu">
+            <a href="cms-home.html" class="sidebar-logo" aria-label="CMS – go to homepage">
+                <svg viewBox="0 0 64 40" aria-hidden="true">
+                    <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                    <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                    <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                    <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                </svg>
+                CMS
+            </a>
+            <div class="sidebar-role"><span class="role-icon" aria-hidden="true">📦</span> Client Panel</div>
+            <a href="client_new_order.html" class="active"><i class="ti ti-square-plus" aria-hidden="true"></i> New Order</a>
+            <a href="my-orders.html"><i class="ti ti-list-details" aria-hidden="true"></i> My Orders</a>
+            <a href="new-product.html"><i class="ti ti-box" aria-hidden="true"></i> New Product</a>
+            <a href="my-products.html"><i class="ti ti-packages" aria-hidden="true"></i> My Products</a>
+            <a href="client_profile.html"><i class="ti ti-user" aria-hidden="true"></i> Profile</a>
+            <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-content">
+            <header class="page-header">
+                <h1>Create new order</h1>
+                <p class="text-muted">Create a delivery order and choose the service that best fits your needs.</p>
+            </header>
+
+            <form id="orderForm" class="order-grid" novalidate>
+                
+                <!-- Package Information -->
+                <section class="card package-card">
+                    <h3>Package Information</h3>
+                    
+                    <div class="product-input-row">
+                        <select id="productSelect">
+                            <option value="" disabled selected>Select Products</option>
+                            <option value="Product A" data-weight="5" data-vol="0.02">Product A (5 kg | 0.02 m³)</option>
+                            <option value="Product B" data-weight="12" data-vol="0.05">Product B (12 kg | 0.05 m³)</option>
+                            <option value="Product C" data-weight="1.5" data-vol="0.005">Product C (1.5 kg | 0.005 m³)</option>
+                        </select>
+
+                        <input type="number" id="productQty" class="qty-input" placeholder="Qt" min="1" value="1">
+                        
+                        <button type="button" id="btnAddProduct" class="btn btn-secondary btn-small">Add</button>
+                    </div>
+                    <small class="error-message" id="productError"></small>
+
+                    <!-- Selected products list -->
+                    <div id="selectedProductsList" class="product-list"></div>
+
+                    <!-- Cargo Totals -->
+                    <div class="cargo-totals-row">
+                        <span>Total Weight: <strong id="totalWeightDisplay">10.0 kg</strong></span>
+                        <span>Total Volume: <strong id="totalVolumeDisplay">0.040 m³</strong></span>
+                    </div>
+                </section>
+
+                <!-- Additional Information -->
+                <section class="card notes-card">
+                    <h3>Additional Information</h3>
+                    <textarea id="orderNotes" placeholder="Delivery notes or handling instructions (optional)"></textarea>
+                </section>
+
+                <!-- Select Location -->
+                <section class="card location-card">
+                    <div class="location-header-row">
+                        <h3>Select Location</h3>
+                        <div class="map-target-switch" role="group" aria-label="Map click target">
+                            <button type="button" id="targetOriginBtn" class="target-pill active-origin">
+                                <span class="dot dot-green"></span> Set Origin
+                            </button>
+                            <button type="button" id="targetDestBtn" class="target-pill">
+                                <span class="dot dot-red"></span> Set Destination
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- ORIGIN -->
+                    <div class="coords-section">
+                        <div class="coords-subtitle">Origin</div>
+                        <div class="address-search-row">
+                            <input type="text" id="originAddress" placeholder="Search origin address (e.g. FEUP, Porto)" autocomplete="off">
+                            <button type="button" id="btnSearchOrigin" class="btn btn-secondary btn-small">Search</button>
+                        </div>
+                        <small class="error-message" id="originAddrError"></small>
+                        <div id="originSuggestions" class="suggestions-list"></div>
+
+                        <div class="coords-row">
+                            <div class="input-block">
+                                <label for="originLat">Latitude</label>
+                                <input type="number" step="any" id="originLat" placeholder="41.1780" value="41.1780">
+                                <small class="error-message" id="originLatError"></small>
+                            </div>
+                            <div class="input-block">
+                                <label for="originLong">Longitude</label>
+                                <input type="number" step="any" id="originLong" placeholder="-8.5980" value="-8.5980">
+                                <small class="error-message" id="originLongError"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DESTINATION -->
+                    <div class="coords-section">
+                        <div class="coords-subtitle">Destination</div>
+                        <div class="address-search-row">
+                            <input type="text" id="destAddress" placeholder="Search destination address (e.g. Aliados, Porto)" autocomplete="off">
+                            <button type="button" id="btnSearchDest" class="btn btn-secondary btn-small">Search</button>
+                        </div>
+                        <small class="error-message" id="destAddrError"></small>
+                        <div id="destSuggestions" class="suggestions-list"></div>
+
+                        <div class="coords-row">
+                            <div class="input-block">
+                                <label for="destLat">Latitude</label>
+                                <input type="number" step="any" id="destLat" placeholder="41.1496" value="41.1496">
+                                <small class="error-message" id="destLatError"></small>
+                            </div>
+                            <div class="input-block">
+                                <label for="destLong">Longitude</label>
+                                <input type="number" step="any" id="destLong" placeholder="-8.6109" value="-8.6109">
+                                <small class="error-message" id="destLongError"></small>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Map Container -->
+                <section class="card map-container-card">
+                    <div class="map-wrapper">
+                        <div id="map"></div>
+                        <div class="map-legend-box">
+                            <div class="legend-item"><span class="dot dot-green"></span> Origin</div>
+                            <div class="legend-item"><span class="dot dot-red"></span> Destination</div>
+                            <div class="legend-item"><span class="route-line-sample"></span> Route (<span id="legendDistance">-- km</span>)</div>
+                        </div>
+                    </div>
+                    <div class="map-footer-hint">
+                        <p class="text-muted" id="mapHintText">Click on the map to set <strong>Origin</strong>, search an address, or edit coordinates</p>
+                    </div>
+                </section>
+
+                <!-- ===== CHOOSE A DELIVERY SERVICE ===== -->
+                <section class="service-selection-wrapper" id="serviceSection">
+                    <div class="service-section-header">
+                        <i class="ti ti-stack-2" aria-hidden="true"></i>
+                        <div>
+                            <h3>Choose a Delivery Service</h3>
+                            <p class="text-muted">Compare delivery options, prices and estimated times.</p>
+                        </div>
+                    </div>
+
+                    <div id="serviceLockedHint" class="service-locked-hint" hidden>
+                        Add at least one product and valid Origin/Destination coordinates to unlock delivery service pricing.
+                    </div>
+
+                    <div class="service-options-grid" id="serviceOptionsGrid">
+                        <!-- STANDARD -->
+                        <div class="service-option-card" data-service="Standard">
+                            <span class="service-check-badge"><i class="ti ti-check" aria-hidden="true"></i></span>
+                            <div class="service-card-top">
+                                <div class="service-icon"><i class="ti ti-truck" aria-hidden="true"></i></div>
+                                <div>
+                                    <h4>Standard</h4>
+                                    <span class="service-sub">Cost-effective delivery</span>
+                                </div>
+                            </div>
+                            <div class="service-divider"></div>
+                            <div class="service-eta">
+                                <i class="ti ti-clock" aria-hidden="true"></i>
+                                <div>
+                                    <small>Estimated delivery</small>
+                                    <strong>2 – 3 business days</strong>
+                                </div>
+                            </div>
+                            <div class="service-card-bottom">
+                                <span class="service-price-pill" id="priceStandard">€--.--</span>
+                                <button type="button" class="service-select-btn" data-service="Standard">Select</button>
+                            </div>
+                        </div>
+
+                        <!-- EXPRESS -->
+                        <div class="service-option-card selected" data-service="Express">
+                            <span class="service-check-badge"><i class="ti ti-check" aria-hidden="true"></i></span>
+                            <div class="service-card-top">
+                                <div class="service-icon"><i class="ti ti-bolt" aria-hidden="true"></i></div>
+                                <div>
+                                    <h4>Express</h4>
+                                    <span class="service-sub">Faster delivery, great balance</span>
+                                </div>
+                            </div>
+                            <div class="service-divider"></div>
+                            <div class="service-eta">
+                                <i class="ti ti-clock" aria-hidden="true"></i>
+                                <div>
+                                    <small>Estimated delivery</small>
+                                    <strong>Next business day</strong>
+                                </div>
+                            </div>
+                            <div class="service-card-bottom">
+                                <span class="service-price-pill" id="priceExpress">€--.--</span>
+                                <button type="button" class="service-select-btn is-selected" data-service="Express">✓ Selected</button>
+                            </div>
+                        </div>
+
+                        <!-- SAME DAY -->
+                        <div class="service-option-card" data-service="Same Day">
+                            <span class="service-check-badge"><i class="ti ti-check" aria-hidden="true"></i></span>
+                            <div class="service-card-top">
+                                <div class="service-icon"><i class="ti ti-rocket" aria-hidden="true"></i></div>
+                                <div>
+                                    <h4>Same Day</h4>
+                                    <span class="service-sub">Urgent deliveries</span>
+                                </div>
+                            </div>
+                            <div class="service-divider"></div>
+                            <div class="service-eta">
+                                <i class="ti ti-clock" aria-hidden="true"></i>
+                                <div>
+                                    <small>Estimated delivery</small>
+                                    <strong>4 – 6 hours</strong>
+                                </div>
+                            </div>
+                            <div class="service-card-bottom">
+                                <span class="service-price-pill" id="priceSameDay">€--.--</span>
+                                <button type="button" class="service-select-btn" data-service="Same Day">Select</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <small class="error-message" id="serviceError"></small>
+
+                    <!-- Summary Bar & Create Order Button -->
+                    <div class="order-summary-bar">
+                        <div class="summary-metrics">
+                            <div class="summary-item">
+                                <i class="ti ti-route" aria-hidden="true"></i>
+                                <div>
+                                    <small>Distance</small>
+                                    <strong id="summaryDistance">-- km</strong>
+                                </div>
+                            </div>
+                            <div class="summary-sep"></div>
+                            <div class="summary-item">
+                                <i class="ti ti-clock" aria-hidden="true"></i>
+                                <div>
+                                    <small>Estimated delivery</small>
+                                    <strong id="summaryEta">Next business day</strong>
+                                </div>
+                            </div>
+                            <div class="summary-sep"></div>
+                            <div class="summary-item">
+                                <i class="ti ti-credit-card" aria-hidden="true"></i>
+                                <div>
+                                    <small>Estimated price</small>
+                                    <strong id="summaryPrice">€--.--</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-create-order">Create Order &rarr;</button>
+                    </div>
+                </section>
+
+            </form>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/client_order.js"></script>
+    <script src="js/topbar.js"
+            data-name="Marta Ferreira"
+            data-role="Client"
+            data-username="marta.ferreira"
+            data-profile="client_profile.html"></script>
+</body>
+</html>

@@ -545,6 +545,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!isValid) return;
 
+        /* Guardar a encomenda (js/orders.js): fica "Initiated" e aparece
+           logo em My Orders e nas Available Orders dos couriers,
+           com o serviço escolhido (Standard / Express / Same Day) e o preço */
+        if (typeof createOrder === 'function') {
+            const placeName = (inputId, lat, long) => {
+                const input = document.getElementById(inputId);
+                const text = input ? input.value.trim() : '';
+                return text !== '' ? text.split(',')[0] : lat + ', ' + long;
+            };
+            const { totalWeight } = getCargoTotals();
+            const distanceFee =
+                currentRouteKm > 300 ? 10 :
+                currentRouteKm > 100 ? 6 :
+                currentRouteKm > 0 ? 3 : 0;
+            const price = (4.50 + 0.90 * totalWeight + distanceFee) * SERVICE_CONFIG[selectedService].multiplier;
+
+            createOrder({
+                client: 'Marta Ferreira',
+                origin: placeName('originAddress', originLat, originLong),
+                originCoords: [Number(originLat), Number(originLong)],
+                destination: placeName('destAddress', destLat, destLong),
+                destinationCoords: [Number(destLat), Number(destLong)],
+                distanceKm: Math.round(calcStraightDistanceKm(
+                    Number(originLat), Number(originLong), Number(destLat), Number(destLong))),
+                service: selectedService,
+                price: Math.round(price * 100) / 100,
+                products: orderItems.map((item) => [item.name, item.quantity, item.weight, item.vol])
+            });
+        }
+
         window.location.href = 'my-orders.html';
     });
 

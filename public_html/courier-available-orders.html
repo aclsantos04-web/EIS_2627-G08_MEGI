@@ -127,6 +127,7 @@
             card.append(
                 createText("h2", "Order #" + order.id),
                 createText("h3", order.origin + " → " + order.destination),
+                createText("p", serviceText(order), "order-service"),         // orders.js: Standard / Express / Same Day
                 createText("p", "Distance: about " + order.distanceKm + " km"),
                 createText("p", orderLoadText(order), "text-muted"),        // orders.js
                 createText("p", "Requested on " + orderDate(order.created), "text-muted"),

@@ -1146,3 +1146,14 @@ dialog::backdrop {               /* the dark layer behind the pop-up */
     color: var(--muted);
     font-size: 13px;
 }
+
+.order-service {                 /* delivery service on an order card */
+    display: inline-block;
+    margin: 0 0 8px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 600;
+}
