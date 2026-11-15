@@ -94,13 +94,15 @@ document.getElementById("product-form").addEventListener("submit", function(even
     };
 
     // Get previously saved products
-    let products = JSON.parse(localStorage.getItem("cmsProducts") || "[]");
+    // Each client has their own list (session.js: "cmsProducts_<username>")
+    const productsKey = userStorageKey("cmsProducts", "client");
+    let products = JSON.parse(localStorage.getItem(productsKey) || "[]");
 
     // Add new product
     products.push(product);
 
     // Save products
-    localStorage.setItem("cmsProducts", JSON.stringify(products));
+    localStorage.setItem(productsKey, JSON.stringify(products));
 
     // Success message
     message.textContent = "Product registered successfully!";

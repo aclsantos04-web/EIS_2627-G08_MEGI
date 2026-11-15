@@ -35,7 +35,11 @@ const fromOrders = getCourierCompletedOrders().map(function (order) {     // ord
     };
 });
 
-const completedOrders = fromOrders.concat(pastDeliveries);
+// The older deliveries above are the demo courier's (Diogo's) history;
+// a courier who registered on the site only sees their own orders.
+const completedOrders = isDemoUser("courier")                          // session.js
+    ? fromOrders.concat(pastDeliveries)
+    : fromOrders;
 
 // Newest first. sort() compares two orders at a time;
 // localeCompare() works because dates are "YYYY-MM-DD".

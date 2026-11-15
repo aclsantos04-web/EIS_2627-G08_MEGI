@@ -335,12 +335,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let savedProducts = [];
         try {
-            const parsed = JSON.parse(localStorage.getItem('cmsProducts') || '[]');
+            // Products of the logged-in client (session.js): each client has their own list
+            const parsed = JSON.parse(localStorage.getItem(userStorageKey('cmsProducts', 'client')) || '[]');
             if (Array.isArray(parsed)) {
                 savedProducts = parsed;
             }
         } catch (err) {
             console.warn('Could not load saved products from localStorage.', err);
+        }
+
+        // Product A / B / C in the HTML are the demo client's sample
+        // products: a new client only sees the products they registered
+        if (!isDemoUser('client')) {
+            Array.from(productSelect.options).forEach(opt => {
+                if (opt.value !== '') opt.remove();
+            });
         }
 
         const existingValues = new Set(
@@ -650,7 +659,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const price = (4.50 + 0.90 * totalWeight + distanceFee) * SERVICE_CONFIG[selectedService].multiplier;
 
             createOrder({
-                client: 'Marta Ferreira',
+                // the logged-in client (session.js)
+                client: getPageUser('client').name,
+                clientUsername: getPageUser('client').username,
                 origin: placeName('originAddress', originLat, originLong),
                 originCoords: [Number(originLat), Number(originLong)],
                 destination: placeName('destAddress', destLat, destLong),

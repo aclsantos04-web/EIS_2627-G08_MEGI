@@ -12,6 +12,10 @@
 
     <!-- Staff Approvals specific styles -->
     <link rel="stylesheet" href="css/admin-staff.css">
+    <!-- Who is logged in: accounts.js (users) + session.js (the logged-in user).
+         Loaded first, so every script on this page can use them. -->
+    <script src="js/accounts.js"></script>
+    <script src="js/session.js"></script>
 </head>
 
 <body>
@@ -653,7 +657,6 @@
     <!-- Staff Approvals behaviour -->
     <!-- accounts.js adds a row for every staff member who registered
          on this browser; it must run before admin-staff.js reads the rows -->
-    <script src="js/accounts.js"></script>
     <script>addRegisteredStaffRows();</script>
     <script src="js/admin-staff.js"></script>
 

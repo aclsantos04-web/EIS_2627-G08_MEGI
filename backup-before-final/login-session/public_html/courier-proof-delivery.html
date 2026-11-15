@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CMS - Proof of Delivery</title>
+
+    <!-- CSS geral -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- CSS das páginas Courier -->
+    <link rel="stylesheet" href="css/courier.css">
+
+    <!-- CSS específico desta página -->
+    <link rel="stylesheet" href="css/courier-proof-delivery.css">
+</head>
+
+<body class="cms-page">
+    <div class="app-layout">
+
+        <!-- ===== SIDEBAR (the same on every Courier page) =====
+             class="active" marks the page you are on. -->
+        <nav class="sidebar" aria-label="Courier menu">
+
+            <a href="index.html"
+               class="sidebar-logo"
+               aria-label="CMS – go to homepage">
+
+                <svg viewBox="0 0 64 40" aria-hidden="true">
+                    <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                    <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                    <circle cx="14" cy="32" r="5"
+                            fill="#fff"
+                            stroke="currentColor"
+                            stroke-width="3"/>
+                    <circle cx="48" cy="32" r="5"
+                            fill="#fff"
+                            stroke="currentColor"
+                            stroke-width="3"/>
+                </svg>
+
+                CMS
+            </a>
+
+            <div class="sidebar-role">
+                <span class="role-icon" aria-hidden="true">🚚</span>
+                Courier Panel
+            </div>
+
+            <a href="courier-available-orders.html">
+                <i class="ti ti-package" aria-hidden="true"></i>
+                Available Orders
+            </a>
+
+            <a href="courier-active-route.html">
+                <i class="ti ti-route" aria-hidden="true"></i>
+                Active Route
+            </a>
+
+            <a href="courier-proof-delivery.html" class="active">
+                <i class="ti ti-signature" aria-hidden="true"></i>
+                Proof of Delivery
+            </a>
+
+            <a href="courier-vehicles.html">
+                <i class="ti ti-truck" aria-hidden="true"></i>
+                Vehicles
+            </a>
+
+            <a href="courier-completed-orders.html">
+                <i class="ti ti-circle-check" aria-hidden="true"></i>
+                Completed Orders
+            </a>
+
+            <a href="courier_profile.html">
+                <i class="ti ti-user" aria-hidden="true"></i>
+                Profile
+            </a>
+
+            <a href="login.html" class="logout">
+                <i class="ti ti-logout" aria-hidden="true"></i>
+                Log out
+            </a>
+
+        </nav>
+
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <main class="app-content">
+
+            <header class="page-header pod-page-header">
+                <div>
+                    <h1>Proof of Delivery</h1>
+                    <p class="text-muted">
+                        Confirm the delivery by registering a recipient signature or delivery photo.
+                    </p>
+                </div>
+            </header>
+
+            <!-- Shown when there is no delivery in progress -->
+            <div id="noDelivery" class="card" hidden></div>
+
+
+            <!-- ===== PROOF OF DELIVERY ===== -->
+            <section class="proof-container">
+
+                <!-- Order identification -->
+                <div class="pod-order-heading">
+
+                    <span class="pod-order-icon">
+                        <i class="ti ti-package"></i>
+                    </span>
+
+                    <h2>
+                        Order <span id="podOrderNumber">#1003</span>
+                    </h2>
+
+                    <span
+                        id="podStatus"
+                        class="badge badge-info">
+
+                        In Progress
+
+                    </span>
+
+                </div>
+
+
+                <!-- Route + load summary -->
+                <div class="pod-route-summary">
+
+                    <div class="pod-route-main">
+                        <i class="ti ti-map-pin"></i>
+
+                        <span id="podRoute">
+                            Lisboa → Coimbra
+                        </span>
+                    </div>
+
+
+                    <div class="pod-route-metric">
+                        <i class="ti ti-packages"></i>
+
+                        <span id="podPackages">
+                            1 package
+                        </span>
+                    </div>
+
+
+                    <div class="pod-route-metric">
+                        <i class="ti ti-weight"></i>
+
+                        <span id="podWeight">
+                            12 kg
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <!-- Order details -->
+                <div class="pod-information-grid">
+
+                    <div class="pod-info-item">
+
+                        <i class="ti ti-user pod-info-icon"></i>
+
+                        <div class="pod-info-content">
+                            <span class="pod-info-label">
+                                Client
+                            </span>
+
+                            <strong
+                                id="podClient"
+                                class="pod-info-value">
+
+                                Marta Ferreira
+
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="pod-info-item">
+
+                        <i class="ti ti-truck pod-info-icon"></i>
+
+                        <div class="pod-info-content">
+                            <span class="pod-info-label">
+                                Vehicle
+                            </span>
+
+                            <strong
+                                id="podVehicle"
+                                class="pod-info-value">
+
+                                —
+
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="pod-info-item">
+
+                        <i class="ti ti-package pod-info-icon"></i>
+
+                        <div class="pod-info-content">
+                            <span class="pod-info-label">
+                                Products
+                            </span>
+
+                            <ul
+                                id="podProducts"
+                                class="pod-products pod-info-value">
+                            </ul>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ===== PROOF METHOD ===== -->
+                <section class="proof-method">
+
+                    <h3>Proof Method</h3>
+
+                    <p class="proof-method-intro">
+                        Add a signature or a photo to confirm the delivery.
+                    </p>
+
+
+                    <!-- Signature / Photo -->
+                    <div class="proof-tabs">
+
+                        <button
+                            type="button"
+                            id="signatureTab"
+                            class="proof-tab active">
+
+                            Signature
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="photoTab"
+                            class="proof-tab">
+
+                            Photo
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- Signature -->
+                    <div id="signaturePanel">
+
+                        <canvas
+                            id="signatureCanvas"
+                            width="900"
+                            height="240">
+
+                            Your browser does not support Canvas.
+
+                        </canvas>
+
+                    </div>
+
+
+                    <!-- Photo -->
+                    <div id="photoPanel" hidden>
+
+                        <div class="photo-area">
+
+                            <!-- Live camera -->
+                            <video
+                                id="cameraPreview"
+                                autoplay
+                                playsinline
+                                hidden>
+                            </video>
+
+
+                            <!-- Used to capture the camera image -->
+                            <canvas
+                                id="photoCanvas"
+                                hidden>
+                            </canvas>
+
+
+                            <!-- Photo preview -->
+                            <img
+                                id="photoPreview"
+                                src="data:image/gif;base64,R0lGODlhAQABAAAAACw="
+                                alt="Delivery photo preview">
+
+
+                            <p id="photoText">
+                                Take or choose a photo confirming the delivery.
+                            </p>
+
+
+                            <div class="photo-actions">
+
+                                <button
+                                    type="button"
+                                    id="openCamera"
+                                    class="btn btn-secondary">
+
+                                    Take Photo
+
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    id="capturePhoto"
+                                    class="btn btn-primary"
+                                    hidden>
+
+                                    Capture
+
+                                </button>
+
+
+                                <input
+                                    type="file"
+                                    id="deliveryPhoto"
+                                    accept="image/*">
+
+
+                                <label
+                                    for="deliveryPhoto"
+                                    class="btn btn-outline">
+
+                                    Choose Photo
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Error message -->
+                    <p
+                        id="proofError"
+                        role="alert">
+                    </p>
+
+
+                    <!-- Final actions -->
+                    <div class="proof-actions">
+
+                        <button
+                            type="button"
+                            id="btnClearSignature"
+                            class="btn btn-outline btn-small">
+
+                            Clear Signature
+
+                        </button>
+
+
+                        <p
+                            id="proofHint"
+                            class="proof-hint">
+
+                            <i class="ti ti-info-circle"></i>
+
+                            Add a signature or photo to enable delivery confirmation.
+
+                        </p>
+
+
+                        <div class="proof-actions-right">
+
+                            <button
+                                type="button"
+                                id="cancelProof"
+                                class="btn btn-outline">
+
+                                Cancel
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                id="confirmDelivery"
+                                class="btn btn-primary"
+                                disabled>
+
+                                Confirm Delivery
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- Shared helpers and data -->
+    <script src="js/validation.js"></script>
+    <script src="js/orders.js"></script>
+
+    <!-- Signature Canvas -->
+    <script src="js/signature.js"></script>
+
+    <!-- Camera and Proof of Delivery behaviour -->
+    <script src="js/camera_proof_of_delivery.js"></script>
+
+    <!-- vehicles.js gives the top bar the courier's document alerts -->
+    <script src="js/vehicles.js"></script>
+
+    <!-- Top bar (notifications + user menu), built by js/topbar.js -->
+    <script
+        src="js/topbar.js"
+        data-name="Diogo Silva"
+        data-role="Courier"
+        data-username="diogo.silva"
+        data-profile="courier_profile.html">
+    </script>
+
+</body>
+</html>

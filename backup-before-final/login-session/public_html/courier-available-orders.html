@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Available Orders</title>
+
+    <!-- CSS comum do projeto -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="app-layout">
+
+        <!-- Menu lateral -->
+        <!-- ===== SIDEBAR (the same on every Courier page) =====
+             class="active" marks the page you are on. -->
+        <nav class="sidebar" aria-label="Courier menu">
+            <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
+                <svg viewBox="0 0 64 40" aria-hidden="true">
+                    <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                    <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                    <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                    <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                </svg>
+                CMS
+            </a>
+            <div class="sidebar-role"><span class="role-icon" aria-hidden="true">🚚</span> Courier Panel</div>
+            <a href="courier-available-orders.html" class="active"><i class="ti ti-package" aria-hidden="true"></i> Available Orders</a>
+            <a href="courier-active-route.html"><i class="ti ti-route" aria-hidden="true"></i> Active Route</a>
+            <a href="courier-proof-delivery.html"><i class="ti ti-signature" aria-hidden="true"></i> Proof of Delivery</a>
+            <a href="courier-vehicles.html"><i class="ti ti-truck" aria-hidden="true"></i> Vehicles</a>
+            <a href="courier-completed-orders.html"><i class="ti ti-circle-check" aria-hidden="true"></i> Completed Orders</a>
+            <a href="courier_profile.html"><i class="ti ti-user" aria-hidden="true"></i> Profile</a>
+            <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
+        </nav>
+
+        <!-- Conteúdo principal -->
+        <main class="app-content">
+            <div class="page-header">
+                <h1>Available Orders</h1>
+            </div>
+
+            <p class="page-intro">Orders waiting for a courier. You can do one order at a time: select it and accept it to start the route.</p>
+
+            <!-- Shown when Diogo already has an order in progress
+                 ("single active task" rule, js/orders.js) -->
+            <div class="alert alert-warning" id="activeOrderBox" hidden>
+                <span id="activeOrderText"></span>
+                <a href="courier-active-route.html" class="btn btn-primary btn-small">Go to Active Route</a>
+            </div>
+
+            <!-- Order cards, filled from js/orders.js (getAvailableOrders) -->
+            <div class="card-grid" id="orderCards"></div>
+
+            <!-- Confirmar seleção -->
+            <div class="accept-bar">
+                <button
+                    type="button"
+                    id="acceptSelection"
+                    class="btn btn-primary">
+                    Accept Selection
+                </button>
+
+                <!-- Mensagem de erro -->
+                <span
+                    id="selectionError"
+                    class="error-message"
+                    role="alert">
+                </span>
+            </div>
+        </main>
+    </div>
+
+    <!-- Orders shared by all pages, then this page's logic -->
+    <script src="js/orders.js"></script>
+    <script>
+        /* =====================================================
+           AVAILABLE ORDERS
+           1. Cards for every order nobody has accepted yet
+           2. Select one card, then "Accept Selection"
+           3. Only one active order at a time: if Diogo already
+              has one, the cards can't be selected
+           ===================================================== */
+        const orderCards = document.getElementById("orderCards");
+        const acceptButton = document.getElementById("acceptSelection");
+        const selectionError = document.getElementById("selectionError");
+        const activeOrder = getActiveOrder();                 // orders.js
+        let selectedOrder = null;
+
+        /* 3. Already doing an order? */
+        if (activeOrder !== null) {
+            document.getElementById("activeOrderText").textContent =
+                "You already have an active order: #" + activeOrder.id + " " +
+                activeOrder.origin + " → " + activeOrder.destination +
+                " (" + activeOrder.status + "). Finish or cancel it before accepting another.";
+            document.getElementById("activeOrderBox").hidden = false;
+            acceptButton.disabled = true;
+        }
+
+        /* 1. One card per available order */
+        function createText(tag, text, className) {
+            const element = document.createElement(tag);
+            element.textContent = text;
+            if (className) {
+                element.className = className;
+            }
+            return element;
+        }
+
+        const available = getAvailableOrders();                // orders.js
+
+        if (available.length === 0) {
+            orderCards.append(createText("p", "There are no orders waiting for a courier right now.", "text-muted"));
+            acceptButton.hidden = true;
+        }
+
+        available.forEach(function (order) {
+            const card = document.createElement("article");
+            card.className = "card order-card";
+
+            const button = createText("button", "Select Order", "btn btn-outline btn-small select-order-btn");
+            button.type = "button";
+            button.dataset.order = order.id;
+            button.disabled = activeOrder !== null;
+
+            card.append(
+                createText("h2", "Order #" + order.id),
+                createText("h3", order.origin + " → " + order.destination),
+                createText("p", serviceText(order), "order-service"),         // orders.js: Standard / Express / Same Day
+                createText("p", "Distance: about " + order.distanceKm + " km"),
+                createText("p", orderLoadText(order), "text-muted"),        // orders.js
+                createText("p", "Requested on " + orderDate(order.created), "text-muted"),
+                button
+            );
+            orderCards.append(card);
+        });
+
+        /* 2. Select a card (only one at a time) */
+        const orderButtons = document.querySelectorAll(".select-order-btn");
+
+        orderButtons.forEach(function (button) {
+            button.addEventListener("click", function () {
+                orderButtons.forEach(function (otherButton) {
+                    otherButton.classList.remove("btn-secondary");
+                    otherButton.classList.add("btn-outline");
+                    otherButton.textContent = "Select Order";
+                    otherButton.closest(".card").classList.remove("is-selected");
+                });
+                selectedOrder = button.dataset.order;
+                button.classList.remove("btn-outline");
+                button.classList.add("btn-secondary");
+                button.textContent = "Selected ✓";
+                button.closest(".card").classList.add("is-selected");
+                selectionError.textContent = "";
+            });
+        });
+
+        /* Accept: the order becomes Diogo's active order */
+        acceptButton.addEventListener("click", function () {
+            if (selectedOrder === null) {
+                selectionError.textContent = "Please select an order first.";
+                return;
+            }
+            
+            if (!acceptOrder(selectedOrder)) { // orders.js
+                selectionError.textContent =
+                    "This order is no longer available or you already have an active order.";
+                return;
+            }
+            window.location.href = "courier-active-route.html";
+            
+        });
+    </script>
+
+<!-- vehicles.js gives the top bar the courier's document alerts -->
+<script src="js/vehicles.js"></script>
+<!-- Top bar (notifications + user menu), built by js/topbar.js -->
+<script src="js/topbar.js"
+        data-name="Diogo Silva"
+        data-role="Courier"
+        data-username="diogo.silva"
+        data-profile="courier_profile.html"></script>
+</body>
+</html>

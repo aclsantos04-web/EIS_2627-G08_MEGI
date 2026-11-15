@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Staff Panel | Vehicle Approvals</title>
+    <!-- Shared styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Staff specific styles -->
+    <link rel="stylesheet" href="css/staff.css">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- ===== SIDEBAR (the same on every Staff page) ===== -->
+        <nav class="sidebar" aria-label="Staff menu">
+            <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
+                <svg viewBox="0 0 64 40" aria-hidden="true">
+                    <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                    <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                    <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                    <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                </svg>
+                CMS
+            </a>
+            <div class="sidebar-role"><span class="role-icon" aria-hidden="true">📋</span> Staff Panel</div>
+            <a href="staff_courier_approvals.html"><i class="ti ti-user-check" aria-hidden="true"></i> Courier Approvals</a>
+            <a href="staff_vehicle_approvals.html" class="active"><i class="ti ti-truck" aria-hidden="true"></i> Vehicle Approvals</a>
+            <a href="staff_alerts.html"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Document Alerts</a>
+            <a href="staff_profile.html"><i class="ti ti-user" aria-hidden="true"></i> Profile</a>
+            <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
+        </nav>
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <main class="app-content">
+            <header class="page-header">
+                <div>
+                    <h1>Vehicle Approvals</h1>
+                    <p class="text-muted">Verify valid insurance and inspection certificates before approving vehicles.</p>
+                </div>
+            </header>
+
+            <!-- ===== APPROVAL STATISTICS (matching Admin) ===== -->
+            <section class="card-grid approval-stats">
+                <article class="card stat-card">
+                    <div class="approval-stat-content">
+                        <span class="approval-stat-icon pending-icon">
+                            <i class="ti ti-clock"></i>
+                        </span>
+                        <div>
+                            <div class="stat-value" id="pendingCount">0</div>
+                            <div class="stat-label">Pending</div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card stat-card">
+                    <div class="approval-stat-content">
+                        <span class="approval-stat-icon approved-icon">
+                            <i class="ti ti-check"></i>
+                        </span>
+                        <div>
+                            <div class="stat-value" id="approvedCount">0</div>
+                            <div class="stat-label">Approved</div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card stat-card">
+                    <div class="approval-stat-content">
+                        <span class="approval-stat-icon rejected-icon">
+                            <i class="ti ti-x"></i>
+                        </span>
+                        <div>
+                            <div class="stat-value" id="rejectedCount">0</div>
+                            <div class="stat-label">Rejected</div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <!-- ===== VEHICLE REGISTRATION REQUESTS ===== -->
+            <section class="card">
+                <div class="approval-card-header">
+                    <div>
+                        <h2>Fleet Vehicle Requests</h2>
+                        <p class="text-muted">Both certificates must be valid and inspected before granting approval.</p>
+                    </div>
+
+                    <div class="approval-tools">
+                        <input
+                            type="search"
+                            id="vehicleSearch"
+                            placeholder="Search plate or courier..."
+                            aria-label="Search Vehicle">
+
+                        <select id="statusFilter" aria-label="Filter by status">
+                            <option value="pending" selected>Pending</option>
+                            <option value="all">All status</option>
+                            <option value="approved">Approved</option>
+                            <option value="denied">Rejected</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>License Plate</th>
+                                <th>Courier</th>
+                                <th>Vehicle Type</th>
+                                <th>Insurance Expiry</th>
+                                <th>Inspection Expiry</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vehicleTableBody">
+                            <!-- Filled by js/staff_vehicles.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ===== VEHICLE & CERTIFICATE VERIFICATION DIALOG ===== -->
+    <dialog id="vehicleDialog">
+        <div class="dialog-heading">
+            <div>
+                <h2 id="dialogTitle">Vehicle & Certificate Review</h2>
+                <p id="dialogSubTitle" class="text-muted">License Plate KL-78-MN</p>
+            </div>
+            <button type="button" id="closeDialog" class="dialog-close" aria-label="Close">
+                <i class="ti ti-x"></i>
+            </button>
+        </div>
+
+        <h3 class="section-title">Vehicle Specifications</h3>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span>License Plate</span>
+                <strong id="dialogPlate"></strong>
+            </div>
+            <div class="detail-item">
+                <span>Courier</span>
+                <strong id="dialogCourier"></strong>
+            </div>
+            <div class="detail-item">
+                <span>Type & Model</span>
+                <strong id="dialogTypeModel"></strong>
+            </div>
+            <div class="detail-item">
+                <span>Max Capacity</span>
+                <strong id="dialogCapacity"></strong>
+            </div>
+            <div class="detail-item">
+                <span>Current Status</span>
+                <div>
+                    <span id="dialogStatus" class="badge badge-warning">Pending</span>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="section-title">Certificate Verification (Required before Approval)</h3>
+        <div class="cert-verify-grid">
+            <!-- Insurance Certificate -->
+            <div class="cert-card">
+                <div class="cert-card-top">
+                    <div>
+                        <div class="cert-card-title">Insurance Certificate</div>
+                        <div class="cert-card-file" id="insFileName">insurance_doc.pdf</div>
+                    </div>
+                    <span id="insExpiryBadge" class="badge badge-success">Valid</span>
+                </div>
+                <div class="text-muted" style="font-size: 12px;">
+                    Expiry Date: <strong id="insExpiryText"></strong>
+                </div>
+                <div class="cert-card-actions">
+                    <button type="button" id="btnViewInsurance" class="btn btn-small btn-outline">
+                        <i class="ti ti-eye"></i> View Insurance
+                    </button>
+                    <span id="insVerifiedStatus" class="cert-unverified-tag">Not verified</span>
+                </div>
+            </div>
+
+            <!-- Inspection Certificate -->
+            <div class="cert-card">
+                <div class="cert-card-top">
+                    <div>
+                        <div class="cert-card-title">Inspection Certificate</div>
+                        <div class="cert-card-file" id="inspFileName">inspection_doc.pdf</div>
+                    </div>
+                    <span id="inspExpiryBadge" class="badge badge-success">Valid</span>
+                </div>
+                <div class="text-muted" style="font-size: 12px;">
+                    Expiry Date: <strong id="inspExpiryText"></strong>
+                </div>
+                <div class="cert-card-actions">
+                    <button type="button" id="btnViewInspection" class="btn btn-small btn-outline">
+                        <i class="ti ti-eye"></i> View Inspection
+                    </button>
+                    <span id="inspVerifiedStatus" class="cert-unverified-tag">Not verified</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Simulated Document Preview Area -->
+        <div id="certPreviewBox" class="doc-preview-container" hidden>
+            <span class="doc-icon">📄</span>
+            <p><strong id="certPreviewTitle">Certificate Preview</strong></p>
+            <small id="certPreviewMeta" class="text-muted"></small>
+            <small class="text-muted">(Simulated certificate viewer — document verified for Sprint 1 prototype.)</small>
+        </div>
+
+        <section id="decisionHistory" hidden>
+            <h3 class="section-title">Decision History</h3>
+            <div id="historyList" class="history-list"></div>
+        </section>
+
+        <section class="decision-section">
+            <h3 class="section-title">Decision</h3>
+            <p id="decisionMessage" class="text-muted">
+                Inspect both certificates above and provide a justification before approving or rejecting.
+            </p>
+
+            <div class="form-group">
+                <label for="decisionReason">Decision justification *</label>
+                <textarea
+                    id="decisionReason"
+                    rows="3"
+                    maxlength="500"
+                    placeholder="Explain the reason for this decision..."></textarea>
+                <span id="decisionError" class="error-message"></span>
+            </div>
+
+            <div class="decision-actions">
+                <button type="button" id="dialogApprove" class="btn btn-success">
+                    <i class="ti ti-check"></i> Approve Vehicle
+                </button>
+                <button type="button" id="dialogReject" class="btn btn-danger">
+                    <i class="ti ti-x"></i> Reject Vehicle
+                </button>
+            </div>
+        </section>
+
+        <div class="form-actions">
+            <button type="button" id="closeDialogButton" class="btn btn-outline">Close</button>
+        </div>
+    </dialog>
+
+    <script src="js/vehicles.js"></script>
+    <script src="js/staff_vehicles.js"></script>
+    <script src="js/accounts.js"></script>
+    <script src="js/topbar.js"
+            data-name="Rita Almeida"
+            data-role="Staff"
+            data-username="rita.almeida"
+            data-profile="staff_profile.html"></script>
+</body>
+</html>

@@ -35,6 +35,10 @@ A COMPLETE FLOW TO TRY
 
 4. Register as a Courier. The account waits for approval. Log in as Staff and approve it in Courier Approvals; the courier can now log in. Staff accounts are approved by the Admin in Staff Approvals.
 
+5. Your own account. Register as a Client (for example "Ana Santos") and log in with that username or email. Every page now shows that account: its name in the top bar, its profile (name, email, phone, NIF, member since), and its own My Orders and My Products, which start empty. Orders placed on New Order are saved under that client, and a client cannot open another client's order. A registered Courier (once approved) also starts with no vehicles: the vehicles they add are their own, Staff see them under that courier's name, and the orders they accept and complete appear only in their own lists. Log out (or open the Login page) to end the session.
+
+The logged-in user is kept in the browser (js/session.js). A page opened directly, without logging in (for example from the Evaluation Index), shows the demo user of that role. Passwords are not checked, because Sprint 1 has no server to store them.
+
 All pages share the same sample data (js/accounts.js, js/orders.js and js/vehicles.js). Changes are kept in the browser (localStorage). To go back to the original sample data, open the browser console (F12) and type resetDemo()
 
 

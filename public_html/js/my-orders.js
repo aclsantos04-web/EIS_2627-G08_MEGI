@@ -1,19 +1,37 @@
 /* =========================================================
    my-orders.js — CLIENT → MY ORDERS
-   Lists Marta's orders from js/orders.js (newest first).
+   Lists the orders of the logged-in client (session.js),
+   from js/orders.js, newest first. The demo client (Marta)
+   has sample orders; a new client starts with none.
    "View" opens client_orders.html?order=ID.
    An order made on New Order, or accepted / delivered by a
    courier, shows its new status here straight away.
    ========================================================= */
 
-const CLIENT_NAME = "Marta Ferreira";       // the client of the demo
+const currentClient = getPageUser("client");     // session.js
 
 (function () {
     const tableBody = document.getElementById("orderRows");
 
-    const orders = getClientOrders(CLIENT_NAME).sort(function (a, b) {
+    const orders = getUserOrders(currentClient).sort(function (a, b) {
         return b.id - a.id;                  // newest (highest number) first
     });
+
+    // No orders yet: a friendly message with a link to New Order
+    if (orders.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.colSpan = 6;
+        cell.className = "empty-row";
+        cell.append("You haven't placed any orders yet. ");
+        const link = document.createElement("a");
+        link.href = "client_new_order.html";
+        link.textContent = "Place your first order";
+        cell.append(link);
+        row.append(cell);
+        tableBody.append(row);
+        return;
+    }
 
     orders.forEach(function (order) {
         const row = document.createElement("tr");

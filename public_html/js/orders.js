@@ -32,7 +32,16 @@
    courier: null while no courier has accepted it
    products:  [name, quantity, weight of one unit in kg, volume of one unit in m³]
    --------------------------------------------------------- */
-const COURIER_NAME = "Diogo Silva";          // the courier of the demo
+// The courier using the page (session.js): the logged-in courier,
+// or the demo courier Diogo Silva when nobody is logged in.
+const COURIER_NAME = typeof getPageUser === "function"
+    ? getPageUser("courier").name
+    : "Diogo Silva";
+// Each courier has their own active order ("cmsActiveOrder" for Diogo,
+// "cmsActiveOrder_<username>" for the others)
+const ACTIVE_ORDER_KEY = typeof userStorageKey === "function"
+    ? userStorageKey("cmsActiveOrder", "courier")
+    : "cmsActiveOrder";
 
 const SAMPLE_ORDERS = [
     {
@@ -217,6 +226,15 @@ function getClientOrders(clientName) {
     });
 }
 
+// Orders of one client account. New orders remember the
+// username (clientUsername); the sample orders only have the name.
+function getUserOrders(user) {
+    return getAllOrders().filter(function (order) {
+        return order.clientUsername === user.username ||
+            (!order.clientUsername && order.client === user.name);
+    });
+}
+
 // Saves an order made on New Order. It starts as "Initiated",
 // so it appears straight away in the couriers' Available Orders.
 function createOrder(details) {
@@ -249,9 +267,9 @@ function getAvailableOrders() {
     });
 }
 
-// The order Diogo is doing now, or null
+// The order this courier is doing now, or null
 function getActiveOrder() {
-    const id = readOrderStorage("cmsActiveOrder", null);
+    const id = readOrderStorage(ACTIVE_ORDER_KEY, null);
     if (id === null) {
         return null;
     }
@@ -275,7 +293,7 @@ function acceptOrder(id) {
     }
 
     updateOrder(id, { courier: COURIER_NAME });
-    writeOrderStorage("cmsActiveOrder", id);
+    writeOrderStorage(ACTIVE_ORDER_KEY, id);
 
     return true;
 }
@@ -289,7 +307,7 @@ function startOrder(id, plate) {
 // available orders (as the brief asks) and he is free again.
 function releaseOrder(id) {
     updateOrder(id, { status: "Initiated", courier: null, vehicle: null });
-    writeOrderStorage("cmsActiveOrder", null);
+    writeOrderStorage(ACTIVE_ORDER_KEY, null);
 }
 
 // Finish: after the Proof of Delivery
@@ -299,7 +317,7 @@ function completeOrder(id, podType) {
         deliveredOn: new Date().toISOString().slice(0, 10),
         podType: podType
     });
-    writeOrderStorage("cmsActiveOrder", null);
+    writeOrderStorage(ACTIVE_ORDER_KEY, null);
 }
 
 // Orders this courier delivered
@@ -314,7 +332,7 @@ function getCourierCompletedOrders() {
    6. RESET (only the orders)
    --------------------------------------------------------- */
 function resetOrders() {
-    ["cmsOrderUpdates", "cmsNewOrders", "cmsActiveOrder"].forEach(function (key) {
+    ["cmsOrderUpdates", "cmsNewOrders", "cmsActiveOrder", ACTIVE_ORDER_KEY].forEach(function (key) {
         try {
             localStorage.removeItem(key);
         } catch (error) {

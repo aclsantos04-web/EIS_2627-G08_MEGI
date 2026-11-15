@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- Staff specific styles -->
     <link rel="stylesheet" href="css/staff.css">
+    <!-- Who is logged in: accounts.js (users) + session.js (the logged-in user).
+         Loaded first, so every script on this page can use them. -->
+    <script src="js/accounts.js"></script>
+    <script src="js/session.js"></script>
 </head>
 <body>
 
@@ -252,7 +256,6 @@
 
     <script src="js/vehicles.js"></script>
     <script src="js/staff_vehicles.js"></script>
-    <script src="js/accounts.js"></script>
     <script src="js/topbar.js"
             data-name="Rita Almeida"
             data-role="Staff"

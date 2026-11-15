@@ -23,8 +23,30 @@ const PROFILE_STORAGE_KEY = "cmsProfiles";
 
 const profileForm = document.getElementById("profileForm");
 
-// Each page writes the username on the form: <form data-username="diogo.silva">
-const username = profileForm.dataset.username;
+// Each page writes its DEMO user on the form: <form data-username="diogo.silva">.
+// If someone else with this role is logged in (session.js), the page
+// shows THEIR profile instead: the fields are filled from their account.
+const demoUsername = profileForm.dataset.username;
+const profileUser = typeof getPageUser === "function"
+    ? getPageUser(findAccount(demoUsername).role)                  // accounts.js + session.js
+    : null;
+const username = profileUser ? profileUser.username : demoUsername;
+
+if (profileUser && profileUser.username !== demoUsername) {
+    document.getElementById("username").value = profileUser.username;
+    document.getElementById("fullName").value = profileUser.name;
+    document.getElementById("email").value = profileUser.email;
+    document.getElementById("phone").value = profileUser.phone || "";
+    document.getElementById("nif").value = profileUser.nif || "";
+    document.getElementById("profileName").textContent = profileUser.name;
+
+    // "Member since 02/09/2026. ..." -> the date this account registered
+    const memberText = document.querySelector(".profile-header .text-muted");
+    if (memberText && profileUser.registered) {
+        memberText.textContent = memberText.textContent.replace(
+            /Member since [0-9/]+/, "Member since " + formatDateText(profileUser.registered));
+    }
+}
 
 // The fields that can be edited and saved
 const EDITABLE_FIELDS = ["fullName", "email", "phone", "nif"];

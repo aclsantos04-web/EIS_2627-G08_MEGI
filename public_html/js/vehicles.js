@@ -69,7 +69,7 @@ function getDocumentState(dateText) {
 
 /* ---------------------------------------------------------
    3. SAMPLE TEST DATA
-   The logged-in courier is Diogo Silva (the courier shown on
+   The demo courier is Diogo Silva (the courier shown on
    the client's order page). His vehicles are the same ones
    offered on the Active Route page.
    Each object = one row of the VEHICLE table in the ER model.
@@ -92,21 +92,42 @@ function getSampleVehicles() {
    try/catch: if the browser blocks storage, the page still
    works with the sample data (it just doesn't remember changes).
    --------------------------------------------------------- */
-function loadVehicles() {
+/* Each courier has their own list (session.js):
+   - the demo courier (Diogo) uses "cmsVehicles" and starts with the samples
+   - any other courier uses "cmsVehicles_<username>" and starts with none
+   Without session.js on the page, everything is Diogo's, as before. */
+function vehicleStorageKey() {
+    return typeof userStorageKey === "function"
+        ? userStorageKey(VEHICLE_STORAGE_KEY, "courier")
+        : VEHICLE_STORAGE_KEY;
+}
+
+// The vehicles saved under one storage key ([] if none yet)
+function readVehicleList(key) {
     try {
-        const saved = localStorage.getItem(VEHICLE_STORAGE_KEY);
+        return JSON.parse(localStorage.getItem(key) || "[]");
+    } catch (error) {
+        return [];
+    }
+}
+
+function loadVehicles() {
+    const key = vehicleStorageKey();
+    try {
+        const saved = localStorage.getItem(key);
         if (saved !== null) {
             return JSON.parse(saved);
         }
     } catch (error) {
         console.warn("Could not read saved vehicles, using sample data.", error);
     }
-    return getSampleVehicles();
+    // only the demo courier has sample vehicles
+    return key === VEHICLE_STORAGE_KEY ? getSampleVehicles() : [];
 }
 
 function saveVehicles(vehicles) {
     try {
-        localStorage.setItem(VEHICLE_STORAGE_KEY, JSON.stringify(vehicles));
+        localStorage.setItem(vehicleStorageKey(), JSON.stringify(vehicles));
     } catch (error) {
         console.warn("Could not save vehicles.", error);
     }
@@ -116,7 +137,7 @@ function saveVehicles(vehicles) {
 // browser console (F12) before a presentation.
 function resetVehicles() {
     try {
-        localStorage.removeItem(VEHICLE_STORAGE_KEY);
+        localStorage.removeItem(vehicleStorageKey());
     } catch (error) {
         console.warn("Could not reset vehicles.", error);
     }
@@ -156,25 +177,61 @@ function getFleet() {
     } catch (error) {
         changes = {};
     }
-    const diogos = loadVehicles().map(function (vehicle) {
-        return Object.assign({ courier: "Diogo Silva" }, vehicle);
-    });
+    // Diogo's list is read directly, so the Staff pages see it
+    // even when someone else is logged in.
+    const savedDiogo = localStorage.getItem(VEHICLE_STORAGE_KEY);
+    const diogos = (savedDiogo !== null ? readVehicleList(VEHICLE_STORAGE_KEY) : getSampleVehicles())
+        .map(function (vehicle) {
+            return Object.assign({ courier: "Diogo Silva" }, vehicle);
+        });
     const others = getOtherCourierVehicles().map(function (vehicle) {
         return Object.assign({}, vehicle, changes[vehicle.plate] || {});
     });
-    return diogos.concat(others);
+    // Couriers who registered on the site: each one's own list
+    const registered = [];
+    getRegisteredCouriers().forEach(function (courier) {
+        readVehicleList(VEHICLE_STORAGE_KEY + "_" + courier.username).forEach(function (vehicle) {
+            registered.push(Object.assign({ courier: courier.name }, vehicle));
+        });
+    });
+    return diogos.concat(registered, others);
+}
+
+// Courier accounts created on Register (accounts.js), not the demo one
+function getRegisteredCouriers() {
+    if (typeof loadRegisteredAccounts !== "function") {
+        return [];
+    }
+    return loadRegisteredAccounts().filter(function (account) {
+        return account.role === "courier";
+    });
 }
 
 // Staff change something about a vehicle (approve, reject, review a document)
 function updateFleetVehicle(plate, changes) {
-    const myVehicles = loadVehicles();
-    const mine = myVehicles.find(function (vehicle) {
-        return vehicle.plate === plate;
+    // Is it in Diogo's list, or in the list of a courier who registered?
+    const savedDiogo = localStorage.getItem(VEHICLE_STORAGE_KEY);
+    const courierLists = [{
+        key: VEHICLE_STORAGE_KEY,
+        vehicles: savedDiogo !== null ? readVehicleList(VEHICLE_STORAGE_KEY) : getSampleVehicles()
+    }];
+    getRegisteredCouriers().forEach(function (courier) {
+        const key = VEHICLE_STORAGE_KEY + "_" + courier.username;
+        courierLists.push({ key: key, vehicles: readVehicleList(key) });
     });
-    if (mine !== undefined) {                       // one of Diogo's: change his list
-        Object.assign(mine, changes);
-        saveVehicles(myVehicles);
-        return;
+    for (const list of courierLists) {
+        const found = list.vehicles.find(function (vehicle) {
+            return vehicle.plate === plate;
+        });
+        if (found !== undefined) {                  // change that courier's own list
+            Object.assign(found, changes);
+            try {
+                localStorage.setItem(list.key, JSON.stringify(list.vehicles));
+            } catch (error) {
+                console.warn("Could not save the vehicle change.", error);
+            }
+            return;
+        }
     }
     let saved = {};
     try {

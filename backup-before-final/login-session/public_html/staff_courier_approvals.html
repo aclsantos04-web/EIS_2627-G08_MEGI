@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Staff Panel | Courier Approvals</title>
+    <!-- Shared styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Staff specific styles -->
+    <link rel="stylesheet" href="css/staff.css">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- ===== SIDEBAR (the same on every Staff page) ===== -->
+        <nav class="sidebar" aria-label="Staff menu">
+            <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
+                <svg viewBox="0 0 64 40" aria-hidden="true">
+                    <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                    <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                    <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                    <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                </svg>
+                CMS
+            </a>
+            <div class="sidebar-role"><span class="role-icon" aria-hidden="true">📋</span> Staff Panel</div>
+            <a href="staff_courier_approvals.html" class="active"><i class="ti ti-user-check" aria-hidden="true"></i> Courier Approvals</a>
+            <a href="staff_vehicle_approvals.html"><i class="ti ti-truck" aria-hidden="true"></i> Vehicle Approvals</a>
+            <a href="staff_alerts.html"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Document Alerts</a>
+            <a href="staff_profile.html"><i class="ti ti-user" aria-hidden="true"></i> Profile</a>
+            <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
+        </nav>
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <main class="app-content">
+            <header class="page-header">
+                <div>
+                    <h1>Courier Approvals</h1>
+                    <p class="text-muted">Review and manage Courier registration requests.</p>
+                </div>
+            </header>
+
+            <!-- ===== APPROVAL STATISTICS (matching Admin) ===== -->
+            <section class="card-grid approval-stats">
+                <article class="card stat-card">
+                    <div class="approval-stat-content">
+                        <span class="approval-stat-icon pending-icon">
+                            <i class="ti ti-clock"></i>
+                        </span>
+                        <div>
+                            <div class="stat-value" id="pendingCount">0</div>
+                            <div class="stat-label">Pending</div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card stat-card">
+                    <div class="approval-stat-content">
+                        <span class="approval-stat-icon approved-icon">
+                            <i class="ti ti-check"></i>
+                        </span>
+                        <div>
+                            <div class="stat-value" id="approvedCount">0</div>
+                            <div class="stat-label">Approved</div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card stat-card">
+                    <div class="approval-stat-content">
+                        <span class="approval-stat-icon rejected-icon">
+                            <i class="ti ti-x"></i>
+                        </span>
+                        <div>
+                            <div class="stat-value" id="rejectedCount">0</div>
+                            <div class="stat-label">Rejected</div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <!-- ===== COURIER REGISTRATION REQUESTS ===== -->
+            <section class="card">
+                <div class="approval-card-header">
+                    <div>
+                        <h2>Courier Registrations</h2>
+                        <p class="text-muted">Couriers can only accept orders after Staff validate their account.</p>
+                    </div>
+
+                    <div class="approval-tools">
+                        <input
+                            type="search"
+                            id="courierSearch"
+                            placeholder="Search Courier..."
+                            aria-label="Search Courier">
+
+                        <select id="statusFilter" aria-label="Filter by status">
+                            <option value="all">All status</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Courier</th>
+                                <th>Email</th>
+                                <th>Registration Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="courierTableBody">
+                            <!-- Filled by js/staff_approvals.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ===== COURIER REQUEST VIEW / REVIEW DIALOG ===== -->
+    <dialog id="courierDialog">
+        <div class="dialog-heading">
+            <div>
+                <h2 id="dialogTitle">Courier Registration Request</h2>
+                <p id="dialogRequestId" class="text-muted">Request COUR-001</p>
+            </div>
+            <button type="button" id="closeDialog" class="dialog-close" aria-label="Close">
+                <i class="ti ti-x"></i>
+            </button>
+        </div>
+
+        <div class="dialog-profile">
+            <span id="dialogAvatar" class="staff-avatar dialog-avatar">CR</span>
+            <div>
+                <h3 id="dialogName">Courier Name</h3>
+                <p class="text-muted">Courier registration request</p>
+            </div>
+        </div>
+
+        <h3 class="section-title">Account Information</h3>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span>Username</span>
+                <strong id="dialogUsername"></strong>
+            </div>
+            <div class="detail-item">
+                <span>Email</span>
+                <strong id="dialogEmail"></strong>
+            </div>
+            <div class="detail-item">
+                <span>Registration Date</span>
+                <strong id="dialogDate"></strong>
+            </div>
+            <div class="detail-item">
+                <span>Requested Role</span>
+                <strong>Courier</strong>
+            </div>
+            <div class="detail-item">
+                <span>Current Status</span>
+                <div>
+                    <span id="dialogStatus" class="badge badge-warning">Pending</span>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="section-title">Requested Access</h3>
+        <div class="access-box">
+            <p>If approved, this user will gain access to the Courier Panel and will be able to:</p>
+            <ul>
+                <li>View and accept available delivery orders</li>
+                <li>Register vehicles with insurance and inspection certificates</li>
+                <li>Record Proof of Delivery (signature and photo)</li>
+            </ul>
+        </div>
+
+        <section id="decisionHistory" hidden>
+            <h3 class="section-title">Decision History</h3>
+            <div id="historyList" class="history-list"></div>
+        </section>
+
+        <section class="decision-section">
+            <h3 class="section-title">Decision</h3>
+            <p id="decisionMessage" class="text-muted">
+                Review the account information and justify the decision before approving or rejecting this Courier request.
+            </p>
+
+            <div class="form-group">
+                <label for="decisionReason">Decision justification *</label>
+                <textarea
+                    id="decisionReason"
+                    rows="3"
+                    maxlength="500"
+                    placeholder="Explain the reason for this decision..."></textarea>
+                <span id="decisionError" class="error-message"></span>
+            </div>
+
+            <div class="decision-actions">
+                <button type="button" id="dialogApprove" class="btn btn-success">
+                    <i class="ti ti-check"></i> Approve
+                </button>
+                <button type="button" id="dialogReject" class="btn btn-danger">
+                    <i class="ti ti-x"></i> Reject
+                </button>
+            </div>
+        </section>
+
+        <div class="form-actions">
+            <button type="button" id="closeDialogButton" class="btn btn-outline">Close</button>
+        </div>
+    </dialog>
+
+    <script src="js/accounts.js"></script>
+    <script src="js/staff_approvals.js"></script>
+    <script src="js/vehicles.js"></script>
+    <script src="js/topbar.js"
+            data-name="Rita Almeida"
+            data-role="Staff"
+            data-username="rita.almeida"
+            data-profile="staff_profile.html"></script>
+</body>
+</html>

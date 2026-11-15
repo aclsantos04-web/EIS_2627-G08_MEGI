@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Active Route</title>
+
+    <!-- CSS comum do projeto -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- CSS do Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <!-- Estilos específicos desta página -->
+    <style>
+        .route-layout {
+            display: grid;
+            grid-template-columns: minmax(500px, 1fr) 300px;
+            gap: 20px;
+            align-items: start;
+        }
+
+        #map {
+            width: 100%;
+            height: 460px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+
+        .route-details {
+            background-color: var(--card);
+            border-radius: var(--radius);
+            padding: 20px;
+        }
+
+        .route-details h2 {
+            margin-bottom: 5px;
+        }
+
+        .route-details h3 {
+            margin-bottom: 20px;
+        }
+
+        .route-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0 25px;
+        }
+
+        .route-summary-item {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .route-summary-item strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .route-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .route-actions .btn {
+            width: 100%;
+        }
+
+        .route-actions button:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 1000px) {
+            .route-layout {
+                grid-template-columns: 1fr;
+            }
+
+            #map {
+                height: 380px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+
+        <!-- Menu lateral -->
+        <!-- ===== SIDEBAR (the same on every Courier page) =====
+             class="active" marks the page you are on. -->
+        <nav class="sidebar" aria-label="Courier menu">
+            <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
+                <svg viewBox="0 0 64 40" aria-hidden="true">
+                    <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                    <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                    <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                    <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+                </svg>
+                CMS
+            </a>
+            <div class="sidebar-role"><span class="role-icon" aria-hidden="true">🚚</span> Courier Panel</div>
+            <a href="courier-available-orders.html"><i class="ti ti-package" aria-hidden="true"></i> Available Orders</a>
+            <a href="courier-active-route.html" class="active"><i class="ti ti-route" aria-hidden="true"></i> Active Route</a>
+            <a href="courier-proof-delivery.html"><i class="ti ti-signature" aria-hidden="true"></i> Proof of Delivery</a>
+            <a href="courier-vehicles.html"><i class="ti ti-truck" aria-hidden="true"></i> Vehicles</a>
+            <a href="courier-completed-orders.html"><i class="ti ti-circle-check" aria-hidden="true"></i> Completed Orders</a>
+            <a href="courier_profile.html"><i class="ti ti-user" aria-hidden="true"></i> Profile</a>
+            <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
+        </nav>
+
+        <!-- Conteúdo principal -->
+        <main class="app-content">
+            <div class="page-header">
+                <h1>Active Route</h1>
+            </div>
+
+            <h2 id="activeOrderTitle">Active Order</h2>
+
+            <!-- Shown when there is no active order (filled by the script below) -->
+            <div id="noActiveOrder" hidden></div>
+
+            <div class="route-layout" id="routeLayout">
+
+                <!-- Mapa -->
+                <div id="map"></div>
+
+                <!-- Informação da encomenda -->
+                <section class="route-details">
+                    <h2>Order Information</h2>
+                    <h3 id="routeName">Porto → Aveiro</h3>
+
+                    <p class="text-muted" id="routeLoad"></p>
+
+                    <!-- Informação calculada através da rota -->
+                    <div class="route-summary">
+                        <div class="route-summary-item">
+                            <strong>Distance</strong>
+                            <span id="routeDistance">Calculating...</span>
+                        </div>
+
+                        <div class="route-summary-item">
+                            <strong>Estimated time</strong>
+                            <span id="routeDuration">Calculating...</span>
+                        </div>
+                    </div>
+
+                    <!-- Escolha do veículo -->
+                    <div class="form-group">
+                        <label for="vehicle">Vehicle:</label>
+
+                        <!-- Filled from the courier's vehicles (vehicles.js).
+                             Vehicles that can't be used are shown but disabled,
+                             with the reason next to them. -->
+                        <select id="vehicle">
+                            <option value="" selected>Select Vehicle</option>
+                        </select>
+                        <small class="vehicle-hint">Only approved vehicles with valid documents that can carry this load can be chosen.</small>
+                    </div>
+
+                    <!-- Estado da entrega -->
+                    <div class="form-group">
+                        <label for="status">Status:</label>
+
+                        <input
+                            type="text"
+                            id="status"
+                            value=""
+                            readonly>
+                    </div>
+
+                    <!-- Mensagens de erro -->
+                    <span id="routeError" class="error-message"></span>
+
+                    <!-- Ações -->
+                    <div class="route-actions">
+                        <button
+                            type="button"
+                            id="startDelivery"
+                            class="btn btn-primary">
+                            Start Delivery
+                        </button>
+
+                        <button
+                            type="button"
+                            id="completeDelivery"
+                            class="btn btn-success"
+                            disabled>
+                            Complete Delivery
+                        </button>
+
+                        <button
+                            type="button"
+                            id="cancelOrder"
+                            class="btn btn-danger">
+                            Cancel Order
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Ficheiro comum dos mapas -->
+    <script src="js/map.js"></script>
+
+    <!-- JavaScript desta página -->
+    <!-- Shared data: orders (orders.js) and vehicles (vehicles.js) -->
+    <script src="js/validation.js"></script>
+    <script src="js/orders.js"></script>
+    <script src="js/vehicles.js"></script>
+    <script>
+        /* =====================================================
+           ACTIVE ROUTE
+           The order Diogo accepted on Available Orders
+           (getActiveOrder in orders.js).
+           Initiated   -> choose a vehicle -> Start Delivery
+           In Progress -> Complete Delivery (Proof of Delivery)
+           Cancel      -> the order goes back to Available Orders
+           ===================================================== */
+        const currentOrder = getActiveOrder();                       // orders.js
+
+        if (currentOrder === null) {
+            /* No active order: friendly empty state instead of the route */
+            document.getElementById("routeLayout").hidden = true;
+            document.getElementById("activeOrderTitle").hidden = true;
+            const box = document.getElementById("noActiveOrder");
+            box.hidden = false;
+            box.className = "card";
+            box.append(createEmptyState(
+                "ti-route-off",
+                "No active order",
+                "Accept an order on Available Orders to see its route, choose a vehicle and start the delivery.",
+                { text: "See available orders", href: "courier-available-orders.html" }
+            ));
+        } else {
+            showRoute(currentOrder);
+        }
+
+        function showRoute(order) {
+            const orderId = order.id;
+            const loadKg = orderWeight(order);
+            const loadM3 = orderVolume(order);  // orders.js
+
+            document.getElementById("activeOrderTitle").textContent = "Active Order #" + orderId;
+            document.getElementById("routeName").textContent = order.origin + " → " + order.destination;
+            document.getElementById("routeLoad").textContent = orderLoadText(order) + " · " + serviceText(order) + " · for " + order.client;
+
+            /* Map and route between the two places (map.js) */
+            createRouteMap("map", order.originCoords, order.destinationCoords, order.origin, order.destination);
+
+            const vehicle = document.getElementById("vehicle");
+            const status = document.getElementById("status");
+            const error = document.getElementById("routeError");
+            const startButton = document.getElementById("startDelivery");
+            const completeButton = document.getElementById("completeDelivery");
+            const cancelButton = document.getElementById("cancelOrder");
+
+            /* The courier's vehicles. Ones that can't be used are disabled. */
+            loadVehicles().forEach(function (car) {                  // vehicles.js
+                const problem = vehicleProblem(car, loadKg,loadM3);          // vehicles.js
+                const option = document.createElement("option");
+                option.value = car.plate;
+                option.textContent = car.type + " - " + car.plate + (problem ? " (" + problem + ")" : "");
+                option.disabled = problem !== "";
+                vehicle.append(option);
+            });
+
+            /* Buttons for the current status */
+            function showStatus() {
+                const current = getOrder(orderId);                   // read again after a change
+                status.value = current.status;
+                if (current.status === "In Progress") {
+                    vehicle.value = current.vehicle;
+                    vehicle.disabled = true;
+                    startButton.disabled = true;
+                    completeButton.disabled = false;
+                } else {
+                    startButton.disabled = false;
+                    completeButton.disabled = true;
+                }
+            }
+            showStatus();
+
+            /* Start: Initiated -> In Progress */
+            startButton.addEventListener("click", function () {
+                if (vehicle.value === "") {
+                    error.textContent = "Please select a vehicle first.";
+                    return;
+                }
+                error.textContent = "";
+                startOrder(orderId, vehicle.value);                   // orders.js
+                showStatus();
+            });
+
+            /* Complete: go to the Proof of Delivery first */
+            completeButton.addEventListener("click", function () {
+                window.location.href = "courier-proof-delivery.html?order=" + orderId;
+            });
+
+            /* Cancel: the order goes back to the list of available orders */
+            cancelButton.addEventListener("click", function () {
+                if (!confirm("Cancel order #" + orderId + "? It will go back to the list of available orders.")) {
+                    return;
+                }
+                releaseOrder(orderId);                                // orders.js
+                window.location.href = "courier-available-orders.html";
+            });
+        }
+    </script>
+<!-- vehicles.js gives the top bar the courier's document alerts -->
+<!-- Top bar (notifications + user menu), built by js/topbar.js -->
+<script src="js/topbar.js"
+        data-name="Diogo Silva"
+        data-role="Courier"
+        data-username="diogo.silva"
+        data-profile="courier_profile.html"></script>
+</body>
+</html>

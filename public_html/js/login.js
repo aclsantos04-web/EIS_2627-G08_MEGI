@@ -46,6 +46,19 @@ function showLoginMessage(text) {
 });
 
 
+/* ---------- Opening this page logs you out ----------
+   Every "Log out" link leads here, so the session ends now.
+   (startSession / endSession are in session.js) */
+endSession();
+
+// The demo cards are plain links: clicking one logs in as that demo user
+document.querySelectorAll(".demo-card[data-username]").forEach(function (card) {
+    card.addEventListener("click", function () {
+        startSession(card.dataset.username);
+    });
+});
+
+
 /* ---------- Coming back from Register ----------
    register.js sends new clients here with ?user=their.username,
    so the username is already filled in. */
@@ -98,6 +111,8 @@ loginForm.addEventListener("submit", function (event) {
         return;
     }
 
-    // 4. Go to the role's area
+    // 4. Remember who logged in (session.js) and go to the role's area.
+    //    Every page then shows THIS user's name, profile and data.
+    startSession(account.username);
     window.location.href = ROLE_HOME[account.role];
 });

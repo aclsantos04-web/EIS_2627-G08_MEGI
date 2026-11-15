@@ -50,7 +50,7 @@ function checkPlate() {
         // Two messages: own vehicle (probably forgotten) or someone
         // else's (a typo, or a case for Staff). We never say WHO owns
         // it, because a courier shouldn't see other couriers' data.
-        showError("plate", owner.courier === "Diogo Silva"
+        showError("plate", owner.courier === getPageUser("courier").name   // session.js
             ? "You have already registered this vehicle."
             : "This plate is already registered by another courier.");
         return false;

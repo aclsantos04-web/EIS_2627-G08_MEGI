@@ -25,7 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
        --------------------------------------------------------- */
     const parameters = new URLSearchParams(window.location.search);
     const orderId = parameters.get('order') || '1001';
-    const order = getOrder(orderId);                     // orders.js
+    // The order, but only if it belongs to the logged-in client (session.js)
+    const foundOrder = getOrder(orderId);                // orders.js
+    const ownOrders = getUserOrders(getPageUser('client'));
+    const order = ownOrders.some((own) => String(own.id) === String(orderId)) ? foundOrder : undefined;
 
     // Unknown number: a clear message instead of a broken page
     if (order === undefined) {

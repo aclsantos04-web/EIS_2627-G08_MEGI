@@ -48,7 +48,8 @@
 
     try {
         const saved = JSON.parse(
-            localStorage.getItem("cmsProducts") || "[]"
+            // the logged-in client's own list (session.js)
+            localStorage.getItem(userStorageKey("cmsProducts", "client")) || "[]"
         );
 
         if (Array.isArray(saved)) {
@@ -60,7 +61,15 @@
     }
 
     // Show sample products if none have been registered
-    const showingDemo = savedProducts.length === 0;
+    // (only for the demo client: a new client sees an empty list)
+    const showingDemo = savedProducts.length === 0 && isDemoUser("client");
+
+    // A new client with no products yet: show the empty message
+    if (savedProducts.length === 0 && !showingDemo) {
+        tableContainer.hidden = true;
+        noProducts.hidden = false;
+        return;
+    }
 
     const products = showingDemo
         ? sampleProducts

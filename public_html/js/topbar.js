@@ -30,6 +30,14 @@
    available right now, while the file runs, so we keep it. */
 const topbarSettings = document.currentScript.dataset;
 
+// The user of this page (session.js): the logged-in user if they have
+// this page's role, otherwise the demo user written in data-name.
+const pageUser = typeof getPageUser === "function"
+    ? getPageUser((topbarSettings.role || "").toLowerCase())
+    : null;
+const topbarUsername = pageUser ? pageUser.username : topbarSettings.username;
+const topbarName = pageUser ? pageUser.name : topbarSettings.name;
+
 
 /* ---------------------------------------------------------
    1. NOTIFICATIONS FOR EACH ROLE
@@ -129,6 +137,10 @@ function getCourierNotifications() {
 }
 
 function getNotifications(role) {
+    // The sample notifications are about the demo client's orders
+    if (role === "Client" && typeof isDemoUser === "function" && !isDemoUser("client")) {
+        return [];
+    }
     if (role === "Courier") {
         return getCourierNotifications();
     }
@@ -156,10 +168,10 @@ function getTopbarInitials(fullName) {
 
 // If the user changed their name on the profile page, use that name
 function getDisplayName() {
-    let name = topbarSettings.name || "User";
+    let name = topbarName || "User";
     try {
         const profiles = JSON.parse(localStorage.getItem("cmsProfiles") || "{}");
-        const saved = profiles[topbarSettings.username];
+        const saved = profiles[topbarUsername];
         if (saved !== undefined && saved.fullName) {
             name = saved.fullName;
         }
@@ -174,7 +186,7 @@ function getDisplayName() {
 function getProfilePhoto() {
     try {
         const photos = JSON.parse(localStorage.getItem("cmsProfilePhotos") || "{}");
-        const photo = photos[topbarSettings.username];
+        const photo = photos[topbarUsername];
         return photo === undefined ? null : photo;
     } catch (error) {
         return null;                             // storage blocked: show the initials
