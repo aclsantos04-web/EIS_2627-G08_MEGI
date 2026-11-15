@@ -60,31 +60,31 @@
         console.warn("Could not load saved products.", error);
     }
 
-    // Show sample products if none have been registered
-    // (only for the demo client: a new client sees an empty list)
-    const showingDemo = savedProducts.length === 0 && isDemoUser("client");
+    // The demo client (Marta) always has the 3 sample products, plus any
+    // she registers, the same list New Order offers her.
+    // A new client has NO sample products: only the ones they register.
+    const isDemo = isDemoUser("client");                    // session.js
+    const products = isDemo
+        ? sampleProducts.concat(savedProducts)
+        : savedProducts;
 
     // A new client with no products yet: show the empty message
-    if (savedProducts.length === 0 && !showingDemo) {
+    if (products.length === 0) {
         tableContainer.hidden = true;
         noProducts.hidden = false;
         return;
     }
 
-    const products = showingDemo
-        ? sampleProducts
-        : savedProducts;
-
-    // Inform the user when demo data is being displayed
-    if (showingDemo) {
+    // Tell the demo client which ones are samples
+    if (isDemo) {
 
         const note = document.createElement("p");
 
         note.className = "text-muted";
 
         note.textContent =
-            "Sample products for demonstration. " +
-            "Use New Product to register your own products.";
+            "Products A, B and C are sample products for the demonstration. " +
+            "Products you register with New Product are added below them.";
 
         tableContainer.insertAdjacentElement(
             "beforebegin", note
@@ -93,7 +93,7 @@
 
     tableBody.replaceChildren();
 
-    // Always show the table for the demo or saved products
+    // Show the table
     tableContainer.hidden = false;
     noProducts.hidden = true;
 
