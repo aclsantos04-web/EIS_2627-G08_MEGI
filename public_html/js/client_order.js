@@ -44,8 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const mapHintText = document.getElementById('mapHintText');
     const legendDistance = document.getElementById('legendDistance');
 
+    // Start with empty location fields
+    [originAddrInput, originLatInput, originLongInput, destAddrInput, destLatInput, destLongInput].forEach(el => {
+        if (el) el.value = '';
+    });
+
     let clickMode = 'origin';
-    let currentRouteKm = 4;
+    let currentRouteKm = 0;
 
     function setClickMode(mode) {
         clickMode = mode;
@@ -81,18 +86,16 @@ document.addEventListener('DOMContentLoaded', () => {
         shadowSize: [41, 41]
     });
 
-    const initialOrigin = [parseFloat(originLatInput.value) || 41.1780, parseFloat(originLongInput.value) || -8.5980];
-    const initialDest = [parseFloat(destLatInput.value) || 41.1496, parseFloat(destLongInput.value) || -8.6109];
-
-    const map = L.map('map').setView(initialOrigin, 13);
+    // Center map on Porto / FEUP without pre-placed markers
+    const map = L.map('map').setView([41.1780, -8.5980], 13);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    const originMarker = L.marker(initialOrigin, { icon: greenIcon }).addTo(map).bindPopup('Origin');
-    const destMarker = L.marker(initialDest, { icon: redIcon }).addTo(map).bindPopup('Destination');
+    let originMarker = null;
+    let destMarker = null;
     let routeLayer = null;
 
     function calcStraightDistanceKm(lat1, lon1, lat2, lon2) {
@@ -111,7 +114,40 @@ document.addEventListener('DOMContentLoaded', () => {
         const dLat = parseFloat(destLatInput.value);
         const dLng = parseFloat(destLongInput.value);
 
-        if (isNaN(oLat) || isNaN(oLng) || isNaN(dLat) || isNaN(dLng)) {
+        const hasOrigin = !isNaN(oLat) && !isNaN(oLng);
+        const hasDest = !isNaN(dLat) && !isNaN(dLng);
+
+        if (hasOrigin) {
+            if (!originMarker) {
+                originMarker = L.marker([oLat, oLng], { icon: greenIcon }).addTo(map).bindPopup('Origin');
+            } else {
+                originMarker.setLatLng([oLat, oLng]);
+            }
+        } else if (originMarker) {
+            map.removeLayer(originMarker);
+            originMarker = null;
+        }
+
+        if (hasDest) {
+            if (!destMarker) {
+                destMarker = L.marker([dLat, dLng], { icon: redIcon }).addTo(map).bindPopup('Destination');
+            } else {
+                destMarker.setLatLng([dLat, dLng]);
+            }
+        } else if (destMarker) {
+            map.removeLayer(destMarker);
+            destMarker = null;
+        }
+
+        if (!hasOrigin || !hasDest) {
+            if (routeLayer) {
+                map.removeLayer(routeLayer);
+                routeLayer = null;
+            }
+            currentRouteKm = 0;
+            if (legendDistance) legendDistance.textContent = '-- km';
+            if (fitMap && hasOrigin) map.setView([oLat, oLng], 14);
+            if (fitMap && hasDest) map.setView([dLat, dLng], 14);
             updateServicePricing();
             return;
         }
@@ -119,10 +155,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const oCoords = [oLat, oLng];
         const dCoords = [dLat, dLng];
 
-        originMarker.setLatLng(oCoords);
-        destMarker.setLatLng(dCoords);
-
-        // Set initial straight distance immediately before OSRM responds
         currentRouteKm = Math.max(1, Math.round(calcStraightDistanceKm(oLat, oLng, dLat, dLng)));
         if (legendDistance) legendDistance.textContent = `${currentRouteKm} km`;
         updateServicePricing();
@@ -283,13 +315,13 @@ document.addEventListener('DOMContentLoaded', () => {
         input.addEventListener('change', () => updateRouteAndMarkers(true));
         input.addEventListener('input', () => {
             clearFieldError(input.id + 'Error', input);
-            updateServicePricing();
+            updateRouteAndMarkers(false);
         });
     });
 
 
     /* =========================================================
-       2. PACKAGE PRODUCTS MANAGEMENT (WEIGHT & VOLUME IN m³)
+       2. PACKAGE PRODUCTS MANAGEMENT (STARTS EMPTY + cmsProducts)
        ========================================================= */
     const btnAddProduct = document.getElementById('btnAddProduct');
     const productSelect = document.getElementById('productSelect');
@@ -298,9 +330,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalWeightDisplay = document.getElementById('totalWeightDisplay');
     const totalVolumeDisplay = document.getElementById('totalVolumeDisplay');
 
-    let orderItems = [
-        { name: 'Product A', weight: 5, vol: 0.02, quantity: 2 }
-    ];
+    function loadSavedProductsIntoSelect() {
+        if (!productSelect) return;
+
+        let savedProducts = [];
+        try {
+            const parsed = JSON.parse(localStorage.getItem('cmsProducts') || '[]');
+            if (Array.isArray(parsed)) {
+                savedProducts = parsed;
+            }
+        } catch (err) {
+            console.warn('Could not load saved products from localStorage.', err);
+        }
+
+        const existingValues = new Set(
+            Array.from(productSelect.options).map(opt => opt.value.trim().toLowerCase())
+        );
+
+        savedProducts.forEach(prod => {
+            if (!prod || !prod.name) return;
+            const normalizedName = prod.name.trim().toLowerCase();
+            if (existingValues.has(normalizedName)) return;
+
+            const weight = Number(prod.weight) || 0;
+            const volume = Number(prod.volume) || 0;
+
+            const option = document.createElement('option');
+            option.value = prod.name.trim();
+            option.setAttribute('data-weight', weight);
+            option.setAttribute('data-vol', volume);
+            option.textContent = `${prod.name.trim()} (${weight} kg | ${volume} m³)`;
+
+            productSelect.appendChild(option);
+            existingValues.add(normalizedName);
+        });
+    }
+
+    // Start with an empty product list
+    let orderItems = [];
 
     function getCargoTotals() {
         let totalWeight = 0;
@@ -315,18 +382,27 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderProductList() {
         selectedProductsList.innerHTML = '';
 
-        orderItems.forEach((item, index) => {
-            const chip = document.createElement('div');
-            chip.className = 'product-chip';
-            chip.innerHTML = `
-                <span>${item.name} | ${item.weight} kg | ${item.vol} m³</span>
-                <div>
-                    <span class="product-qty-badge">${item.quantity}</span>
-                    <button type="button" class="btn-remove-item" data-index="${index}" title="Remove">✕</button>
-                </div>
-            `;
-            selectedProductsList.appendChild(chip);
-        });
+        if (orderItems.length === 0) {
+            const emptyMsg = document.createElement('p');
+            emptyMsg.className = 'text-muted';
+            emptyMsg.style.fontSize = '13px';
+            emptyMsg.style.margin = '4px 0 8px';
+            emptyMsg.textContent = 'No products added yet. Select a product above and click Add.';
+            selectedProductsList.appendChild(emptyMsg);
+        } else {
+            orderItems.forEach((item, index) => {
+                const chip = document.createElement('div');
+                chip.className = 'product-chip';
+                chip.innerHTML = `
+                    <span>${item.name} | ${item.weight} kg | ${item.vol} m³</span>
+                    <div>
+                        <span class="product-qty-badge">${item.quantity}</span>
+                        <button type="button" class="btn-remove-item" data-index="${index}" title="Remove">✕</button>
+                    </div>
+                `;
+                selectedProductsList.appendChild(chip);
+            });
+        }
 
         const { totalWeight, totalVol } = getCargoTotals();
         if (totalWeightDisplay) totalWeightDisplay.textContent = `${totalWeight.toFixed(1)} kg`;
@@ -382,7 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     /* =========================================================
-       3. DELIVERY SERVICE SELECTION (MATCHING cms-home.html FORMULA)
+       3. DELIVERY SERVICE SELECTION (NO PRE-SELECTED SERVICE)
        ========================================================= */
     const serviceCards = document.querySelectorAll('.service-option-card');
     const serviceButtons = document.querySelectorAll('.service-select-btn');
@@ -397,9 +473,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const summaryEtaEl = document.getElementById('summaryEta');
     const summaryPriceEl = document.getElementById('summaryPrice');
 
-    let selectedService = 'Express';
+    // Start with no service pre-selected
+    let selectedService = null;
 
-    // Exact same multipliers as cms-home.html
     const SERVICE_CONFIG = {
         'Standard': { multiplier: 1.0, eta: '2 – 3 business days', priceEl: priceStandardEl },
         'Express':  { multiplier: 1.5, eta: 'Next business day',   priceEl: priceExpressEl },
@@ -418,7 +494,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!hasValidInputsForPricing()) {
             if (serviceOptionsGrid) serviceOptionsGrid.classList.add('is-disabled');
             if (serviceLockedHint) serviceLockedHint.hidden = false;
+            if (priceStandardEl) priceStandardEl.textContent = '€--.--';
+            if (priceExpressEl) priceExpressEl.textContent = '€--.--';
+            if (priceSameDayEl) priceSameDayEl.textContent = '€--.--';
             if (summaryDistanceEl) summaryDistanceEl.textContent = '-- km';
+            if (summaryEtaEl) summaryEtaEl.textContent = '--';
             if (summaryPriceEl) summaryPriceEl.textContent = '€--.--';
             return;
         }
@@ -428,7 +508,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const { totalWeight } = getCargoTotals();
 
-        // Exact same pricing formula as cms-home.html
         const distanceFee =
             currentRouteKm > 300 ? 10 :
             currentRouteKm > 100 ? 6 :
@@ -449,10 +528,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (selectedService && SERVICE_CONFIG[selectedService]) {
             if (summaryEtaEl) summaryEtaEl.textContent = SERVICE_CONFIG[selectedService].eta;
             if (summaryPriceEl) summaryPriceEl.textContent = `€${prices[selectedService].toFixed(2)}`;
+        } else {
+            if (summaryEtaEl) summaryEtaEl.textContent = 'Select a service';
+            if (summaryPriceEl) summaryPriceEl.textContent = '€--.--';
         }
     }
 
     function selectDeliveryService(serviceName) {
+        if (!hasValidInputsForPricing()) return;
+
         selectedService = serviceName;
         clearFieldError('serviceError', null);
 
@@ -470,10 +554,17 @@ document.addEventListener('DOMContentLoaded', () => {
         updateServicePricing();
     }
 
+    // Ensure no card starts visually selected
     serviceCards.forEach(card => {
+        card.classList.remove('selected');
         card.addEventListener('click', () => {
             selectDeliveryService(card.getAttribute('data-service'));
         });
+    });
+
+    serviceButtons.forEach(btn => {
+        btn.textContent = 'Select';
+        btn.classList.remove('is-selected');
     });
 
 
@@ -545,9 +636,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!isValid) return;
 
-        /* Guardar a encomenda (js/orders.js): fica "Initiated" e aparece
-           logo em My Orders e nas Available Orders dos couriers,
-           com o serviço escolhido (Standard / Express / Same Day) e o preço */
         if (typeof createOrder === 'function') {
             const placeName = (inputId, lat, long) => {
                 const input = document.getElementById(inputId);
@@ -578,7 +666,8 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'my-orders.html';
     });
 
-    // Initial render
+    // Initial empty state render
+    loadSavedProductsIntoSelect();
     renderProductList();
-    updateRouteAndMarkers(true);
+    updateRouteAndMarkers(false);
 });
