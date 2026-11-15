@@ -242,6 +242,7 @@ documentForm.addEventListener("submit", function (event) {
 
     if (vehicle.approval === "denied") {
         vehicle.approval = "pending";
+        vehicle.resubmissionFromDenied = true;
     }
 
     saveVehicles(vehicles);                               // vehicles.js
