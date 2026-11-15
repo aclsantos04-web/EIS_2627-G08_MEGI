@@ -670,7 +670,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     Number(originLat), Number(originLong), Number(destLat), Number(destLong))),
                 service: selectedService,
                 price: Math.round(price * 100) / 100,
-                products: orderItems.map((item) => [item.name, item.quantity, item.weight, item.vol])
+                products: orderItems.map((item) => [item.name, item.quantity, item.weight, item.vol]),
+                // Delivery notes (optional): shown on Order Details and to the courier
+                notes: document.getElementById('orderNotes').value.trim()
             });
         }
 

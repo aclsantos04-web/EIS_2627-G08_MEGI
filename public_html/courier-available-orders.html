@@ -137,6 +137,10 @@
                 createText("p", "Requested on " + orderDate(order.created), "text-muted"),
                 button
             );
+            // The client's delivery notes, so the courier knows before accepting
+            if (order.notes) {
+                button.before(createText("p", "Notes: " + order.notes, "order-notes"));
+            }
             orderCards.append(card);
         });
 
