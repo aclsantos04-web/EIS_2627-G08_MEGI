@@ -162,141 +162,48 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="css/public-header.css">
+    <link rel="stylesheet" href="css/cms-footer.css">
 </head>
 
 
 <body>
 
-    <header
-        style="
-            min-height: 82px;
-            padding: 0 36px;
+    <!-- ================= EVALUATION STRIP =================
+     For the teachers: a slim link above the top bar, on every
+     public page. Styles: css/public-header.css (section "Evaluation strip"). -->
+<a href="evaluation-index.html" class="eval-strip">
+    <span class="eval-strip-icon" aria-hidden="true">🎓</span>
+    <span class="eval-strip-text"><strong>Evaluating this project?</strong> Click here to go to the Evaluation Index</span>
+    <span class="eval-strip-arrow" aria-hidden="true">→</span>
+</a>
 
-            display: flex;
-            align-items: center;
-            gap: 30px;
+<!-- ================= TOP BAR =================
+     The same bar on every public page (styles: css/public-header.css).
+     aria-current="page" marks where you are (blue gradient). -->
+<header class="public-header">
+    <a href="cms-home.html" class="public-logo" aria-label="CMS – go to homepage">
+        <svg viewBox="0 0 64 40" aria-hidden="true">
+            <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+            <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+            <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+            <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+        </svg>
+        CMS
+    </a>
 
-            background: #ffffff;
-            border-bottom: 1px solid #e4e8ed;
-        "
-    >
+    <nav class="public-nav" aria-label="Main menu">
+        <a href="cms-home.html">Home</a>
+        <a href="delivery-services.html">Services</a>
+        <a href="contact.html">Support</a>
+        <a href="team.html">Meet the Team</a>
+    </nav>
 
-        <a
-            href="index.html"
-            style="
-                display: flex;
-                align-items: center;
-                gap: 10px;
-
-                color: #17212d;
-                text-decoration: none;
-
-                font-size: 30px;
-                font-weight: 800;
-            "
-        >
-
-            <svg
-                width="48"
-                height="34"
-                viewBox="0 0 64 40"
-                aria-hidden="true"
-                style="display: block;"
-            >
-                <rect
-                    x="4"
-                    y="6"
-                    width="30"
-                    height="21"
-                    rx="1"
-                    fill="currentColor"
-                />
-
-                <path
-                    d="M36 13h12l10 10v4H36z"
-                    fill="currentColor"
-                />
-
-                <circle
-                    cx="17"
-                    cy="31"
-                    r="5"
-                    fill="currentColor"
-                />
-
-                <circle
-                    cx="49"
-                    cy="31"
-                    r="5"
-                    fill="currentColor"
-                />
-            </svg>
-
-            <span>CMS</span>
-
-        </a>
-
-
-        <nav
-            style="
-                display: flex;
-                align-items: center;
-                gap: 28px;
-            "
-        >
-
-            <a
-                href="index.html"
-                style="
-                    color: #223044;
-                    text-decoration: none;
-                    font-weight: 600;
-                "
-            >
-                Home
-            </a>
-
-            <a
-                href="team.html"
-                style="
-                    color: #223044;
-                    text-decoration: none;
-                    font-weight: 600;
-                "
-            >
-                Meet the Team
-            </a>
-
-        </nav>
-
-
-        <div
-            style="
-                margin-left: auto;
-
-                display: flex;
-                align-items: center;
-                gap: 14px;
-            "
-        >
-
-            <a
-                href="login.html"
-                class="btn btn-primary"
-            >
-                Login
-            </a>
-
-            <a
-                href="register.html"
-                class="btn btn-outline"
-            >
-                Get Started
-            </a>
-
-        </div>
-
-    </header>
+    <div class="public-actions">
+        <a href="login.html" class="public-btn public-btn-primary">Login</a>
+        <a href="register.html" class="public-btn public-btn-outline">Get Started</a>
+    </div>
+</header>
 
 
     <main class="application-page">
@@ -330,7 +237,7 @@
             </p>
 
 
-            <form id="courierApplication">
+            <form id="courierApplication" novalidate>
 
                 <div class="application-grid">
 
@@ -347,6 +254,7 @@
                             placeholder="e.g. Diogo Silva"
                             required
                         >
+                        <span class="error-message" id="courierName-error"></span>
 
                     </div>
 
@@ -364,6 +272,7 @@
                             placeholder="name@example.com"
                             required
                         >
+                        <span class="error-message" id="courierEmail-error"></span>
 
                     </div>
 
@@ -381,6 +290,7 @@
                             placeholder="+351 912 345 678"
                             required
                         >
+                        <span class="error-message" id="courierPhone-error"></span>
 
                     </div>
 
@@ -398,6 +308,7 @@
                             placeholder="e.g. Porto"
                             required
                         >
+                        <span class="error-message" id="courierLocation-error"></span>
 
                     </div>
 
@@ -443,6 +354,7 @@
                             </option>
 
                         </select>
+                        <span class="error-message" id="licenceCategory-error"></span>
 
                     </div>
 
@@ -459,6 +371,7 @@
                             name="licenceExpiry"
                             required
                         >
+                        <span class="error-message" id="licenceExpiry-error"></span>
 
                     </div>
 
@@ -490,6 +403,7 @@
                         </option>
 
                     </select>
+                        <span class="error-message" id="hasVehicle-error"></span>
 
                 </div>
 
@@ -523,6 +437,7 @@
                         accept=".pdf,.doc,.docx"
                         required
                     >
+                    <span class="error-message" id="courierCV-error"></span>
 
                     <small class="text-muted">
                         Accepted formats: PDF, DOC or DOCX.
@@ -535,6 +450,7 @@
 
                     <input
                         type="checkbox"
+                        id="courierConfirm"
                         required
                     >
 
@@ -545,6 +461,7 @@
                     </span>
 
                 </label>
+                <span class="error-message" id="courierConfirm-error"></span>
 
 
                 <button
@@ -560,7 +477,9 @@
                     class="application-feedback"
                     hidden
                 >
-                    Application submitted successfully.
+                    <strong>Application received!</strong>
+                    Our Staff will review it. Meanwhile, create your courier account on
+                    <a href="register.html">Get Started</a> so you can log in once it is approved.
                 </div>
 
             </form>
@@ -569,28 +488,162 @@
 
     </main>
 
+<!-- ================= FOOTER =================
+     The same footer on every public page (styles: css/cms-footer.css). -->
+<footer class="cms-footer">
+    <div class="cms-footer-wrap">
+        <div class="cms-footer-top">
 
+            <div class="cms-footer-brand">
+                <a class="cms-footer-logo" href="cms-home.html" aria-label="CMS – go to homepage">
+                    <svg viewBox="0 0 64 40" aria-hidden="true">
+                        <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                        <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                        <circle cx="14" cy="32" r="5" fill="white" stroke="currentColor" stroke-width="3"/>
+                        <circle cx="48" cy="32" r="5" fill="white" stroke="currentColor" stroke-width="3"/>
+                    </svg>
+                    CMS
+                </a>
+                <p class="cms-footer-subtitle">COURIER MANAGEMENT SYSTEM</p>
+            </div>
+
+            <nav class="cms-footer-col" aria-label="Services">
+                <h2>SERVICES</h2>
+                <a href="cms-home.html#delivery-estimate">Get a Quote</a>
+                <a href="delivery-services.html">Delivery Services</a>
+            </nav>
+
+            <nav class="cms-footer-col" aria-label="Support">
+                <h2>SUPPORT</h2>
+                <a href="faq.html">FAQs</a>
+                <a href="contact.html">Contact Us</a>
+            </nav>
+
+            <nav class="cms-footer-col" aria-label="Careers">
+                <h2>CAREERS</h2>
+                <a href="apply-courier.html">Apply as Courier</a>
+            </nav>
+
+            <nav class="cms-footer-col" aria-label="About CMS">
+                <h2>ABOUT CMS</h2>
+                <a href="team.html">Meet the Team</a>
+                <a href="evaluation-index.html">Evaluation Index</a>
+            </nav>
+
+        </div>
+
+        <hr class="cms-footer-rule">
+
+        <div class="cms-footer-bottom">
+            <div class="cms-footer-social" aria-label="Illustrative social icons">
+                <span>in</span>
+                <span>◎</span>
+                <span>▶</span>
+            </div>
+            <p>© 2026 Courier Management System (CMS). FEUP Academic Project.</p>
+            <div class="cms-footer-legal">
+                <span>Privacy Policy</span>
+                <span>|</span>
+                <span>Terms and Conditions</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- Shared form checks (showError, checkRequired...) -->
+    <script src="js/validation.js"></script>
     <script>
+        /* =====================================================
+           COURIER APPLICATION — form checks
+           Same behaviour as the other CMS forms: every problem
+           shows in red under its field, all at once, and the
+           form is only "sent" when everything is correct.
+           ===================================================== */
+        const courierApplication = document.getElementById("courierApplication");
+        const applicationFeedback = document.getElementById("applicationFeedback");
 
-        const courierApplication =
-            document.getElementById("courierApplication");
+        const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const PHONE_PATTERN = /^(\+351)?[29][0-9]{8}$/;      // Portuguese number, +351 optional
 
-        const applicationFeedback =
-            document.getElementById("applicationFeedback");
+        clearErrorsWhileTyping(courierApplication);            // validation.js
 
-
-        courierApplication.addEventListener(
-            "submit",
-            function (event) {
-
-                event.preventDefault();
-
-                applicationFeedback.hidden = false;
-
-                courierApplication.reset();
+        function checkPattern(fieldId, pattern, emptyMessage, wrongMessage) {
+            const value = document.getElementById(fieldId).value.trim().replace(/\s/g, "");
+            if (value.length === 0) {
+                showError(fieldId, emptyMessage);
+                return false;
             }
-        );
+            if (!pattern.test(value)) {
+                showError(fieldId, wrongMessage);
+                return false;
+            }
+            return true;
+        }
 
+        // The licence must still be valid tomorrow
+        function checkLicenceDate() {
+            const value = document.getElementById("licenceExpiry").value;
+            if (value === "") {
+                showError("licenceExpiry", "Licence expiry date is required.");
+                return false;
+            }
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (new Date(value + "T00:00:00") <= today) {
+                showError("licenceExpiry", "Your driving licence has expired.");
+                return false;
+            }
+            return true;
+        }
+
+        // A CV was chosen and it is a PDF, DOC or DOCX
+        function checkCV() {
+            const files = document.getElementById("courierCV").files;
+            if (files.length === 0) {
+                showError("courierCV", "Please upload your CV.");
+                return false;
+            }
+            const extension = files[0].name.split(".").pop().toLowerCase();
+            if (!["pdf", "doc", "docx"].includes(extension)) {
+                showError("courierCV", "Only PDF, DOC or DOCX files are accepted.");
+                return false;
+            }
+            return true;
+        }
+
+        courierApplication.addEventListener("submit", function (event) {
+            event.preventDefault();                            // don't reload the page
+            clearAllErrors(courierApplication);
+            applicationFeedback.hidden = true;
+
+            // One check per line, so every error shows at once
+            const results = [
+                checkRequired("courierName", "Full name is required."),
+                checkPattern("courierEmail", EMAIL_PATTERN, "Email is required.", "Please enter a valid email address."),
+                checkPattern("courierPhone", PHONE_PATTERN, "Phone number is required.", "Phone must have 9 digits and start with 2 or 9."),
+                checkRequired("courierLocation", "Location is required."),
+                checkRequired("licenceCategory", "Please choose your licence category."),
+                checkLicenceDate(),
+                checkRequired("hasVehicle", "Please tell us if you have a vehicle."),
+                checkCV()
+            ];
+
+            const confirmBox = document.getElementById("courierConfirm");
+            if (!confirmBox.checked) {
+                showError("courierConfirm", "Please confirm that the information is correct.");
+                results.push(false);
+            }
+
+            if (results.includes(false)) {
+                courierApplication.querySelector(".invalid").focus();    // jump to the first error
+                return;
+            }
+
+            courierApplication.reset();
+            applicationFeedback.hidden = false;
+            applicationFeedback.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
     </script>
 
 </body>

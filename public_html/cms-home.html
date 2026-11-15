@@ -24,9 +24,13 @@ html {
 
 body {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Inter', Arial, sans-serif;     /* same fonts as the rest of CMS */
     color: var(--text);
     background: #f5f7fa;
+}
+
+h1, h2, h3 {
+    font-family: 'Poppins', Arial, sans-serif;
 }
 
 a {
@@ -53,7 +57,7 @@ button, input, select {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 25px;
+    border-radius: 11px;         /* rounded square, like every CMS button */
     padding: 11px 24px;
     font-size: 14px;
     font-weight: 700;
@@ -737,376 +741,13 @@ button, input, select {
 
 </style>
 
-<!-- Top bar shared with team.html -->
+<!-- Top bar and footer shared by all public pages -->
 <link rel="stylesheet" href="css/public-header.css">
 
 <link rel="stylesheet" href="css/cms-footer.css">
 
 
-<style>
-/* Evaluation centered in the homepage header */
 
-.public-header .evaluation-center {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    white-space: nowrap;
-}
-
-.public-header .evaluation-center:hover {
-    transform: translate(-50%, -52%);
-}
-
-@media (max-width: 900px) {
-    .public-header .evaluation-center {
-        position: static;
-        transform: none;
-    }
-
-    .public-header .evaluation-center:hover {
-        transform: none;
-    }
-
-    .public-header .public-actions {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-}
-</style>
-
-
-<style>
-/* FINAL HOMEPAGE HEADER */
-
-.cms-hnav .cms-hnav-main {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    align-items: center;
-    gap: 18px;
-    min-height: 78px;
-    padding: 12px 26px;
-}
-
-/* LEFT SIDE */
-
-.cms-hnav-left {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    justify-self: start;
-    min-width: 0;
-}
-
-.cms-hnav .cms-hnav-logo {
-    font-size: 26px;
-    flex-shrink: 0;
-}
-
-.cms-hnav .cms-hnav-menu {
-    display: flex;
-    align-items: center;
-    gap: 1px;
-    width: auto;
-    padding: 0;
-    border: none;
-    order: initial;
-}
-
-.cms-hnav .cms-hnav-menu > a {
-    font-size: 13px;
-    padding: 10px 9px;
-}
-
-/* CENTERED EVALUATION BUTTON */
-
-.cms-hnav .cms-hnav-evaluation {
-    position: static;
-    justify-self: center;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 16px;
-    border: 1.5px solid #215394;
-    border-radius: 25px;
-    background: white;
-    color: #215394;
-    font-size: 12px;
-    font-weight: 700;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: background 0.2s, color 0.2s;
-}
-
-.cms-hnav .cms-hnav-evaluation:hover {
-    background: #eaf4fc;
-    color: #173c74;
-}
-
-/* RIGHT SIDE */
-
-.cms-hnav .cms-hnav-actions {
-    display: flex;
-    gap: 10px;
-    justify-self: end;
-    margin-left: 0;
-    width: auto;
-}
-
-.cms-hnav-login {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 11px 22px;
-    border-radius: 25px;
-    background: #215394;
-    color: white;
-    font-size: 13px;
-    font-weight: 700;
-    text-decoration: none;
-    white-space: nowrap;
-}
-
-.cms-hnav-login:hover {
-    background: #173c74;
-}
-
-/* TABLET */
-
-@media (max-width: 1270px) {
-
-    .cms-hnav .cms-hnav-main {
-        grid-template-columns: 1fr auto;
-        gap: 12px;
-    }
-
-    .cms-hnav-left {
-        grid-column: 1;
-        grid-row: 1;
-    }
-
-    .cms-hnav .cms-hnav-actions {
-        grid-column: 2;
-        grid-row: 1;
-    }
-
-    .cms-hnav .cms-hnav-evaluation {
-        grid-column: 1 / -1;
-        grid-row: 2;
-        margin: 3px auto;
-    }
-}
-
-/* MOBILE */
-
-@media (max-width: 750px) {
-
-    .cms-hnav .cms-hnav-main {
-        grid-template-columns: 1fr;
-        justify-items: center;
-        padding: 17px 14px;
-    }
-
-    .cms-hnav-left {
-        grid-column: 1;
-        grid-row: 1;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .cms-hnav .cms-hnav-menu {
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .cms-hnav .cms-hnav-evaluation {
-        grid-column: 1;
-        grid-row: 2;
-        white-space: normal;
-        text-align: center;
-    }
-
-    .cms-hnav .cms-hnav-actions {
-        grid-column: 1;
-        grid-row: 3;
-        justify-self: center;
-    }
-}
-
-</style>
-
-
-<style>
-/* HOMEPAGE HEADER - FINAL FIX */
-
-#cms-home-header {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    align-items: center;
-    gap: 20px;
-    min-height: 78px;
-    padding: 12px 28px;
-    background: #ffffff;
-}
-
-/* LOGO + NAVIGATION */
-
-#cms-home-header .cms-home-left {
-    display: flex;
-    align-items: center;
-    gap: 22px;
-    min-width: 0;
-}
-
-#cms-home-header .public-logo {
-    display: inline-flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: 9px;
-    flex-shrink: 0;
-    white-space: nowrap;
-    font-size: 29px;
-    line-height: 1;
-}
-
-#cms-home-header .public-logo svg {
-    width: 44px;
-    height: 34px;
-    flex-shrink: 0;
-}
-
-#cms-home-header .public-nav {
-    display: flex;
-    align-items: center;
-    flex-wrap: nowrap;
-    gap: 2px;
-}
-
-#cms-home-header .public-nav a {
-    white-space: nowrap;
-    font-size: 13px;
-    padding: 10px 11px;
-}
-
-/* CENTERED EVALUATION */
-
-#cms-home-header .cms-home-evaluation {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    justify-self: center;
-    padding: 10px 15px;
-    border: 1.5px solid #215394;
-    border-radius: 25px;
-    background: white;
-    color: #215394;
-    font-size: 12px;
-    font-weight: 700;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: background .2s;
-}
-
-#cms-home-header .cms-home-evaluation:hover {
-    background: #eaf4fc;
-}
-
-/* LOGIN + GET STARTED */
-
-#cms-home-header .public-actions {
-    display: flex;
-    align-items: center;
-    justify-self: end;
-    flex-shrink: 0;
-    gap: 10px;
-    margin-left: 0;
-    width: auto;
-}
-
-#cms-home-header .public-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 20px;
-    border-radius: 24px;
-    border: 2px solid #215394;
-    font-size: 13px;
-    font-weight: 700;
-    text-decoration: none;
-    white-space: nowrap;
-}
-
-#cms-home-header .public-btn-primary {
-    background: #215394;
-    color: #ffffff;
-}
-
-#cms-home-header .public-btn-outline {
-    background: #ffffff;
-    color: #215394;
-}
-
-/* SMALLER SCREENS */
-
-@media (max-width: 1450px) {
-
-    #cms-home-header {
-        grid-template-columns: minmax(0, 1fr) auto;
-    }
-
-    #cms-home-header .cms-home-left {
-        grid-column: 1;
-        grid-row: 1;
-        flex-wrap: wrap;
-    }
-
-    #cms-home-header .public-actions {
-        grid-column: 2;
-        grid-row: 1;
-    }
-
-    #cms-home-header .cms-home-evaluation {
-        grid-column: 1 / -1;
-        grid-row: 2;
-    }
-}
-
-@media (max-width: 760px) {
-
-    #cms-home-header {
-        grid-template-columns: 1fr;
-        justify-items: center;
-        padding: 16px;
-    }
-
-    #cms-home-header .cms-home-left {
-        grid-column: 1;
-        grid-row: 1;
-        justify-content: center;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    #cms-home-header .public-nav {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    #cms-home-header .cms-home-evaluation {
-        grid-column: 1;
-        grid-row: 2;
-        white-space: normal;
-        text-align: center;
-    }
-
-    #cms-home-header .public-actions {
-        grid-column: 1;
-        grid-row: 3;
-        justify-self: center;
-    }
-}
-</style>
 
 
 </head>
@@ -1115,95 +756,40 @@ button, input, select {
 
 <div class="page">
 
-<!-- ================= TOP BAR =================
-     Same bar on cms-home.html and team.html.
-     Styles: css/public-header.css
-     aria-current="page" marks the page we are on (blue gradient). -->
-
-<!-- CMS HOMEPAGE - NEW HEADER -->
-
-
-<!-- CMS HOMEPAGE HEADER -->
-
-
-<!-- HOMEPAGE HEADER -->
-
-<header class="public-header" id="cms-home-header">
-
-    <!-- LEFT SIDE -->
-
-    <div class="cms-home-left">
-
-        <a href="cms-home.html"
-           class="public-logo"
-           aria-label="CMS Homepage">
-
-            <svg viewBox="0 0 64 40" aria-hidden="true">
-                <rect x="2" y="4" width="34"
-                      height="24" fill="currentColor"/>
-
-                <path d="M38 12h12l10 10v6H38z"
-                      fill="currentColor"/>
-
-                <circle cx="14" cy="32" r="5"
-                        fill="#fff" stroke="currentColor"
-                        stroke-width="3"/>
-
-                <circle cx="48" cy="32" r="5"
-                        fill="#fff" stroke="currentColor"
-                        stroke-width="3"/>
-            </svg>
-
-            CMS
-        </a>
-
-        <nav class="public-nav" aria-label="Main navigation">
-
-            <a href="cms-home.html" aria-current="page">
-                Home
-            </a>
-
-            
-<a href="delivery-services.html">
-    Services
+<!-- ================= EVALUATION STRIP =================
+     For the teachers: a slim link above the top bar, on every
+     public page. Styles: css/public-header.css (section "Evaluation strip"). -->
+<a href="evaluation-index.html" class="eval-strip">
+    <span class="eval-strip-icon" aria-hidden="true">🎓</span>
+    <span class="eval-strip-text"><strong>Evaluating this project?</strong> Click here to go to the Evaluation Index</span>
+    <span class="eval-strip-arrow" aria-hidden="true">→</span>
 </a>
 
-
-            <a href="contact.html">
-                Support
-            </a>
-
-            <a href="team.html">
-                Meet the Team
-            </a>
-
-        </nav>
-
-    </div>
-
-    <!-- CENTER: TEACHER EVALUATION -->
-
-    <a href="evaluation-index.html"
-       class="cms-home-evaluation">
-        Click here to go to Evaluation Index
+<!-- ================= TOP BAR =================
+     The same bar on every public page (styles: css/public-header.css).
+     aria-current="page" marks where you are (blue gradient). -->
+<header class="public-header">
+    <a href="cms-home.html" class="public-logo" aria-label="CMS – go to homepage">
+        <svg viewBox="0 0 64 40" aria-hidden="true">
+            <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+            <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+            <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+            <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+        </svg>
+        CMS
     </a>
 
-    <!-- RIGHT SIDE -->
+    <nav class="public-nav" aria-label="Main menu">
+        <a href="cms-home.html" aria-current="page">Home</a>
+        <a href="delivery-services.html">Services</a>
+        <a href="contact.html">Support</a>
+        <a href="team.html">Meet the Team</a>
+    </nav>
 
     <div class="public-actions">
-
-        <a href="login.html"
-           class="public-btn public-btn-primary">
-            Login
-        </a>
-
-        <a href="register.html"
-           class="public-btn public-btn-outline">
-            Get Started
-        </a>
-
+        <a href="login.html" class="public-btn public-btn-primary">Login</a>
+        <a href="register.html" class="public-btn public-btn-outline">Get Started</a>
     </div>
-
 </header>
 
 
@@ -1639,143 +1225,66 @@ button, input, select {
 
 </section>
 
-<!-- CMS PUBLIC FOOTER -->
-
+<!-- ================= FOOTER =================
+     The same footer on every public page (styles: css/cms-footer.css). -->
 <footer class="cms-footer">
-
     <div class="cms-footer-wrap">
-
         <div class="cms-footer-top">
 
-            <!-- CMS LOGO -->
-
             <div class="cms-footer-brand">
-
-                <a class="cms-footer-logo"
-                   href="cms-home.html">
-
-                    <svg viewBox="0 0 64 40"
-                         aria-hidden="true">
-
-                        <rect x="2" y="4"
-                              width="34" height="24"
-                              fill="currentColor"/>
-
-                        <path d="M38 12h12l10 10v6H38z"
-                              fill="currentColor"/>
-
-                        <circle cx="14" cy="32" r="5"
-                                fill="white"
-                                stroke="currentColor"
-                                stroke-width="3"/>
-
-                        <circle cx="48" cy="32" r="5"
-                                fill="white"
-                                stroke="currentColor"
-                                stroke-width="3"/>
+                <a class="cms-footer-logo" href="cms-home.html" aria-label="CMS – go to homepage">
+                    <svg viewBox="0 0 64 40" aria-hidden="true">
+                        <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                        <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                        <circle cx="14" cy="32" r="5" fill="white" stroke="currentColor" stroke-width="3"/>
+                        <circle cx="48" cy="32" r="5" fill="white" stroke="currentColor" stroke-width="3"/>
                     </svg>
-
                     CMS
                 </a>
-
-                <p class="cms-footer-subtitle">
-                    COURIER MANAGEMENT SYSTEM
-                </p>
-
+                <p class="cms-footer-subtitle">COURIER MANAGEMENT SYSTEM</p>
             </div>
 
-            <!-- SERVICES -->
-
-            <nav class="cms-footer-col">
-
+            <nav class="cms-footer-col" aria-label="Services">
                 <h2>SERVICES</h2>
-
-                <a href="cms-home.html#delivery-estimate">
-                    Get a Quote
-                </a>
-
-                
-<a href="delivery-services.html">
-    Delivery Services
-</a>
-
-
+                <a href="cms-home.html#delivery-estimate">Get a Quote</a>
+                <a href="delivery-services.html">Delivery Services</a>
             </nav>
 
-            <!-- SUPPORT -->
-
-            <nav class="cms-footer-col">
-
+            <nav class="cms-footer-col" aria-label="Support">
                 <h2>SUPPORT</h2>
-
-                <span class="cms-footer-unavailable">
-                    FAQs
-                </span>
-
-                <a href="contact.html">
-                    Contact Us
-                </a>
-
+                <a href="faq.html">FAQs</a>
+                <a href="contact.html">Contact Us</a>
             </nav>
 
-            <!-- CAREERS -->
-
-            <nav class="cms-footer-col">
-
+            <nav class="cms-footer-col" aria-label="Careers">
                 <h2>CAREERS</h2>
-
-                <a href="apply-courier.html">
-                    Apply as Courier
-                </a>
-
+                <a href="apply-courier.html">Apply as Courier</a>
             </nav>
 
-            <!-- ABOUT CMS -->
-
-            <nav class="cms-footer-col">
-
+            <nav class="cms-footer-col" aria-label="About CMS">
                 <h2>ABOUT CMS</h2>
-
-                <a href="team.html">
-                    Meet the Team
-                </a>
-
+                <a href="team.html">Meet the Team</a>
+                <a href="evaluation-index.html">Evaluation Index</a>
             </nav>
 
         </div>
 
         <hr class="cms-footer-rule">
 
-        <!-- FOOTER BOTTOM -->
-
         <div class="cms-footer-bottom">
-
-            <div class="cms-footer-social"
-                 aria-label="Illustrative social icons">
-
+            <div class="cms-footer-social" aria-label="Illustrative social icons">
                 <span>in</span>
                 <span>◎</span>
                 <span>▶</span>
-
             </div>
-
-            <p>
-                © 2026 Courier Management System (CMS).
-                FEUP Academic Project.
-            </p>
-
+            <p>© 2026 Courier Management System (CMS). FEUP Academic Project.</p>
             <div class="cms-footer-legal">
-
                 <span>Privacy Policy</span>
                 <span>|</span>
                 <span>Terms and Conditions</span>
-
             </div>
-
         </div>
-
     </div>
-
 </footer>
 
 

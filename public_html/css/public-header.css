@@ -1,23 +1,37 @@
 /* =========================================================
    public-header.css — TOP BAR OF THE PUBLIC PAGES
-   Used by: cms-home.html, team.html
-   (Login and Register can use it too.)
+   Used by every page you can open without logging in:
+   cms-home, delivery-services, contact, faq, apply-courier,
+   team, login and register. Same bar everywhere, so moving
+   between pages feels natural.
 
-   The same look as the logged-in pages: truck logo + "CMS" in
-   Poppins, the CMS blues, and the blue gradient on the page
-   you are on (like the active link in the sidebar).
+   Look: truck logo + "CMS" in Poppins, the CMS blues, rounded
+   squares for every button (border-radius 11px, like the rest
+   of the project) and the blue gradient on the current page.
 
    All classes start with "public-" so these rules can't
    change anything else on the page.
 
-   HTML to copy (put aria-current="page" on the current link):
+   Above the bar, every public page has the evaluation strip
+   (a link to evaluation-index.html for the teachers):
+
+   <a href="evaluation-index.html" class="eval-strip">
+       <span class="eval-strip-icon" aria-hidden="true">🎓</span>
+       <span class="eval-strip-text"><strong>Evaluating this project?</strong> Click here to go to the Evaluation Index</span>
+       <span class="eval-strip-arrow" aria-hidden="true">→</span>
+   </a>
+
+   HTML to copy (put aria-current="page" on the link of the
+   page you are on; on faq.html it goes on "Support"):
 
    <header class="public-header">
        <a href="cms-home.html" class="public-logo" aria-label="CMS – go to homepage">
            <svg ...truck...></svg> CMS
        </a>
        <nav class="public-nav" aria-label="Main menu">
-           <a href="cms-home.html" aria-current="page">Home</a>
+           <a href="cms-home.html">Home</a>
+           <a href="delivery-services.html">Services</a>
+           <a href="contact.html">Support</a>
            <a href="team.html">Meet the Team</a>
        </nav>
        <div class="public-actions">
@@ -39,25 +53,37 @@
     z-index: 50;
     display: flex;
     align-items: center;
-    gap: 32px;
-    padding: 14px 32px;
-    background: rgba(255, 255, 255, 0.94);
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    min-height: 76px;
+    padding: 12px 32px;
+    background: rgba(255, 255, 255, 0.96);
     border-bottom: 1px solid rgba(27, 75, 145, 0.12);
     box-shadow: 0 6px 22px rgba(27, 75, 145, 0.07);
     font-family: "Inter", Arial, sans-serif;
     box-sizing: border-box;
 }
 
+.public-header *,
+.public-header *::before,
+.public-header *::after {
+    box-sizing: border-box;
+}
+
+
 /* ---------- Logo: truck + CMS (same as the sidebar logo) ---------- */
 .public-logo {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
+    flex-shrink: 0;
     color: #17212b;
     font-family: "Poppins", Arial, sans-serif;
     font-size: 31px;
     font-weight: 700;
     letter-spacing: -1.6px;
+    line-height: 1;
+    white-space: nowrap;
     text-decoration: none;
 }
 
@@ -69,20 +95,24 @@
 .public-logo svg {
     width: 44px;
     height: auto;
+    flex-shrink: 0;
 }
 
-/* ---------- Links: Home, Meet the Team ---------- */
+
+/* ---------- Links: Home, Services, Support, Meet the Team ---------- */
 .public-nav {
     display: flex;
-    gap: 6px;
+    align-items: center;
+    gap: 4px;
 }
 
 .public-nav a {
-    padding: 9px 14px;
+    padding: 9px 13px;
     border-radius: 10px;
     color: #334155;
     font-size: 14px;
     font-weight: 600;
+    white-space: nowrap;
     text-decoration: none;
     transition: background-color 0.2s, color 0.2s;
 }
@@ -100,10 +130,12 @@
     box-shadow: 0 6px 16px rgba(27, 75, 145, 0.22);
 }
 
+
 /* ---------- Buttons: Login, Get Started ---------- */
 .public-actions {
     margin-left: auto;           /* pushes the buttons to the right */
     display: flex;
+    align-items: center;
     gap: 10px;
 }
 
@@ -111,12 +143,14 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 9px 20px;
+    padding: 9px 18px;
     border: 2px solid #1B4B91;
-    border-radius: 11px;
+    border-radius: 11px;         /* rounded square, like every button in CMS */
     font-family: "Inter", Arial, sans-serif;
     font-size: 14px;
     font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
     text-decoration: none;
     transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
 }
@@ -147,12 +181,85 @@
     color: #1B4B91;
 }
 
+/* Login / Get Started on their own page: a ring shows where you are */
+.public-btn[aria-current="page"] {
+    box-shadow: 0 0 0 3px rgba(47, 115, 184, 0.25);
+}
+
+
+/* ---------- Evaluation strip (for the teachers) ----------
+   A slim light-blue line above the top bar. The whole strip
+   is one link, so it is easy to click. It scrolls away with
+   the page; the top bar stays (sticky). */
+.eval-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 9px 16px;
+    background: linear-gradient(90deg, #e3f1fb, #d3e9f8, #e3f1fb);
+    border-bottom: 1px solid #c3dcef;
+    color: #1B4B91;
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.eval-strip:hover,
+.eval-strip:focus-visible {
+    background: #cfe6f7;
+    text-decoration: none;
+    outline: none;
+}
+
+.eval-strip:hover .eval-strip-text,
+.eval-strip:focus-visible .eval-strip-text {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.eval-strip strong {
+    font-weight: 700;
+}
+
+.eval-strip-icon {
+    font-size: 15px;
+}
+
+.eval-strip-arrow {
+    font-weight: 700;
+    transition: transform 0.2s;
+}
+
+.eval-strip:hover .eval-strip-arrow {
+    transform: translateX(3px);
+}
+
+
+/* ---------- Medium screens: links move to a second row ---------- */
+@media (max-width: 1080px) {
+    .public-nav {
+        order: 3;                /* after the logo and the buttons */
+        width: 100%;
+        overflow-x: auto;        /* scroll sideways if it doesn't fit */
+        padding-bottom: 2px;
+    }
+}
+
+
 /* ---------- Phones ---------- */
 @media (max-width: 760px) {
     .public-header {
-        flex-wrap: wrap;         /* buttons move to their own row */
-        gap: 10px 16px;
+        gap: 10px;
         padding: 12px 16px;
+    }
+
+    .eval-strip {
+        padding: 8px 12px;
+        font-size: 12px;
     }
 
     .public-logo {
@@ -164,11 +271,19 @@
     }
 
     .public-actions {
+        order: 2;
         margin-left: 0;
         width: 100%;
     }
 
     .public-btn {
-        flex: 1;                 /* both buttons share the row */
+        flex: 1;                 /* the buttons share the row */
+        padding: 9px 10px;
+        font-size: 13px;
+    }
+
+    .public-nav a {
+        padding: 8px 11px;
+        font-size: 13px;
     }
 }

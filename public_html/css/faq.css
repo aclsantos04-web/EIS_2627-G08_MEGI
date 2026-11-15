@@ -1,0 +1,515 @@
+/* =========================================================
+   faq.css — STYLES ONLY FOR faq.html
+   Same look as the rest of CMS: Inter / Poppins, the CMS
+   blues, the light-blue background with the soft circle,
+   white cards with the gradient line on top and rounded-
+   square buttons (11px).
+   The top bar is in public-header.css, the footer in
+   cms-footer.css.
+   ========================================================= */
+
+:root {
+    --faq-primary: #1B4B91;
+    --faq-accent: #2F73B8;
+    --faq-light: #C9E4F7;
+    --faq-soft: #EAF5FC;
+    --faq-text: #17212b;
+    --faq-muted: #52687e;
+    --faq-line: #d9e7f3;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f7fbff;
+    color: var(--faq-text);
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: 'Poppins', Arial, sans-serif;
+}
+
+
+/* ---------- 1. Top section ----------
+   Gradient + soft circle, like the logged-in pages and the
+   Team page. overflow: hidden keeps the circle inside. */
+.faq-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 64px 6% 56px;
+    background:
+        radial-gradient(circle at 12% 8%, rgba(255, 255, 255, 0.55), transparent 32%),
+        linear-gradient(180deg, var(--faq-light) 0%, var(--faq-soft) 70%, #f7fbff 100%);
+}
+
+.faq-hero::before {                  /* the big soft circle */
+    content: "";
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    top: -250px;
+    right: -100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.28);
+    pointer-events: none;
+}
+
+.faq-container {
+    position: relative;              /* above the circle */
+    width: min(980px, 100%);
+    margin: 0 auto;
+}
+
+.faq-eyebrow {
+    margin: 0 0 10px;
+    color: var(--faq-accent);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.faq-hero h1 {
+    margin: 0 0 14px;
+    color: #153b70;
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.15;
+    letter-spacing: -1.2px;
+}
+
+.faq-hero h1 span {
+    color: #2764ab;
+}
+
+.faq-hero-text {
+    max-width: 620px;
+    margin: 0 0 28px;
+    color: var(--faq-muted);
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+
+/* ---------- 2. Search box ---------- */
+.faq-search {
+    position: relative;
+    max-width: 620px;
+}
+
+.faq-search i {                      /* magnifying glass inside the box */
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--faq-accent);
+    font-size: 20px;
+    pointer-events: none;
+}
+
+.faq-search input {
+    width: 100%;
+    padding: 15px 16px 15px 48px;
+    border: 1px solid #b8d7ec;
+    border-radius: 11px;
+    background: #FFFFFF;
+    color: var(--faq-text);
+    font-family: inherit;
+    font-size: 15px;
+    box-shadow: 0 10px 27px rgba(27, 75, 145, 0.08);
+}
+
+.faq-search input:focus {
+    outline: none;
+    border: 2px solid var(--faq-primary);
+    padding: 14px 15px 14px 47px;    /* thicker border, same size */
+}
+
+
+/* ---------- 3. Category buttons ---------- */
+.faq-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 22px;
+}
+
+.faq-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 14px;
+    border: 1.5px solid #b8d7ec;
+    border-radius: 11px;
+    background: #FFFFFF;
+    color: var(--faq-primary);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.faq-chip:hover {
+    border-color: var(--faq-accent);
+    transform: translateY(-1px);
+}
+
+.faq-chip[aria-pressed="true"] {     /* the chosen category */
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--faq-primary), var(--faq-accent));
+    color: #FFFFFF;
+    box-shadow: 0 6px 16px rgba(27, 75, 145, 0.22);
+}
+
+.faq-chip:focus-visible,
+.faq-item summary:focus-visible {
+    outline: 2px solid var(--faq-primary);
+    outline-offset: 2px;
+}
+
+
+/* ---------- 4. Questions ---------- */
+.faq-main {
+    padding: 44px 6% 64px;
+}
+
+.faq-group {
+    margin-bottom: 34px;
+}
+
+.faq-group[hidden] {
+    display: none;
+}
+
+.faq-group h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 14px;
+    color: #153b70;
+    font-size: 21px;
+    font-weight: 600;
+}
+
+.faq-group-icon {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--faq-soft);
+    color: var(--faq-primary);
+    font-size: 19px;
+}
+
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* One question = one card.
+   <details> opens and closes by itself (no JavaScript needed). */
+.faq-item {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: 14px;
+    background: #FFFFFF;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.045);
+    transition: box-shadow 0.2s;
+}
+
+.faq-item[hidden] {
+    display: none;
+}
+
+/* Gradient line on the left of an open question */
+.faq-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--faq-primary), var(--faq-accent), #7FC7F2);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.faq-item[open] {
+    box-shadow: 0 12px 28px rgba(27, 75, 145, 0.1);
+}
+
+.faq-item[open]::before {
+    opacity: 1;
+}
+
+.faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 20px 18px 22px;
+    color: var(--faq-text);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.45;
+    list-style: none;                /* hide the browser's own triangle */
+    cursor: pointer;
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;                   /* same, for Safari */
+}
+
+.faq-item summary:hover {
+    color: var(--faq-primary);
+}
+
+/* The + that turns into × when the question is open */
+.faq-toggle {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: var(--faq-soft);
+    color: var(--faq-primary);
+    font-size: 18px;
+    transition: transform 0.25s, background-color 0.2s;
+}
+
+.faq-item[open] .faq-toggle {
+    transform: rotate(45deg);
+    background: var(--faq-light);
+}
+
+.faq-answer {
+    padding: 0 22px 20px;
+    color: var(--faq-muted);
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+.faq-answer p {
+    margin: 0 0 10px;
+}
+
+.faq-answer p:last-child {
+    margin-bottom: 0;
+}
+
+.faq-answer ul,
+.faq-answer ol {
+    margin: 0 0 10px;
+    padding-left: 20px;
+}
+
+.faq-answer a {
+    color: var(--faq-primary);
+    font-weight: 600;
+}
+
+.faq-answer strong {
+    color: var(--faq-text);
+}
+
+/* Small table with the delivery services */
+.faq-table {
+    width: 100%;
+    margin: 4px 0 12px;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.faq-table th,
+.faq-table td {
+    padding: 9px 12px;
+    border-top: 1px solid var(--faq-line);
+    text-align: left;
+}
+
+.faq-table th {
+    background: #eaf4fb;
+    color: var(--faq-text);
+    font-weight: 600;
+}
+
+/* Highlighted search words */
+mark {
+    padding: 0 2px;
+    border-radius: 3px;
+    background: #fff1b8;
+    color: inherit;
+}
+
+
+/* ---------- 5. No results ---------- */
+.faq-empty {
+    padding: 40px 24px;
+    border: 1px dashed #b8d7ec;
+    border-radius: 14px;
+    background: #FFFFFF;
+    text-align: center;
+}
+
+.faq-empty[hidden] {
+    display: none;
+}
+
+.faq-empty i {
+    display: inline-grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    margin-bottom: 12px;
+    border-radius: 50%;
+    background: var(--faq-soft);
+    color: var(--faq-primary);
+    font-size: 26px;
+}
+
+.faq-empty h2 {
+    margin: 0 0 6px;
+    font-size: 19px;
+    color: #153b70;
+}
+
+.faq-empty p {
+    margin: 0 0 18px;
+    color: var(--faq-muted);
+    font-size: 14px;
+}
+
+
+/* ---------- 6. Buttons (rounded squares, like all CMS buttons) ---------- */
+.faq-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: 2px solid var(--faq-primary);
+    border-radius: 11px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.faq-btn:hover {
+    transform: translateY(-1px);
+}
+
+.faq-btn-primary {
+    background: linear-gradient(135deg, var(--faq-primary), var(--faq-accent));
+    color: #FFFFFF;
+    box-shadow: 0 6px 16px rgba(27, 75, 145, 0.22);
+}
+
+.faq-btn-outline {
+    background: #FFFFFF;
+    color: var(--faq-primary);
+}
+
+.faq-btn-outline:hover {
+    background: var(--faq-light);
+}
+
+
+/* ---------- 7. "Still have a question?" card ---------- */
+.faq-help {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 12px;
+    padding: 28px 30px;
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: 17px;
+    background: #FFFFFF;
+    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.065);
+}
+
+.faq-help::before {                  /* gradient line on top, like the other cards */
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--faq-primary), var(--faq-accent), #7FC7F2);
+}
+
+.faq-help h2 {
+    margin: 0 0 6px;
+    color: #153b70;
+    font-size: 21px;
+}
+
+.faq-help p {
+    margin: 0;
+    color: var(--faq-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.faq-help-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+
+/* ---------- 8. Phones ---------- */
+@media (max-width: 700px) {
+    .faq-hero {
+        padding: 40px 16px 36px;
+    }
+
+    .faq-main {
+        padding: 28px 16px 44px;
+    }
+
+    .faq-item summary {
+        padding: 16px 16px 16px 18px;
+        font-size: 14px;
+    }
+
+    .faq-answer {
+        padding: 0 18px 18px;
+    }
+
+    .faq-help {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 24px 20px;
+    }
+
+    .faq-help-actions,
+    .faq-help-actions .faq-btn {
+        width: 100%;
+    }
+}
+
+
+/* Text only screen readers hear (the search label) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
