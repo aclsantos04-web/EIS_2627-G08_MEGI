@@ -19,48 +19,17 @@ const closeUserDialogButton = document.getElementById("closeUserDialogButton");
 const userNameError = document.getElementById("userDialogName-error");
 const userEmailError = document.getElementById("userDialogEmail-error");
 
-const USER_EDITS_KEY = "cmsAdminUserEdits";
 
 let selectedUser = null;
 
 
-/* Obter alterações feitas pelo Admin */
-function getUserEdits() {
-    try {
-        return JSON.parse(
-            localStorage.getItem(USER_EDITS_KEY) || "{}"
-        );
-    } catch (error) {
-        return {};
-    }
-}
-
-
-/* Guardar alterações feitas pelo Admin */
-function saveUserEdits(edits) {
-    localStorage.setItem(
-        USER_EDITS_KEY,
-        JSON.stringify(edits)
-    );
-}
-
-
-/* Aplicar alterações guardadas apenas aos utilizadores aprovados */
+/* Approved users, with their latest details.
+   getAllAccounts() (accounts.js) already includes every change made
+   on a Profile page or here, because both save to the same place. */
 function getUsers() {
-    const edits = getUserEdits();
-
     return getAllAccounts()
         .filter(function (account) {
             return getAccountStatus(account) === "approved";
-        })
-        .map(function (account) {
-            const key = account.username || account.email;
-
-            return Object.assign(
-                {},
-                account,
-                edits[key] || {}
-            );
         });
 }
 
@@ -211,6 +180,17 @@ userDialogForm.addEventListener(
             isValid = false;
         }
 
+        // Emails must be unique: users can log in with them (accounts.js)
+        else if (emailTakenByOther(trimmedEmail, selectedUser.username)) {
+
+            userDialogEmail.classList.add("invalid");
+
+            userEmailError.textContent =
+                "This email is already used by another account.";
+
+            isValid = false;
+        }
+
 
         if (!isValid) {
             userDialogForm
@@ -221,24 +201,12 @@ userDialogForm.addEventListener(
         }
 
 
-        const edits = getUserEdits();
-
-        const key =
-            selectedUser.username ||
-            selectedUser.email;
-
-
-        edits[key] = Object.assign(
-            {},
-            edits[key] || {},
-            {
-                name: trimmedName,
-                email: trimmedEmail
-            }
-        );
-
-
-        saveUserEdits(edits);
+        // Saved where the Profile pages save too (accounts.js), so the
+        // user sees the change on their own profile and top bar
+        saveProfileChanges(selectedUser.username, {
+            fullName: trimmedName,
+            email: trimmedEmail
+        });
 
         userDialog.close();
 

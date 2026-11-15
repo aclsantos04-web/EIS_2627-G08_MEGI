@@ -49,10 +49,10 @@ const ROLE_NAMES = {
    --------------------------------------------------------- */
 const SAMPLE_ACCOUNTS = [
     // The four demo accounts (one per role)
-    { username: "marta.ferreira", name: "Marta Ferreira", email: "marta.ferreira@email.pt", role: "client",  status: "approved", registered: "2026-09-02" },
-    { username: "diogo.silva",    name: "Diogo Silva",    email: "diogo.silva@email.pt",    role: "courier", status: "approved", registered: "2026-09-15" },
-    { username: "rita.almeida",   name: "Rita Almeida",   email: "rita.almeida@cms.pt",     role: "staff",   status: "approved", registered: "2026-09-01" },
-    { username: "admin",          name: "Carlos Pinto",   email: "admin@cms.pt",            role: "admin",   status: "approved", registered: "2026-09-01" },
+    { username: "marta.ferreira", name: "Marta Ferreira", email: "marta.ferreira@email.pt", role: "client",  phone: "912345678", nif: "245678905", status: "approved", registered: "2026-09-02" },
+    { username: "diogo.silva",    name: "Diogo Silva",    email: "diogo.silva@email.pt",    role: "courier", phone: "936123456", nif: "234567899", status: "approved", registered: "2026-09-15" },
+    { username: "rita.almeida",   name: "Rita Almeida",   email: "rita.almeida@cms.pt",     role: "staff",   phone: "225081400", nif: "213456788", status: "approved", registered: "2026-09-01" },
+    { username: "admin",          name: "Carlos Pinto",   email: "admin@cms.pt",            role: "admin",   phone: "225081401", nif: "198765436", status: "approved", registered: "2026-09-01" },
 
     // Other clients (their orders appear in Available Orders)
     { username: "carlos.mendes",  name: "Carlos Mendes",  email: "carlos.mendes@email.pt",  role: "client",  status: "approved", registered: "2026-10-06" },
@@ -104,9 +104,49 @@ function loadRegisteredAccounts() {
     return readStored("cmsAccounts", []);
 }
 
-// Sample users + registered users, in one list
+/* ---------------------------------------------------------
+   PROFILE CHANGES: ONE PLACE FOR EVERY PAGE
+   When a user edits their Profile, or the Admin edits a user on
+   Admin > Users, the change is saved in ONE place: "cmsProfiles",
+   one entry per username: { fullName, email, phone, nif }.
+   getAllAccounts() puts those changes on top of the account, so
+   every page (top bar, profile, Admin > Users, Staff lists, orders)
+   shows the same, latest details. There is never a second copy.
+   --------------------------------------------------------- */
+const PROFILE_CHANGES_KEY = "cmsProfiles";
+
+// The account with its saved profile changes applied
+function applyProfileChanges(account) {
+    const changes = readStored(PROFILE_CHANGES_KEY, {})[account.username];
+    if (!changes) {
+        return account;
+    }
+    return Object.assign({}, account, {
+        name: changes.fullName || account.name,
+        email: changes.email || account.email,
+        phone: changes.phone || account.phone,
+        nif: changes.nif || account.nif
+    });
+}
+
+// Saves changes to a user's details. Only the fields given are changed:
+// saveProfileChanges("marta.ferreira", { fullName: "Marta F.", email: "..." })
+function saveProfileChanges(username, changes) {
+    const all = readStored(PROFILE_CHANGES_KEY, {});
+    all[username] = Object.assign({}, all[username] || {}, changes);
+    writeStored(PROFILE_CHANGES_KEY, all);
+}
+
+// Is this email already used by a DIFFERENT account? (emails must be unique,
+// because users can log in with their email)
+function emailTakenByOther(email, username) {
+    const owner = findAccount(email);
+    return owner !== undefined && owner.username !== username;
+}
+
+// Sample users + registered users, in one list (with their profile changes)
 function getAllAccounts() {
-    return SAMPLE_ACCOUNTS.concat(loadRegisteredAccounts());
+    return SAMPLE_ACCOUNTS.concat(loadRegisteredAccounts()).map(applyProfileChanges);
 }
 
 // Finds an account by username OR email (capital letters don't matter)

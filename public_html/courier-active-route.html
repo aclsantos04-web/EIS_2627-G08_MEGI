@@ -139,6 +139,7 @@
                     <h3 id="routeName">Porto → Aveiro</h3>
 
                     <p class="text-muted" id="routeLoad"></p>
+                    <p class="order-notes" id="routeNotes" hidden></p>
 
                     <!-- Informação calculada através da rota -->
                     <div class="route-summary">
@@ -256,6 +257,13 @@
             document.getElementById("activeOrderTitle").textContent = "Active Order #" + orderId;
             document.getElementById("routeName").textContent = order.origin + " → " + order.destination;
             document.getElementById("routeLoad").textContent = orderLoadText(order) + " · " + serviceText(order) + " · for " + order.client;
+
+            /* The client's delivery notes (from New Order) */
+            const routeNotes = document.getElementById("routeNotes");
+            if (order.notes) {
+                routeNotes.textContent = "Notes: " + order.notes;
+                routeNotes.hidden = false;
+            }
 
             /* Map and route between the two places (map.js) */
             createRouteMap("map", order.originCoords, order.destinationCoords, order.origin, order.destination);

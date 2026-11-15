@@ -50,7 +50,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const closeDialog = document.getElementById("closeDialog");
     const closeDialogButton = document.getElementById("closeDialogButton");
 
-    const currentStaff = "Rita Almeida";
+    // The Staff member who is logged in (session.js) is the one
+    // recorded as "Decided by" in the history.
+    const currentStaff = getPageUser("staff").name;
     const historyStorageKey = "cmsVehicleApprovalHistory";
 
     let selectedVehicle = null;
