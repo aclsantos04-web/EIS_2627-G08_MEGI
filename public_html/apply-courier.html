@@ -420,6 +420,7 @@
                         rows="4"
                         placeholder="Tell us briefly about any previous delivery or driving experience."
                     ></textarea>
+                    <span class="error-message" id="courierExperience-error"></span>
 
                 </div>
 
@@ -477,9 +478,10 @@
                     class="application-feedback"
                     hidden
                 >
-                    <strong>Application received!</strong>
-                    Our Staff will review it. Meanwhile, create your courier account on
-                    <a href="register.html">Get Started</a> so you can log in once it is approved.
+                    <strong>Application submitted successfully!</strong>
+                    Your application has been sent to our Human Resources team for review.
+                    If your application is successful, you will be contacted with the next steps
+                    to create your CMS Courier account.
                 </div>
 
             </form>
@@ -640,6 +642,9 @@
                 return;
             }
 
+            // Sprint 1 simulates the submission of this application to an external HR process.
+            // The CV is validated locally but is not uploaded or stored by the CMS,
+            // since recruitment takes place before the candidate becomes a CMS user.
             courierApplication.reset();
             applicationFeedback.hidden = false;
             applicationFeedback.scrollIntoView({ behavior: "smooth", block: "center" });
