@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -879,7 +878,7 @@ button, input, select {
         <img src="images/package.svg" alt="">
 
         <div>
-            <div class="stat-number">12 480</div>
+            <div class="stat-number" data-target="12480">0</div>
             <div class="stat-label">Deliveries this year</div>
         </div>
 
@@ -890,7 +889,7 @@ button, input, select {
         <img src="images/truck.svg" alt="">
 
         <div>
-            <div class="stat-number">27</div>
+            <div class="stat-number" data-target="27">0</div>
             <div class="stat-label">Active Couriers</div>
         </div>
 
@@ -901,7 +900,7 @@ button, input, select {
         <img src="images/users.svg" alt="">
 
         <div>
-            <div class="stat-number">320</div>
+            <div class="stat-number" data-target="320">0</div>
             <div class="stat-label">Clients</div>
         </div>
 
@@ -1290,6 +1289,106 @@ button, input, select {
         );
 
         items.forEach(item => observer.observe(item));
+
+    }
+
+
+    /* KPI COUNTER ANIMATION */
+
+    const counters =
+        document.querySelectorAll(".stat-number[data-target]");
+
+    const reducedMotion =
+        matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+
+    function animateCounter(counter) {
+
+        const target = Number(counter.dataset.target);
+
+        const duration = 1600;
+
+        const startTime = performance.now();
+
+
+        function update(currentTime) {
+
+            const progress = Math.min(
+                (currentTime - startTime) / duration,
+                1
+            );
+
+            const eased =
+                1 - Math.pow(1 - progress, 3);
+
+            const value =
+                Math.floor(target * eased);
+
+            counter.textContent =
+                value.toLocaleString("pt-PT");
+
+
+            if (progress < 1) {
+
+                requestAnimationFrame(update);
+
+            } else {
+
+                counter.textContent =
+                    target.toLocaleString("pt-PT");
+            }
+        }
+
+
+        requestAnimationFrame(update);
+    }
+
+
+    if (
+        "IntersectionObserver" in window &&
+        !reducedMotion
+    ) {
+
+        const counterObserver =
+            new IntersectionObserver(
+                entries => {
+
+                    entries.forEach(entry => {
+
+                        if (entry.isIntersecting) {
+
+                            animateCounter(entry.target);
+
+                            counterObserver.unobserve(
+                                entry.target
+                            );
+                        }
+
+                    });
+
+                },
+                {
+                    threshold: 0.5
+                }
+            );
+
+
+        counters.forEach(counter => {
+
+            counterObserver.observe(counter);
+
+        });
+
+    } else {
+
+        counters.forEach(counter => {
+
+            counter.textContent =
+                Number(
+                    counter.dataset.target
+                ).toLocaleString("pt-PT");
+
+        });
 
     }
 
