@@ -30,15 +30,19 @@ function saveUserEdits(edits) {
 function getUsers() {
     const edits = getUserEdits();
 
-    return getAllAccounts().map(function (account) {
-        const key = account.username || account.email;
+    return getAllAccounts()
+        .filter(function (account) {
+            return getAccountStatus(account) === "approved";
+        })
+        .map(function (account) {
+            const key = account.username || account.email;
 
-        return Object.assign(
-            {},
-            account,
-            edits[key] || {}
-        );
-    });
+            return Object.assign(
+                {},
+                account,
+                edits[key] || {}
+            );
+        });
 }
 
 
