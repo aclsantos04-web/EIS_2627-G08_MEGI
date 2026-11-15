@@ -51,6 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ? (order.status === 'Cancelled' ? '—' : 'Not assigned yet')
         : order.courier + (order.vehicle ? ' (' + order.vehicle + ')' : '');
     document.getElementById('courierValue').textContent = courierText;
+    document.getElementById('serviceValue').textContent = serviceText(order) +
+        (order.price ? ' · €' + order.price.toFixed(2) : '');        // orders.js
 
     const productsList = document.getElementById('productsList');
     productsList.innerHTML = '';

@@ -50,14 +50,14 @@
                     <h3>Package Information</h3>
                     
                     <div class="product-input-row">
-                        <select id="productSelect">
+                        <select id="productSelect" aria-label="Product to add">
                             <option value="" disabled selected>Select Products</option>
                             <option value="Product A" data-weight="5" data-vol="0.02">Product A (5 kg | 0.02 m³)</option>
                             <option value="Product B" data-weight="12" data-vol="0.05">Product B (12 kg | 0.05 m³)</option>
                             <option value="Product C" data-weight="1.5" data-vol="0.005">Product C (1.5 kg | 0.005 m³)</option>
                         </select>
 
-                        <input type="number" id="productQty" class="qty-input" placeholder="Qt" min="1" value="1">
+                        <input type="number" id="productQty" aria-label="Quantity" class="qty-input" placeholder="Qt" min="1" value="1">
                         
                         <button type="button" id="btnAddProduct" class="btn btn-secondary btn-small">Add</button>
                     </div>
@@ -76,7 +76,7 @@
                 <!-- Additional Information -->
                 <section class="card notes-card">
                     <h3>Additional Information</h3>
-                    <textarea id="orderNotes" placeholder="Delivery notes or handling instructions (optional)"></textarea>
+                    <textarea id="orderNotes" aria-label="Delivery notes" placeholder="Delivery notes or handling instructions (optional)"></textarea>
                 </section>
 
                 <!-- Select Location -->
@@ -97,7 +97,7 @@
                     <div class="coords-section">
                         <div class="coords-subtitle">Origin</div>
                         <div class="address-search-row">
-                            <input type="text" id="originAddress" placeholder="Search origin address (e.g. FEUP, Porto)" autocomplete="off">
+                            <input type="text" id="originAddress" aria-label="Search origin address" placeholder="Search origin address (e.g. FEUP, Porto)" autocomplete="off">
                             <button type="button" id="btnSearchOrigin" class="btn btn-secondary btn-small">Search</button>
                         </div>
                         <small class="error-message" id="originAddrError"></small>
@@ -121,7 +121,7 @@
                     <div class="coords-section">
                         <div class="coords-subtitle">Destination</div>
                         <div class="address-search-row">
-                            <input type="text" id="destAddress" placeholder="Search destination address (e.g. Aliados, Porto)" autocomplete="off">
+                            <input type="text" id="destAddress" aria-label="Search destination address" placeholder="Search destination address (e.g. Aliados, Porto)" autocomplete="off">
                             <button type="button" id="btnSearchDest" class="btn btn-secondary btn-small">Search</button>
                         </div>
                         <small class="error-message" id="destAddrError"></small>
@@ -286,6 +286,7 @@
     <!-- Scripts -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="js/map.js"></script>
+    <script src="js/orders.js"></script>
     <script src="js/client_order.js"></script>
     <script src="js/topbar.js"
             data-name="Marta Ferreira"

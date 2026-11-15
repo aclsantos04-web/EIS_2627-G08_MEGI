@@ -251,7 +251,7 @@
 
             document.getElementById("activeOrderTitle").textContent = "Active Order #" + orderId;
             document.getElementById("routeName").textContent = order.origin + " → " + order.destination;
-            document.getElementById("routeLoad").textContent = orderLoadText(order) + " · for " + order.client;
+            document.getElementById("routeLoad").textContent = orderLoadText(order) + " · " + serviceText(order) + " · for " + order.client;
 
             /* Map and route between the two places (map.js) */
             createRouteMap("map", order.originCoords, order.destinationCoords, order.origin, order.destination);

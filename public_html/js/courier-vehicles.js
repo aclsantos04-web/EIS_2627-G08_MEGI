@@ -55,12 +55,25 @@ function createCell(mainText, secondLine) {
     return cell;
 }
 
-// Expiry cell: the date, then a coloured badge underneath
-function createExpiryCell(dateText) {
+// Expiry cell: the date, then a coloured badge underneath.
+// pendingDate: the date of a new certificate Staff are still
+// reviewing. It is shown, but it doesn't count yet.
+function createExpiryCell(dateText, pendingDate) {
     const state = getDocumentState(dateText);            // vehicles.js
     const cell = document.createElement("td");
     cell.append(formatDate(dateText), document.createElement("br"), createBadge(state.label, state.type));
+    if (pendingDate) {
+        const note = document.createElement("small");
+        note.className = "pending-note";
+        note.textContent = "New date " + formatDate(pendingDate) + " under review";
+        cell.append(document.createElement("br"), note);
+    }
     return cell;
+}
+
+// The new date waiting for Staff, if this document is being reviewed
+function pendingDateFor(vehicle, documentType) {
+    return vehicle.updatedDocument === documentType ? vehicle.pendingExpiry : null;
 }
 
 
@@ -106,8 +119,8 @@ function renderTable() {
             createCell(vehicle.plate, vehicle.model),
             createCell(vehicle.type),
             createCell(vehicle.maxWeightKg + " kg", vehicle.maxVolumeM3 + " m³"),
-            createExpiryCell(vehicle.insuranceExpiry),
-            createExpiryCell(vehicle.inspectionExpiry),
+            createExpiryCell(vehicle.insuranceExpiry, pendingDateFor(vehicle, "insurance")),
+            createExpiryCell(vehicle.inspectionExpiry, pendingDateFor(vehicle, "inspection")),
             statusCell,
             actionCell
         );
@@ -127,8 +140,8 @@ function renderAlerts() {
 
     vehicles.forEach(function (vehicle) {
         const documents = [
-            { name: "Insurance",  date: vehicle.insuranceExpiry },
-            { name: "Inspection", date: vehicle.inspectionExpiry }
+            { name: "Insurance",  type: "insurance",  date: vehicle.insuranceExpiry },
+            { name: "Inspection", type: "inspection", date: vehicle.inspectionExpiry }
         ];
 
         documents.forEach(function (doc) {
@@ -138,7 +151,11 @@ function renderAlerts() {
             }
 
             const item = document.createElement("li");
-            if (state.type === "danger") {
+            if (pendingDateFor(vehicle, doc.type)) {
+                // Already uploaded a new one: waiting for Staff
+                item.textContent = doc.name + " for " + vehicle.plate + " " + state.label.toLowerCase() +
+                    " (" + formatDate(doc.date) + "). Your new certificate is waiting for Staff review.";
+            } else if (state.type === "danger") {
                 item.classList.add("text-danger");
                 item.textContent = doc.name + " for " + vehicle.plate + " expired on " + formatDate(doc.date) +
                     ". Upload a new certificate or Staff may disapprove this vehicle.";
@@ -217,17 +234,16 @@ documentForm.addEventListener("submit", function (event) {
     const documentType = document.getElementById("documentType").value;
     const newDate = document.getElementById("newExpiryDate").value;
 
-    if (documentType === "insurance") {
-        vehicle.insuranceExpiry = newDate;
-    } else {
-        vehicle.inspectionExpiry = newDate;
-    }
+    // The new date is NOT applied yet: it waits in pendingExpiry
+    // until Staff validate the certificate (Staff -> Document Alerts).
+    // Until then the old date still decides if the vehicle can be used.
     vehicle.updatedDocument = documentType;               // Staff see it in Document Alerts
+    vehicle.pendingExpiry = newDate;
 
     saveVehicles(vehicles);                               // vehicles.js
 
     showSuccessMessage("successMessage", "New " + documentType + " certificate for " + vehicle.plate +
-        " uploaded. Staff have been notified to review it.");   // validation.js
+        " uploaded. The new date counts once Staff approve it.");   // validation.js
 
     dialog.close();
     renderPage();
