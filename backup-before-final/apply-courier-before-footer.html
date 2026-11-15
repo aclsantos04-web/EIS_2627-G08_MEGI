@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CMS - Apply as Courier</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cms-lara.css">
+
+    <style>
+        body {
+            margin: 0;
+        }
+
+        main.application-page {
+            width: 100%;
+            max-width: none;
+            min-height: calc(100vh - 82px);
+
+            margin: 0;
+            padding: 48px 5% 70px;
+
+            box-sizing: border-box;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(255, 255, 255, 0.45) 0,
+                    rgba(255, 255, 255, 0.45) 220px,
+                    transparent 221px
+                ),
+                #cbe5f5;
+        }
+
+        .application-intro {
+            width: min(1120px, 100%);
+            margin: 0 auto 34px;
+        }
+
+        .application-intro .eyebrow {
+            margin: 0 0 12px;
+            color: #4e6478;
+            font-size: 15px;
+        }
+
+        .application-intro h1 {
+            margin: 0 0 8px;
+            font-size: 42px;
+        }
+
+        .application-intro > p:last-child {
+            margin: 0;
+            color: #566878;
+            font-size: 16px;
+        }
+
+        .application-card {
+            width: min(1120px, 100%);
+            margin: 0 auto;
+            padding: 36px;
+
+            box-sizing: border-box;
+
+            background: #ffffff;
+
+            border-radius: 16px;
+            border-top: 5px solid #2b66ad;
+
+            box-shadow:
+                0 10px 28px rgba(25, 55, 85, 0.08);
+        }
+
+        .application-card h2 {
+            margin: 0 0 6px;
+        }
+
+        .application-card > p {
+            margin: 0 0 28px;
+        }
+
+        .application-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .application-card .form-group {
+            margin-bottom: 20px;
+        }
+
+        .application-card label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        .application-card textarea {
+            width: 100%;
+            min-height: 110px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .application-card input[type="file"] {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .application-confirmation {
+            display: flex !important;
+            align-items: flex-start;
+            gap: 10px;
+
+            margin: 4px 0 24px;
+
+            font-weight: 400 !important;
+            color: #566878;
+        }
+
+        .application-confirmation input {
+            width: auto;
+            margin-top: 3px;
+        }
+
+        .application-submit {
+            width: 100%;
+        }
+
+        .application-feedback {
+            margin-top: 18px;
+            padding: 12px 16px;
+
+            background: #eaf7ef;
+            color: #25613d;
+
+            border: 1px solid #bcdcc8;
+            border-radius: 8px;
+
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .application-feedback[hidden] {
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            .application-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .application-intro h1 {
+                font-size: 34px;
+            }
+
+            .application-card {
+                padding: 22px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="css/public-header.css">
+    <link rel="stylesheet" href="css/cms-footer.css">
+</head>
+
+
+<body>
+
+    <!-- ================= EVALUATION STRIP =================
+     For the teachers: a slim link above the top bar, on every
+     public page. Styles: css/public-header.css (section "Evaluation strip"). -->
+<a href="evaluation-index.html" class="eval-strip">
+    <span class="eval-strip-icon" aria-hidden="true">🎓</span>
+    <span class="eval-strip-text"><strong>Evaluating this project?</strong> Click here to go to the Evaluation Index</span>
+    <span class="eval-strip-arrow" aria-hidden="true">→</span>
+</a>
+
+<!-- ================= TOP BAR =================
+     The same bar on every public page (styles: css/public-header.css).
+     aria-current="page" marks where you are (blue gradient). -->
+<header class="public-header">
+    <a href="cms-home.html" class="public-logo" aria-label="CMS – go to homepage">
+        <svg viewBox="0 0 64 40" aria-hidden="true">
+            <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+            <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+            <circle cx="14" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+            <circle cx="48" cy="32" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+        </svg>
+        CMS
+    </a>
+
+    <nav class="public-nav" aria-label="Main menu">
+        <a href="cms-home.html">Home</a>
+        <a href="delivery-services.html">Services</a>
+        <a href="contact.html">Support</a>
+        <a href="team.html">Meet the Team</a>
+    </nav>
+
+    <div class="public-actions">
+        <a href="login.html" class="public-btn public-btn-primary">Login</a>
+        <a href="register.html" class="public-btn public-btn-outline">Get Started</a>
+    </div>
+</header>
+
+
+    <main class="application-page">
+
+        <section class="application-intro">
+
+            <p class="eyebrow">
+                Join CMS
+            </p>
+
+            <h1>
+                Apply as a Courier
+            </h1>
+
+            <p>
+                Join our courier network and help connect
+                people, packages and possibilities.
+            </p>
+
+        </section>
+
+
+        <section class="application-card">
+
+            <h2>
+                Courier Application
+            </h2>
+
+            <p class="text-muted">
+                Tell us a little about yourself.
+            </p>
+
+
+            <form id="courierApplication" novalidate>
+
+                <div class="application-grid">
+
+                    <div class="form-group">
+
+                        <label for="courierName">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="courierName"
+                            name="courierName"
+                            placeholder="e.g. Diogo Silva"
+                            required
+                        >
+                        <span class="error-message" id="courierName-error"></span>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="courierEmail">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="courierEmail"
+                            name="courierEmail"
+                            placeholder="name@example.com"
+                            required
+                        >
+                        <span class="error-message" id="courierEmail-error"></span>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="courierPhone">
+                            Phone
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="courierPhone"
+                            name="courierPhone"
+                            placeholder="+351 912 345 678"
+                            required
+                        >
+                        <span class="error-message" id="courierPhone-error"></span>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="courierLocation">
+                            Location
+                        </label>
+
+                        <input
+                            type="text"
+                            id="courierLocation"
+                            name="courierLocation"
+                            placeholder="e.g. Porto"
+                            required
+                        >
+                        <span class="error-message" id="courierLocation-error"></span>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="licenceCategory">
+                            Driving Licence Category
+                        </label>
+
+                        <select
+                            id="licenceCategory"
+                            name="licenceCategory"
+                            required
+                        >
+
+                            <option value="">
+                                Select a category
+                            </option>
+
+                            <option value="A">
+                                A
+                            </option>
+
+                            <option value="A1">
+                                A1
+                            </option>
+
+                            <option value="A2">
+                                A2
+                            </option>
+
+                            <option value="B">
+                                B
+                            </option>
+
+                            <option value="C">
+                                C
+                            </option>
+
+                            <option value="C1">
+                                C1
+                            </option>
+
+                        </select>
+                        <span class="error-message" id="licenceCategory-error"></span>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="licenceExpiry">
+                            Driving Licence Expiry Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="licenceExpiry"
+                            name="licenceExpiry"
+                            required
+                        >
+                        <span class="error-message" id="licenceExpiry-error"></span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="hasVehicle">
+                        Do you currently have a vehicle available?
+                    </label>
+
+                    <select
+                        id="hasVehicle"
+                        name="hasVehicle"
+                        required
+                    >
+
+                        <option value="">
+                            Select an option
+                        </option>
+
+                        <option value="yes">
+                            Yes
+                        </option>
+
+                        <option value="no">
+                            No
+                        </option>
+
+                    </select>
+                        <span class="error-message" id="hasVehicle-error"></span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="courierExperience">
+                        Previous Experience
+                    </label>
+
+                    <textarea
+                        id="courierExperience"
+                        name="courierExperience"
+                        rows="4"
+                        placeholder="Tell us briefly about any previous delivery or driving experience."
+                    ></textarea>
+                    <span class="error-message" id="courierExperience-error"></span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="courierCV">
+                        CV
+                    </label>
+
+                    <input
+                        type="file"
+                        id="courierCV"
+                        name="courierCV"
+                        accept=".pdf,.doc,.docx"
+                        required
+                    >
+                    <span class="error-message" id="courierCV-error"></span>
+
+                    <small class="text-muted">
+                        Accepted formats: PDF, DOC or DOCX.
+                    </small>
+
+                </div>
+
+
+                <label class="application-confirmation">
+
+                    <input
+                        type="checkbox"
+                        id="courierConfirm"
+                        required
+                    >
+
+                    <span>
+                        I confirm that the information provided
+                        is correct and may be reviewed as part
+                        of my application.
+                    </span>
+
+                </label>
+                <span class="error-message" id="courierConfirm-error"></span>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary application-submit"
+                >
+                    Submit Application
+                </button>
+
+
+                <div
+                    id="applicationFeedback"
+                    class="application-feedback"
+                    hidden
+                >
+                    <strong>Application submitted successfully!</strong>
+                    Your application has been sent to our Human Resources team for review.
+                    If your application is successful, you will be contacted with the next steps
+                    to create your CMS Courier account.
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+<!-- ================= FOOTER =================
+     The same footer on every public page (styles: css/cms-footer.css). -->
+<footer class="cms-footer">
+    <div class="cms-footer-wrap">
+        <div class="cms-footer-top">
+
+            <div class="cms-footer-brand">
+                <a class="cms-footer-logo" href="cms-home.html" aria-label="CMS – go to homepage">
+                    <svg viewBox="0 0 64 40" aria-hidden="true">
+                        <rect x="2" y="4" width="34" height="24" fill="currentColor"/>
+                        <path d="M38 12h12l10 10v6H38z" fill="currentColor"/>
+                        <circle cx="14" cy="32" r="5" fill="white" stroke="currentColor" stroke-width="3"/>
+                        <circle cx="48" cy="32" r="5" fill="white" stroke="currentColor" stroke-width="3"/>
+                    </svg>
+                    CMS
+                </a>
+                <p class="cms-footer-subtitle">COURIER MANAGEMENT SYSTEM</p>
+            </div>
+
+            <nav class="cms-footer-col" aria-label="Services">
+                <h2>SERVICES</h2>
+                <a href="cms-home.html#delivery-estimate">Get a Quote</a>
+                <a href="delivery-services.html">Delivery Services</a>
+            </nav>
+
+            <nav class="cms-footer-col" aria-label="Support">
+                <h2>SUPPORT</h2>
+                <a href="faq.html">FAQs</a>
+                <a href="contact.html">Contact Us</a>
+            </nav>
+
+            <nav class="cms-footer-col" aria-label="Careers">
+                <h2>CAREERS</h2>
+                <a href="apply-courier.html">Apply as Courier</a>
+            </nav>
+
+            <nav class="cms-footer-col" aria-label="About CMS">
+                <h2>ABOUT CMS</h2>
+                <a href="team.html">Meet the Team</a>
+                <a href="evaluation-index.html">Evaluation Index</a>
+            </nav>
+
+        </div>
+
+        <hr class="cms-footer-rule">
+
+        <div class="cms-footer-bottom">
+            <div class="cms-footer-social" role="group" aria-label="Illustrative social icons">
+                <span>in</span>
+                <span>◎</span>
+                <span>▶</span>
+            </div>
+            <p>© 2026 Courier Management System (CMS). FEUP Academic Project.</p>
+            <div class="cms-footer-legal">
+                <span>Privacy Policy</span>
+                <span>|</span>
+                <span>Terms and Conditions</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- Shared form checks (showError, checkRequired...) -->
+    <script src="js/validation.js"></script>
+    <script>
+        /* =====================================================
+           COURIER APPLICATION — form checks
+           Same behaviour as the other CMS forms: every problem
+           shows in red under its field, all at once, and the
+           form is only "sent" when everything is correct.
+           ===================================================== */
+        const courierApplication = document.getElementById("courierApplication");
+        const applicationFeedback = document.getElementById("applicationFeedback");
+
+        const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const PHONE_PATTERN = /^(\+351)?[29][0-9]{8}$/;      // Portuguese number, +351 optional
+
+        clearErrorsWhileTyping(courierApplication);            // validation.js
+
+        function checkPattern(fieldId, pattern, emptyMessage, wrongMessage) {
+            const value = document.getElementById(fieldId).value.trim().replace(/\s/g, "");
+            if (value.length === 0) {
+                showError(fieldId, emptyMessage);
+                return false;
+            }
+            if (!pattern.test(value)) {
+                showError(fieldId, wrongMessage);
+                return false;
+            }
+            return true;
+        }
+
+        // The licence must still be valid tomorrow
+        function checkLicenceDate() {
+            const value = document.getElementById("licenceExpiry").value;
+            if (value === "") {
+                showError("licenceExpiry", "Licence expiry date is required.");
+                return false;
+            }
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (new Date(value + "T00:00:00") <= today) {
+                showError("licenceExpiry", "Your driving licence has expired.");
+                return false;
+            }
+            return true;
+        }
+
+        // A CV was chosen and it is a PDF, DOC or DOCX
+        function checkCV() {
+            const files = document.getElementById("courierCV").files;
+            if (files.length === 0) {
+                showError("courierCV", "Please upload your CV.");
+                return false;
+            }
+            const extension = files[0].name.split(".").pop().toLowerCase();
+            if (!["pdf", "doc", "docx"].includes(extension)) {
+                showError("courierCV", "Only PDF, DOC or DOCX files are accepted.");
+                return false;
+            }
+            return true;
+        }
+
+        courierApplication.addEventListener("submit", function (event) {
+            event.preventDefault();                            // don't reload the page
+            clearAllErrors(courierApplication);
+            applicationFeedback.hidden = true;
+
+            // One check per line, so every error shows at once
+            const results = [
+                checkRequired("courierName", "Full name is required."),
+                checkPattern("courierEmail", EMAIL_PATTERN, "Email is required.", "Please enter a valid email address."),
+                checkPattern("courierPhone", PHONE_PATTERN, "Phone number is required.", "Phone must have 9 digits and start with 2 or 9."),
+                checkRequired("courierLocation", "Location is required."),
+                checkRequired("licenceCategory", "Please choose your licence category."),
+                checkLicenceDate(),
+                checkRequired("hasVehicle", "Please tell us if you have a vehicle."),
+                checkCV()
+            ];
+
+            const confirmBox = document.getElementById("courierConfirm");
+            if (!confirmBox.checked) {
+                showError("courierConfirm", "Please confirm that the information is correct.");
+                results.push(false);
+            }
+
+            if (results.includes(false)) {
+                courierApplication.querySelector(".invalid").focus();    // jump to the first error
+                return;
+            }
+
+            // Sprint 1 simulates the submission of this application to an external HR process.
+            // The CV is validated locally but is not uploaded or stored by the CMS,
+            // since recruitment takes place before the candidate becomes a CMS user.
+            courierApplication.reset();
+            applicationFeedback.hidden = false;
+            applicationFeedback.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+    </script>
+
+</body>
+
+</html>

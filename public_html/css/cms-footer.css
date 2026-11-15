@@ -118,10 +118,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     margin: 0;
 }
 
+/* Only the copyright line is left here, centred
+   (the illustrative social icons and the Privacy Policy / Terms
+   links were removed because they didn't lead anywhere) */
 .cms-footer-bottom {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    text-align: center;
     flex-wrap: wrap;
     gap: 15px 28px;
     padding: 23px 0;
@@ -131,35 +135,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 
 .cms-footer-bottom p {
     margin: 0;
-}
-
-.cms-footer-social {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-}
-
-.cms-footer-social span {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 25px;
-    height: 25px;
-    border: 1px solid #b5d0e4;
-    border-radius: 6px;
-    color: #255680;
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.cms-footer-legal {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-}
-
-.cms-footer-legal span {
-    color: #7891a5;
 }
 
 /* CONTACT INVITATION ON HOMEPAGE */
@@ -231,11 +206,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 28px 16px;
         padding: 36px 0 30px;
-    }
-
-    .cms-footer-bottom {
-        align-items: flex-start;
-        flex-direction: column;
     }
 
     .cms-contact-invite {
