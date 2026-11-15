@@ -42,9 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function getAlerts() {
         const alerts = [];
         getFleet().forEach(function (vehicle) {
-            if (vehicle.approval !== "approved") {
-                return;
-            }
+            
             if (vehicle.updatedDocument) {
                 // The date of the NEW certificate (not active until validated)
                 const dateText = vehicle.pendingExpiry || vehicle[vehicle.updatedDocument + "Expiry"];
@@ -55,6 +53,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     dateText: dateText
                 });
             }
+            
+            
+if (vehicle.approval !== "approved") {
+    return;
+}
+
             ["insurance", "inspection"].forEach(function (documentType) {
                 const dateText = vehicle[documentType + "Expiry"];
                 const state = getDocumentState(dateText);
