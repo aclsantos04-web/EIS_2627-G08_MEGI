@@ -33,7 +33,8 @@ const dialogReject = document.getElementById("dialogReject");
 const closeDialog = document.getElementById("closeDialog");
 const closeDialogButton = document.getElementById("closeDialogButton");
 
-const currentAdmin = "Carlos Pinto";
+// The Admin who is logged in (session.js) is recorded as "Decided by"
+const currentAdmin = getPageUser("admin").name;
 const storageKey = "cmsStaffApprovalDecisions";
 
 let selectedRow = null;

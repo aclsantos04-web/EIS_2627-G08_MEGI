@@ -39,38 +39,42 @@ const COURIER_NAME = typeof getPageUser === "function"
     : "Diogo Silva";
 // Each courier has their own active order ("cmsActiveOrder" for Diogo,
 // "cmsActiveOrder_<username>" for the others)
+const COURIER_USERNAME = typeof getPageUser === "function"
+    ? getPageUser("courier").username
+    : "diogo.silva";
 const ACTIVE_ORDER_KEY = typeof userStorageKey === "function"
     ? userStorageKey("cmsActiveOrder", "courier")
     : "cmsActiveOrder";
 
 const SAMPLE_ORDERS = [
     {
-        id: 1001, client: "Marta Ferreira", created: "2026-10-15", service: "Standard",
+        id: 1001, client: "Marta Ferreira", clientUsername: "marta.ferreira", created: "2026-10-15", service: "Standard",
         origin: "Porto", originCoords: [41.1496, -8.6109],
         destination: "Aveiro", destinationCoords: [40.6405, -8.6538],
         distanceKm: 70, status: "Completed",
-        courier: "Diogo Silva", vehicle: "AA-12-BC",
+        courier: "Diogo Silva", courierUsername: "diogo.silva", vehicle: "AA-12-BC",
         deliveredOn: "2026-10-15", podType: "signature",
         products: [["Books", 1, 5, 0.01], ["Shoes", 1, 3, 0.02]]
     },
     {
-        id: 1002, client: "Marta Ferreira", created: "2026-10-18", service: "Express",
+        id: 1002, client: "Marta Ferreira", clientUsername: "marta.ferreira", created: "2026-10-18", service: "Express",
         origin: "Braga", originCoords: [41.5454, -8.4265],
         destination: "Porto", destinationCoords: [41.1496, -8.6109],
         distanceKm: 55, status: "In Progress",
-        courier: "Sara Lima", vehicle: "31-PQ-07",
+        courier: "Sara Lima", courierUsername: "sara.lima", vehicle: "31-PQ-07",
         products: [["Laptop", 1, 3, 0.015]]
     },
     {
-        id: 1003, client: "Marta Ferreira", created: "2026-10-20", service: "Standard",
+        id: 1003, client: "Marta Ferreira", clientUsername: "marta.ferreira", created: "2026-10-20", service: "Standard",
         origin: "Lisboa", originCoords: [38.7223, -9.1393],
         destination: "Coimbra", destinationCoords: [40.2033, -8.4103],
         distanceKm: 205, status: "Initiated",
         courier: null, vehicle: null,
-        products: [["Kitchen set", 1, 12, 0.08]]
+        products: [["Kitchen set", 1, 12, 0.08]],
+        notes: "Fragile: glass items inside, please keep upright."
     },
     {
-        id: 1004, client: "Marta Ferreira", created: "2026-10-21", service: "Standard",
+        id: 1004, client: "Marta Ferreira", clientUsername: "marta.ferreira", created: "2026-10-21", service: "Standard",
         origin: "Viana do Castelo", originCoords: [41.6932, -8.8329],
         destination: "Braga", destinationCoords: [41.5454, -8.4265],
         distanceKm: 60, status: "Cancelled",
@@ -78,15 +82,16 @@ const SAMPLE_ORDERS = [
         products: [["Office chair", 1, 7, 0.15]]
     },
     {
-        id: 1005, client: "Carlos Mendes", created: "2026-11-12", service: "Same Day",
+        id: 1005, client: "Carlos Mendes", clientUsername: "carlos.mendes", created: "2026-11-12", service: "Same Day",
         origin: "Matosinhos", originCoords: [41.1821, -8.6891],
         destination: "Porto", destinationCoords: [41.1579, -8.6291],
         distanceKm: 9, status: "Initiated",
         courier: null, vehicle: null,
-        products: [["Clothes", 2, 3, 0.04]]
+        products: [["Clothes", 2, 3, 0.04]],
+        notes: "Please ring the bell at door 2. If nobody answers, leave it with the neighbour at door 3."
     },
     {
-        id: 1006, client: "Carlos Mendes", created: "2026-11-13", service: "Express",
+        id: 1006, client: "Carlos Mendes", clientUsername: "carlos.mendes", created: "2026-11-13", service: "Express",
         origin: "Porto", originCoords: [41.1579, -8.6291],
         destination: "Guimarães", destinationCoords: [41.4425, -8.2918],
         distanceKm: 55, status: "Initiated",
@@ -125,7 +130,17 @@ function getAllOrders() {
     const updates = readOrderStorage("cmsOrderUpdates", {});
     const all = SAMPLE_ORDERS.concat(readOrderStorage("cmsNewOrders", []));
     return all.map(function (order) {
-        return Object.assign({}, order, updates[order.id] || {});
+        const full = Object.assign({}, order, updates[order.id] || {});
+        // Orders are linked to people by USERNAME; the name shown is
+        // always the person's current name (if they edited their profile,
+        // every order shows the new one). findAccount is in accounts.js.
+        if (typeof findAccount === "function") {
+            const client = full.clientUsername ? findAccount(full.clientUsername) : undefined;
+            const courier = full.courierUsername ? findAccount(full.courierUsername) : undefined;
+            if (client) { full.client = client.name; }
+            if (courier) { full.courier = courier.name; }
+        }
+        return full;
     });
 }
 
@@ -227,7 +242,7 @@ function getClientOrders(clientName) {
 }
 
 // Orders of one client account. New orders remember the
-// username (clientUsername); the sample orders only have the name.
+// username (clientUsername); the name is only a fallback for orders without one.
 function getUserOrders(user) {
     return getAllOrders().filter(function (order) {
         return order.clientUsername === user.username ||
@@ -292,7 +307,7 @@ function acceptOrder(id) {
         return false;
     }
 
-    updateOrder(id, { courier: COURIER_NAME });
+    updateOrder(id, { courier: COURIER_NAME, courierUsername: COURIER_USERNAME });
     writeOrderStorage(ACTIVE_ORDER_KEY, id);
 
     return true;
@@ -306,7 +321,7 @@ function startOrder(id, plate) {
 // Cancel by the courier: the order goes back to the list of
 // available orders (as the brief asks) and he is free again.
 function releaseOrder(id) {
-    updateOrder(id, { status: "Initiated", courier: null, vehicle: null });
+    updateOrder(id, { status: "Initiated", courier: null, courierUsername: null, vehicle: null });
     writeOrderStorage(ACTIVE_ORDER_KEY, null);
 }
 
@@ -323,8 +338,16 @@ function completeOrder(id, podType) {
 // Orders this courier delivered
 function getCourierCompletedOrders() {
     return getAllOrders().filter(function (order) {
-        return order.courier === COURIER_NAME && order.status === "Completed";
+        return isMyCourierOrder(order) && order.status === "Completed";
     });
+}
+
+// Is this order assigned to the courier using the page?
+// (by username; very old saved orders may only have the name)
+function isMyCourierOrder(order) {
+    return order.courierUsername
+        ? order.courierUsername === COURIER_USERNAME
+        : order.courier === COURIER_NAME;
 }
 
 

@@ -158,12 +158,12 @@ function resetVehicles() {
    --------------------------------------------------------- */
 function getOtherCourierVehicles() {
     return [
-        { plate: "31-PQ-07", courier: "Sara Lima",     type: "Van",   model: "Ford Transit Connect", maxWeightKg: 700,  maxVolumeM3: 3.6,  insuranceExpiry: addDays(210), inspectionExpiry: addDays(180), approval: "approved" },
-        { plate: "55-RT-90", courier: "Sara Lima",     type: "Truck", model: "MAN TGL",              maxWeightKg: 4000, maxVolumeM3: 18,   insuranceExpiry: addDays(120), inspectionExpiry: addDays(-3),  approval: "approved" },
-        { plate: "78-LM-33", courier: "Rui Mendes",    type: "Van",   model: "Citroën Berlingo",     maxWeightKg: 650,  maxVolumeM3: 3.3,  insuranceExpiry: addDays(3),   inspectionExpiry: addDays(90),  approval: "approved" },
-        { plate: "23-AB-45", courier: "Beatriz Costa", type: "Van",   model: "Renault Master",       maxWeightKg: 1200, maxVolumeM3: 10,   insuranceExpiry: addDays(2),   inspectionExpiry: addDays(200), approval: "approved", updatedDocument: "insurance", pendingExpiry: addDays(365) },
-        { plate: "94-XF-21", courier: "Beatriz Costa", type: "Moto",  model: "Yamaha NMAX 125",      maxWeightKg: 25,   maxVolumeM3: 0.08, insuranceExpiry: addDays(280), inspectionExpiry: addDays(270), approval: "pending" },
-        { plate: "10-ZZ-44", courier: "Rui Mendes",    type: "Moto",  model: "Piaggio Liberty",      maxWeightKg: 20,   maxVolumeM3: 0.06, insuranceExpiry: addDays(300), inspectionExpiry: addDays(240), approval: "pending" }
+        { plate: "31-PQ-07", courier: "Sara Lima",     courierUsername: "sara.lima", type: "Van",   model: "Ford Transit Connect", maxWeightKg: 700,  maxVolumeM3: 3.6,  insuranceExpiry: addDays(210), inspectionExpiry: addDays(180), approval: "approved" },
+        { plate: "55-RT-90", courier: "Sara Lima",     courierUsername: "sara.lima", type: "Truck", model: "MAN TGL",              maxWeightKg: 4000, maxVolumeM3: 18,   insuranceExpiry: addDays(120), inspectionExpiry: addDays(-3),  approval: "approved" },
+        { plate: "78-LM-33", courier: "Rui Mendes",    courierUsername: "rui.mendes", type: "Van",   model: "Citroën Berlingo",     maxWeightKg: 650,  maxVolumeM3: 3.3,  insuranceExpiry: addDays(3),   inspectionExpiry: addDays(90),  approval: "approved" },
+        { plate: "23-AB-45", courier: "Beatriz Costa", courierUsername: "beatriz.costa", type: "Van",   model: "Renault Master",       maxWeightKg: 1200, maxVolumeM3: 10,   insuranceExpiry: addDays(2),   inspectionExpiry: addDays(200), approval: "approved", updatedDocument: "insurance", pendingExpiry: addDays(365) },
+        { plate: "94-XF-21", courier: "Beatriz Costa", courierUsername: "beatriz.costa", type: "Moto",  model: "Yamaha NMAX 125",      maxWeightKg: 25,   maxVolumeM3: 0.08, insuranceExpiry: addDays(280), inspectionExpiry: addDays(270), approval: "pending" },
+        { plate: "10-ZZ-44", courier: "Rui Mendes",    courierUsername: "rui.mendes", type: "Moto",  model: "Piaggio Liberty",      maxWeightKg: 20,   maxVolumeM3: 0.06, insuranceExpiry: addDays(300), inspectionExpiry: addDays(240), approval: "pending" }
     ];
 }
 
@@ -182,7 +182,7 @@ function getFleet() {
     const savedDiogo = localStorage.getItem(VEHICLE_STORAGE_KEY);
     const diogos = (savedDiogo !== null ? readVehicleList(VEHICLE_STORAGE_KEY) : getSampleVehicles())
         .map(function (vehicle) {
-            return Object.assign({ courier: "Diogo Silva" }, vehicle);
+            return Object.assign({ courier: "Diogo Silva", courierUsername: "diogo.silva" }, vehicle);
         });
     const others = getOtherCourierVehicles().map(function (vehicle) {
         return Object.assign({}, vehicle, changes[vehicle.plate] || {});
@@ -191,10 +191,16 @@ function getFleet() {
     const registered = [];
     getRegisteredCouriers().forEach(function (courier) {
         readVehicleList(VEHICLE_STORAGE_KEY + "_" + courier.username).forEach(function (vehicle) {
-            registered.push(Object.assign({ courier: courier.name }, vehicle));
+            registered.push(Object.assign({ courier: courier.name, courierUsername: courier.username }, vehicle));
         });
     });
-    return diogos.concat(registered, others);
+    // Show each courier's CURRENT name (they may have edited their profile)
+    return diogos.concat(registered, others).map(function (vehicle) {
+        const owner = typeof findAccount === "function" && vehicle.courierUsername
+            ? findAccount(vehicle.courierUsername)
+            : undefined;
+        return owner ? Object.assign({}, vehicle, { courier: owner.name }) : vehicle;
+    });
 }
 
 // Courier accounts created on Register (accounts.js), not the demo one
@@ -204,7 +210,7 @@ function getRegisteredCouriers() {
     }
     return loadRegisteredAccounts().filter(function (account) {
         return account.role === "courier";
-    });
+    }).map(applyProfileChanges);                       // their latest name (accounts.js)
 }
 
 // Staff change something about a vehicle (approve, reject, review a document)

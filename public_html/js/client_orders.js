@@ -57,6 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('serviceValue').textContent = serviceText(order) +
         (order.price ? ' · €' + order.price.toFixed(2) : '');        // orders.js
 
+    // Delivery notes written on New Order (only shown if there are any)
+    if (order.notes) {
+        document.getElementById('notesValue').textContent = order.notes;
+        document.getElementById('notesGroup').hidden = false;
+    }
+
     const productsList = document.getElementById('productsList');
     productsList.innerHTML = '';
     order.products.forEach((product) => {

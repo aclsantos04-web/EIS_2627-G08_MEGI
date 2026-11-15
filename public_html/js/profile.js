@@ -32,7 +32,9 @@ const profileUser = typeof getPageUser === "function"
     : null;
 const username = profileUser ? profileUser.username : demoUsername;
 
-if (profileUser && profileUser.username !== demoUsername) {
+// The fields are always filled from the account (accounts.js), which
+// already includes the latest changes made here OR by the Admin.
+if (profileUser) {
     document.getElementById("username").value = profileUser.username;
     document.getElementById("fullName").value = profileUser.name;
     document.getElementById("email").value = profileUser.email;
@@ -87,6 +89,11 @@ function getInitials(fullName) {
 // (refreshAvatars() is in section 4)
 function updateHeader(fullName) {
     document.getElementById("profileName").textContent = fullName;
+    // the name in the top bar changes straight away too
+    const topbarName = document.querySelector(".topbar-user-text strong");
+    if (topbarName) {
+        topbarName.textContent = fullName;
+    }
     refreshAvatars();
 }
 
@@ -195,7 +202,12 @@ function validateProfileForm() {
 
     // One check per line, so every error appears at once
     if (!checkRequired("fullName", "Full name is required.")) { isValid = false; }
-    if (!checkPattern("email", EMAIL_PATTERN, "Email is required.", "Please enter a valid email address.")) { isValid = false; }
+    if (!checkPattern("email", EMAIL_PATTERN, "Email is required.", "Please enter a valid email address.")) {
+        isValid = false;
+    } else if (emailTakenByOther(document.getElementById("email").value.trim(), username)) {   // accounts.js
+        showError("email", "This email is already used by another account.");
+        isValid = false;
+    }
     if (!checkPattern("phone", PHONE_PATTERN, "Phone number is required.", "Phone must have 9 digits and start with 2 or 9.")) { isValid = false; }
     
 if (!checkPattern(
@@ -247,9 +259,9 @@ profileForm.addEventListener("submit", function (event) {
     // server will check the current one and store the new one safely.
     const passwordChanged = wantsToChangePassword();
 
-    const profiles = loadAllProfiles();
-    profiles[username] = profile;
-    saveAllProfiles(profiles);
+    // The same place Admin > Users saves to (accounts.js), so the
+    // Admin and every other page see these new details too
+    saveProfileChanges(username, profile);
 
     updateHeader(profile.fullName);
 

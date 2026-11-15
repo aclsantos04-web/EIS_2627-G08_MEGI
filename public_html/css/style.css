@@ -1157,3 +1157,15 @@ dialog::backdrop {               /* the dark layer behind the pop-up */
     font-size: 12px;
     font-weight: 600;
 }
+
+
+/* Delivery notes written by the client on New Order
+   (Available Orders cards and Active Route) */
+.order-notes {
+    background: #fff8e6;
+    border-left: 3px solid #f0b429;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    overflow-wrap: anywhere;
+}

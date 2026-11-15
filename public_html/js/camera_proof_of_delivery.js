@@ -62,7 +62,7 @@ const validActiveOrder =
     activeForProof &&
     order &&
     String(order.id) === String(activeForProof.id) &&
-    order.courier === COURIER_NAME;
+    isMyCourierOrder(order);                     // orders.js
 
 /* Sem encomenda ativa */
 if (!activeForProof) {
