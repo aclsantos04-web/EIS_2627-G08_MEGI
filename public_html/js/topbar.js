@@ -73,20 +73,27 @@ function getStaffNotifications() {
             return vehicle.approval === "pending";
         }).length;
         documents = 0;
-        fleet.forEach(function (vehicle) {
-            if (vehicle.approval !== "approved") {
-                return;
-            }
-            if (vehicle.updatedDocument) {
-                documents += 1;
-            }
-            ["insuranceExpiry", "inspectionExpiry"].forEach(function (key) {
-                if (getDocumentState(vehicle[key]).type !== "success" &&
-                        vehicle.updatedDocument + "Expiry" !== key) {
-                    documents += 1;
-                }
-            });
-        });
+        
+fleet.forEach(function (vehicle) {
+
+    // Count new uploads even if the vehicle is denied
+    if (vehicle.updatedDocument) {
+        documents += 1;
+    }
+
+    // Expiry alerts only apply to approved vehicles
+    if (vehicle.approval !== "approved") {
+        return;
+    }
+
+    ["insuranceExpiry", "inspectionExpiry"].forEach(function (key) {
+        if (getDocumentState(vehicle[key]).type !== "success" &&
+                vehicle.updatedDocument + "Expiry" !== key) {
+            documents += 1;
+        }
+    });
+});
+
     }
     const list = [];
     if (couriers > 0) {
