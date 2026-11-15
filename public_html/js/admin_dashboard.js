@@ -12,7 +12,7 @@
    1. SAMPLE DATA
      users      -> USER.role  (and account_status = "pending")
      orders     -> ORDER.status
-     routes     -> ROUTE.status
+     routes     -> worked out from the orders (1 route = 1 order)
      documents  -> VEHICLE insurance / inspection expiry dates
    --------------------------------------------------------- */
 const dashboardData = {
@@ -40,11 +40,6 @@ const dashboardData = {
         { week: "W3", orders: 48 },
         { week: "W4", orders: 55 }
     ],
-
-    routes: {
-        active: 9,
-        completed: 64
-    },
 
     averageDeliveryDays: 1.8,
 
@@ -77,6 +72,20 @@ function toPercent(fraction) {
 // "Active" = not finished yet = Initiated + In Progress
 function getActiveOrders(orders) {
     return orders.initiated + orders.inProgress;
+}
+
+// ROUTES are worked out from the orders, not typed in.
+// In this system a route links ONE courier, ONE vehicle and ONE order
+// ("single active task"): a route becomes active when the courier
+// starts the order (In Progress) and is completed when it is delivered.
+// So: active routes = orders In Progress, completed routes = orders Completed.
+// (A courier can't have two active routes, so this can never be more
+// than the number of couriers.)
+function getRoutes(orders) {
+    return {
+        active: orders.inProgress,
+        completed: orders.completed
+    };
 }
 
 // Of the orders that are finished, how many were delivered (not cancelled)?
@@ -125,8 +134,9 @@ function renderKpis(data) {
     setText("kpiClients", data.users.clients);
     setText("kpiCouriers", data.users.couriers);
     setText("kpiStaff", data.users.staff);
-    setText("kpiActiveRoutes", data.routes.active);
-    setText("kpiCompletedRoutes", plural(data.routes.completed, "route") + " completed");
+    const routes = getRoutes(data.orders);
+    setText("kpiActiveRoutes", routes.active);
+    setText("kpiCompletedRoutes", plural(routes.completed, "route") + " completed");
     setText("kpiDeliveryTime", data.averageDeliveryDays.toFixed(1));
 
     // Only show the "waiting for approval" link if someone is waiting
@@ -142,7 +152,9 @@ function renderKpis(data) {
     setText("kpiActiveOrdersNote", "of " + totalOrders + " this month");
 
     setText("kpiCompletion", toPercent(completionRate));
-    setText("kpiCompletionNote", toPercent(1 - completionRate) + " cancelled");
+    // "of finished orders": the chart's Cancelled % is out of ALL orders
+    // (including those still running), so it is a smaller number
+    setText("kpiCompletionNote", toPercent(1 - completionRate) + " of finished orders cancelled");
 
     setText("kpiExpiring", expiringTotal);
     setText("kpiExpiringNote",
