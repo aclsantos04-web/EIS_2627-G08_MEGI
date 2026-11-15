@@ -143,6 +143,152 @@
     </main>
 
 </div>
+    
+<!-- User details / edit dialog -->
+<dialog id="userDialog">
+
+    <form id="userDialogForm" novalidate>
+
+        <div class="user-dialog-heading">
+
+            <div>
+                <h2 id="userDialogTitle">
+                    User Details
+                </h2>
+
+                <p class="text-muted">
+                    View or update CMS account information.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                id="closeUserDialog"
+                class="user-dialog-close"
+                aria-label="Close">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="user-dialog-profile">
+
+            <span
+                id="userDialogAvatar"
+                class="user-avatar user-dialog-avatar">
+                JD
+            </span>
+
+            <div>
+                <h3 id="userDialogNameTitle">
+                    John Doe
+                </h3>
+
+                <p
+                    id="userDialogRole"
+                    class="text-muted">
+                    Client
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="user-dialog-grid">
+
+            <div class="form-group">
+
+                <label for="userDialogName">
+                    Name
+                </label>
+
+                <input
+                    type="text"
+                    id="userDialogName">
+
+                <span
+                    id="userDialogName-error"
+                    class="error-message">
+                </span>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="userDialogEmail">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="userDialogEmail">
+
+                <span
+                    id="userDialogEmail-error"
+                    class="error-message">
+                </span>
+
+            </div>
+
+
+            <div class="user-dialog-detail">
+
+                <span>Username</span>
+
+                <strong id="userDialogUsername">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="user-dialog-detail">
+
+                <span>Type</span>
+
+                <strong id="userDialogType">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="user-dialog-detail">
+
+                <span>Registration Date</span>
+
+                <strong id="userDialogDate">
+                    —
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <button
+                type="button"
+                id="closeUserDialogButton"
+                class="btn btn-outline">
+                Close
+            </button>
+
+            <button
+                type="submit"
+                id="userDialogSave"
+                class="btn btn-primary">
+                Save Changes
+            </button>
+
+        </div>
+
+    </form>
+
+</dialog>
 
 <!-- Shared data -->
 <script src="js/accounts.js"></script>

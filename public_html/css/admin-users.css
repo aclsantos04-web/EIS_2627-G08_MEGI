@@ -85,3 +85,98 @@
     padding: 7px 12px;
     font-size: 13px;
 }
+
+/* User List : buttons view and edit  */
+
+#userDialog {
+    max-width: 620px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.user-dialog-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.user-dialog-heading h2 {
+    margin-bottom: 3px;
+}
+
+.user-dialog-close {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: #FFFFFF;
+    color: var(--text);
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.user-dialog-close:hover {
+    background: var(--page-soft);
+    color: var(--primary);
+}
+
+.user-dialog-profile {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 22px;
+}
+
+.user-dialog-profile h3,
+.user-dialog-profile p {
+    margin: 0;
+}
+
+.user-dialog-avatar {
+    width: 54px;
+    height: 54px;
+    font-size: 16px;
+}
+
+.user-dialog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 16px;
+}
+
+.user-dialog-detail {
+    padding: 11px 12px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: #FFFFFF;
+}
+
+.user-dialog-detail > span {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.user-dialog-detail strong {
+    font-size: 13px;
+}
+
+#userDialog input[readonly] {
+    background: var(--page-soft);
+    color: var(--text);
+    cursor: default;
+}
+
+@media (max-width: 600px) {
+    .user-dialog-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -2,7 +2,26 @@ const usersTable = document.getElementById("usersTable");
 const userSearch = document.getElementById("userSearch");
 const typeFilter = document.getElementById("typeFilter");
 
+const userDialog = document.getElementById("userDialog");
+const userDialogForm = document.getElementById("userDialogForm");
+const userDialogTitle = document.getElementById("userDialogTitle");
+const userDialogAvatar = document.getElementById("userDialogAvatar");
+const userDialogNameTitle = document.getElementById("userDialogNameTitle");
+const userDialogRole = document.getElementById("userDialogRole");
+const userDialogName = document.getElementById("userDialogName");
+const userDialogEmail = document.getElementById("userDialogEmail");
+const userDialogUsername = document.getElementById("userDialogUsername");
+const userDialogType = document.getElementById("userDialogType");
+const userDialogDate = document.getElementById("userDialogDate");
+const userDialogSave = document.getElementById("userDialogSave");
+const closeUserDialog = document.getElementById("closeUserDialog");
+const closeUserDialogButton = document.getElementById("closeUserDialogButton");
+const userNameError = document.getElementById("userDialogName-error");
+const userEmailError = document.getElementById("userDialogEmail-error");
+
 const USER_EDITS_KEY = "cmsAdminUserEdits";
+
+let selectedUser = null;
 
 
 /* Obter alterações feitas pelo Admin */
@@ -26,7 +45,7 @@ function saveUserEdits(edits) {
 }
 
 
-/* Aplicar alterações guardadas aos utilizadores */
+/* Aplicar alterações guardadas apenas aos utilizadores aprovados */
 function getUsers() {
     const edits = getUserEdits();
 
@@ -71,70 +90,187 @@ function createActionButton(text, className, action) {
 }
 
 
+/* Limpar erros do modal */
+function clearDialogErrors() {
+    userDialogName.classList.remove("invalid");
+    userDialogEmail.classList.remove("invalid");
+
+    userNameError.textContent = "";
+    userEmailError.textContent = "";
+}
+
+
+/* Abrir modal em modo View ou Edit */
+function openUserDialog(account, editMode) {
+    selectedUser = account;
+
+    clearDialogErrors();
+
+    userDialogTitle.textContent =
+        editMode ? "Edit User" : "User Details";
+
+    userDialogAvatar.textContent =
+        getInitials(account.name);
+
+    userDialogNameTitle.textContent =
+        account.name;
+
+    userDialogRole.textContent =
+        ROLE_NAMES[account.role];
+
+    userDialogName.value =
+        account.name;
+
+    userDialogEmail.value =
+        account.email;
+
+    userDialogUsername.textContent =
+        account.username || "—";
+
+    userDialogType.textContent =
+        ROLE_NAMES[account.role];
+
+    userDialogDate.textContent =
+        formatDateText(account.registered);
+
+    userDialogName.readOnly =
+        !editMode;
+
+    userDialogEmail.readOnly =
+        !editMode;
+
+    userDialogSave.hidden =
+        !editMode;
+
+    userDialog.showModal();
+}
+
+
 /* Ver informação do utilizador */
 function viewUser(account) {
-    alert(
-        "Name: " + account.name +
-        "\nEmail: " + account.email +
-        "\nUsername: " + account.username +
-        "\nRole: " + ROLE_NAMES[account.role] +
-        "\nRegistration date: " +
-        formatDateText(account.registered)
-    );
+    openUserDialog(account, false);
 }
 
 
 /* Editar informação do utilizador */
 function editUser(account) {
-    const newName = prompt(
-        "Name:",
-        account.name
-    );
-
-    if (newName === null) {
-        return;
-    }
-
-    const trimmedName = newName.trim();
-
-    if (trimmedName === "") {
-        alert("Name cannot be empty.");
-        return;
-    }
-
-
-    const newEmail = prompt(
-        "Email:",
-        account.email
-    );
-
-    if (newEmail === null) {
-        return;
-    }
-
-    const trimmedEmail = newEmail.trim();
-
-    if (trimmedEmail === "") {
-        alert("Email cannot be empty.");
-        return;
-    }
-
-
-    const edits = getUserEdits();
-    const key = account.username || account.email;
-
-    edits[key] = Object.assign(
-        {},
-        edits[key] || {},
-        {
-            name: trimmedName,
-            email: trimmedEmail
-        }
-    );
-
-    saveUserEdits(edits);
-    renderUsers();
+    openUserDialog(account, true);
 }
+
+
+/* Guardar edição feita no modal */
+userDialogForm.addEventListener(
+    "submit",
+    function (event) {
+
+        event.preventDefault();
+
+        if (!selectedUser) {
+            return;
+        }
+
+        clearDialogErrors();
+
+        const trimmedName =
+            userDialogName.value.trim();
+
+        const trimmedEmail =
+            userDialogEmail.value.trim();
+
+        const emailPattern =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        let isValid = true;
+
+
+        if (trimmedName === "") {
+            userDialogName.classList.add("invalid");
+
+            userNameError.textContent =
+                "Name cannot be empty.";
+
+            isValid = false;
+        }
+
+
+        if (trimmedEmail === "") {
+            userDialogEmail.classList.add("invalid");
+
+            userEmailError.textContent =
+                "Email cannot be empty.";
+
+            isValid = false;
+
+        } else if (!emailPattern.test(trimmedEmail)) {
+
+            userDialogEmail.classList.add("invalid");
+
+            userEmailError.textContent =
+                "Please enter a valid email address.";
+
+            isValid = false;
+        }
+
+
+        if (!isValid) {
+            userDialogForm
+                .querySelector(".invalid")
+                .focus();
+
+            return;
+        }
+
+
+        const edits = getUserEdits();
+
+        const key =
+            selectedUser.username ||
+            selectedUser.email;
+
+
+        edits[key] = Object.assign(
+            {},
+            edits[key] || {},
+            {
+                name: trimmedName,
+                email: trimmedEmail
+            }
+        );
+
+
+        saveUserEdits(edits);
+
+        userDialog.close();
+
+        selectedUser = null;
+
+        renderUsers();
+    }
+);
+
+
+/* Fechar modal */
+closeUserDialog.addEventListener(
+    "click",
+    function () {
+        userDialog.close();
+    }
+);
+
+closeUserDialogButton.addEventListener(
+    "click",
+    function () {
+        userDialog.close();
+    }
+);
+
+userDialog.addEventListener(
+    "close",
+    function () {
+        selectedUser = null;
+        clearDialogErrors();
+    }
+);
 
 
 /* Criar linha da tabela */
@@ -176,33 +312,46 @@ function createUserRow(account) {
     const roleCell = document.createElement("td");
 
     const roleBadge = document.createElement("span");
-    roleBadge.className = "badge badge-info";
-    roleBadge.textContent = ROLE_NAMES[account.role];
+
+    roleBadge.className =
+        "badge badge-info";
+
+    roleBadge.textContent =
+        ROLE_NAMES[account.role];
 
     roleCell.appendChild(roleBadge);
 
 
     /* Actions */
-    const actionsCell = document.createElement("td");
+    const actionsCell =
+        document.createElement("td");
 
-    const actions = document.createElement("div");
-    actions.className = "user-actions";
+    const actions =
+        document.createElement("div");
 
-    const viewButton = createActionButton(
-        "View",
-        "btn btn-secondary btn-sm",
-        function () {
-            viewUser(account);
-        }
-    );
+    actions.className =
+        "user-actions";
 
-    const editButton = createActionButton(
-        "Edit",
-        "btn btn-primary btn-sm",
-        function () {
-            editUser(account);
-        }
-    );
+
+    const viewButton =
+        createActionButton(
+            "View",
+            "btn btn-secondary btn-sm",
+            function () {
+                viewUser(account);
+            }
+        );
+
+
+    const editButton =
+        createActionButton(
+            "Edit",
+            "btn btn-primary btn-sm",
+            function () {
+                editUser(account);
+            }
+        );
+
 
     actions.append(
         viewButton,
@@ -227,43 +376,67 @@ function createUserRow(account) {
 /* Mostrar utilizadores */
 function renderUsers() {
     const search =
-        userSearch.value.trim().toLowerCase();
+        userSearch.value
+            .trim()
+            .toLowerCase();
 
     const selectedType =
         typeFilter.value;
 
     const accounts =
-        getUsers().filter(function (account) {
-            const matchesSearch =
-                account.name.toLowerCase().includes(search) ||
-                account.email.toLowerCase().includes(search);
+        getUsers().filter(
+            function (account) {
 
-            const matchesType =
-                selectedType === "all" ||
-                account.role === selectedType;
+                const matchesSearch =
+                    account.name
+                        .toLowerCase()
+                        .includes(search) ||
 
-            return matchesSearch && matchesType;
-        });
+                    account.email
+                        .toLowerCase()
+                        .includes(search);
+
+                const matchesType =
+                    selectedType === "all" ||
+                    account.role === selectedType;
+
+                return (
+                    matchesSearch &&
+                    matchesType
+                );
+            }
+        );
+
 
     usersTable.replaceChildren();
 
 
-    accounts.forEach(function (account) {
-        usersTable.appendChild(
-            createUserRow(account)
-        );
-    });
+    accounts.forEach(
+        function (account) {
+
+            usersTable.appendChild(
+                createUserRow(account)
+            );
+
+        }
+    );
 
 
     if (accounts.length === 0) {
-        const row = document.createElement("tr");
-        const cell = document.createElement("td");
+
+        const row =
+            document.createElement("tr");
+
+        const cell =
+            document.createElement("td");
 
         cell.colSpan = 5;
         cell.className = "text-muted";
-        cell.textContent = "No users found.";
+        cell.textContent =
+            "No users found.";
 
         row.appendChild(cell);
+
         usersTable.appendChild(row);
     }
 }
