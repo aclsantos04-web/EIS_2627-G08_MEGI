@@ -228,6 +228,7 @@ if (vehicle.approval !== "approved") {
             if (vehicle.pendingExpiry) {
                 changes[alertBeingReviewed.documentType + "Expiry"] = vehicle.pendingExpiry;
             }
+            
             updateFleetVehicle(vehicle.plate, changes);                    // vehicles.js
             showFeedback(
                 "New " + DOCUMENT_NAMES[alertBeingReviewed.documentType].toLowerCase() +

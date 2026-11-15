@@ -240,6 +240,10 @@ documentForm.addEventListener("submit", function (event) {
     vehicle.updatedDocument = documentType;               // Staff see it in Document Alerts
     vehicle.pendingExpiry = newDate;
 
+    if (vehicle.approval === "denied") {
+        vehicle.approval = "pending";
+    }
+
     saveVehicles(vehicles);                               // vehicles.js
 
     showSuccessMessage("successMessage", "New " + documentType + " certificate for " + vehicle.plate +
