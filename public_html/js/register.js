@@ -113,10 +113,10 @@ document.getElementById("register-form")
 
     /* PHONE NUMBER */
 
-    if (!/^[0-9]{9}$/.test(phone.value.trim())) {
+    if (!/^[29][0-9]{8}$/.test(phone.value.trim())) {
         showError(
             phone,
-            "Phone number must contain exactly 9 digits."
+            "Phone must have 9 digits and start with 2 or 9."
         );
     }
 
@@ -149,7 +149,7 @@ document.getElementById("register-form")
 
     const nifValue = nif.value.trim();
 
-    if (!/^[0-9]{9}$/.test(nifValue)) {
+    if (!/^[1-9][0-9]{8}$/.test(nifValue)) {
         showError(
             nif,
             "NIF must contain exactly 9 digits."

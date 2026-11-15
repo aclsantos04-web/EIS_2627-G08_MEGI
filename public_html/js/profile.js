@@ -89,8 +89,28 @@ function fillSavedProfile() {
    Same rules as register.js, so both pages agree.
    --------------------------------------------------------- */
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;   // something@something.something
-const NIF_PATTERN = /^[0-9]{9}$/;                     // exactly 9 digits
+const NIF_PATTERN = /^[1-9][0-9]{8}$/;                    // exactly 9 digits
 const PHONE_PATTERN = /^[29][0-9]{8}$/;               // 9 digits, starts with 2 or 9
+
+/* Validate Portuguese NIF using its check digit */
+
+function isValidNIF(nif) {
+    if (!NIF_PATTERN.test(nif)) {
+        return false;
+    }
+
+    let sum = 0;
+
+    for (let i = 0; i < 8; i++) {
+        sum += Number(nif[i]) * (9 - i);
+    }
+
+    const remainder = sum % 11;
+    const checkDigit = remainder < 2 ? 0 : 11 - remainder;
+
+    return checkDigit === Number(nif[8]);
+}
+
 
 // Checks a field against a pattern (used for email, NIF, phone)
 function checkPattern(fieldId, pattern, emptyMessage, wrongMessage) {
@@ -155,7 +175,21 @@ function validateProfileForm() {
     if (!checkRequired("fullName", "Full name is required.")) { isValid = false; }
     if (!checkPattern("email", EMAIL_PATTERN, "Email is required.", "Please enter a valid email address.")) { isValid = false; }
     if (!checkPattern("phone", PHONE_PATTERN, "Phone number is required.", "Phone must have 9 digits and start with 2 or 9.")) { isValid = false; }
-    if (!checkPattern("nif", NIF_PATTERN, "NIF is required.", "NIF must contain exactly 9 digits.")) { isValid = false; }
+    
+if (!checkPattern(
+    "nif",
+    NIF_PATTERN,
+    "NIF is required.",
+    "NIF must contain 9 digits and cannot start with 0."
+)) {
+    isValid = false;
+} else if (!isValidNIF(
+    document.getElementById("nif").value.trim()
+)) {
+    showError("nif", "Please enter a valid Portuguese NIF.");
+    isValid = false;
+}
+
 
     if (wantsToChangePassword() && !checkPasswordChange()) {
         isValid = false;
