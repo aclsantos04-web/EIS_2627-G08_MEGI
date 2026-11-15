@@ -1,23 +1,21 @@
 /* =========================================================
    staff_alerts.js — STAFF → DOCUMENT ALERTS
-   Built from js/vehicles.js (getFleet), as the forum answer
-   asks: Staff get an alert when
-     - a document of an approved vehicle is expired or expires
-       in the next 3 days  -> Notify the courier, or Disapprove
-                              the vehicle if it is already expired
-     - a courier uploads a new certificate -> Review and Validate
-   The dates are counted from today, so these alerts always
-   match the courier's My Vehicles page.
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
     const tableBody = document.getElementById("alertsTableBody");
     const feedback = document.getElementById("staffFeedback");
+    const documentAlertsBox = document.getElementById("documentAlerts");
+    const documentAlertList = document.getElementById("documentAlertList");
+
     const docDialog = document.getElementById("docDialog");
     const docDialogDetails = document.getElementById("docDialogDetails");
     const docDialogName = document.getElementById("docDialogName");
+    const docDialogFile = document.getElementById("docDialogFile");
     const btnCloseDoc = document.getElementById("btnCloseDoc");
+    const btnCloseDocTop = document.getElementById("btnCloseDocTop");
     const btnValidateDoc = document.getElementById("btnValidateDoc");
+    const btnRejectDoc = document.getElementById("btnRejectDoc");
 
     let alertBeingReviewed = null;
     let feedbackTimer = null;
@@ -41,35 +39,69 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 6000);
     }
 
-    /* ---------- 1. Which alerts are there? ---------- */
     function getAlerts() {
         const alerts = [];
-        getFleet().forEach(function (vehicle) {                     // vehicles.js
+        getFleet().forEach(function (vehicle) {
             if (vehicle.approval !== "approved") {
-                return;                                              // not in use yet
+                return;
             }
-            // A new certificate waiting for review
             if (vehicle.updatedDocument) {
                 const dateText = vehicle[vehicle.updatedDocument + "Expiry"];
-                alerts.push({ vehicle: vehicle, kind: "upload", documentType: vehicle.updatedDocument, dateText: dateText });
+                alerts.push({
+                    vehicle: vehicle,
+                    kind: "upload",
+                    documentType: vehicle.updatedDocument,
+                    dateText: dateText
+                });
             }
-            // Expired or expiring documents
             ["insurance", "inspection"].forEach(function (documentType) {
                 const dateText = vehicle[documentType + "Expiry"];
                 const state = getDocumentState(dateText);
                 if (state.type !== "success" && vehicle.updatedDocument !== documentType) {
-                    alerts.push({ vehicle: vehicle, kind: state.type, documentType: documentType, dateText: dateText, state: state });
+                    alerts.push({
+                        vehicle: vehicle,
+                        kind: state.type,
+                        documentType: documentType,
+                        dateText: dateText,
+                        state: state
+                    });
                 }
             });
         });
-        // Expired first, then expiring, then new uploads
+
         const order = { danger: 0, warning: 1, upload: 2 };
         return alerts.sort(function (a, b) {
             return order[a.kind] - order[b.kind];
         });
     }
 
-    /* ---------- 2. Draw the table ---------- */
+    /* Render top yellow banner listing expired & expiring-in-3-days vehicles */
+    function renderTopWarningBanner(alerts) {
+        documentAlertList.replaceChildren();
+
+        alerts.forEach(function (alert) {
+            if (alert.kind === "upload") {
+                return;
+            }
+            const item = document.createElement("li");
+            const docLabel = alert.documentType === "insurance" ? "Insurance" : "Inspection";
+
+            if (alert.kind === "danger") {
+                item.className = "text-danger";
+                item.textContent =
+                    docLabel + " for " + alert.vehicle.plate + " (" + alert.vehicle.courier + ") expired on " +
+                    formatDate(alert.dateText) + ". Notify the courier or disapprove the vehicle.";
+            } else {
+                item.textContent =
+                    docLabel + " for " + alert.vehicle.plate + " (" + alert.vehicle.courier + ") " +
+                    alert.state.label.toLowerCase() + " (" + formatDate(alert.dateText) + ").";
+            }
+            documentAlertList.appendChild(item);
+        });
+
+        documentAlertsBox.hidden = documentAlertList.children.length === 0;
+    }
+
     function createCell(content) {
         const cell = document.createElement("td");
         if (typeof content === "string") {
@@ -99,10 +131,11 @@ document.addEventListener("DOMContentLoaded", function () {
     function renderTable() {
         tableBody.replaceChildren();
         const alerts = getAlerts();
+        renderTopWarningBanner(alerts);
 
         if (alerts.length === 0) {
             const row = document.createElement("tr");
-            const cell = createCell("All documents are valid. There are no alerts.");
+            const cell = createCell("All documents are valid. There are no pending alerts.");
             cell.colSpan = 6;
             cell.className = "empty-table-msg";
             row.append(cell);
@@ -115,50 +148,63 @@ document.addEventListener("DOMContentLoaded", function () {
             const documentName = DOCUMENT_NAMES[alert.documentType];
             const row = document.createElement("tr");
 
+            const plateCell = document.createElement("td");
             const plate = document.createElement("strong");
             plate.textContent = vehicle.plate;
+            const model = document.createElement("span");
+            model.className = "vehicle-model";
+            model.textContent = vehicle.model;
+            plateCell.append(plate, model);
 
             const date = document.createElement("span");
-            date.textContent = formatDate(alert.dateText);              // vehicles.js
+            date.textContent = formatDate(alert.dateText);
             if (alert.kind === "danger") {
                 date.className = "text-danger";
             }
 
             const actions = document.createElement("div");
-            actions.className = "table-actions";
+            actions.className = "approval-actions";
 
             let badge;
             if (alert.kind === "upload") {
                 badge = createBadge("info", "New upload");
-                actions.append(createButton("Review", "btn-primary btn-review", function () {
+                actions.append(createButton("Review", "btn-primary", function () {
                     alertBeingReviewed = alert;
-                    docDialogDetails.textContent = "Vehicle: " + vehicle.plate + " · Courier: " + vehicle.courier +
+                    const fileName = alert.documentType === "insurance"
+                        ? (vehicle.insuranceFile || `insurance_${vehicle.plate.toLowerCase()}.pdf`)
+                        : (vehicle.inspectionFile || `inspection_${vehicle.plate.toLowerCase()}.pdf`);
+
+                    docDialogDetails.textContent =
+                        "Vehicle: " + vehicle.plate + " (" + vehicle.model + ") · Courier: " + vehicle.courier +
                         " · New expiry date: " + formatDate(alert.dateText);
-                    docDialogName.textContent = documentName + " (uploaded by " + vehicle.courier + ")";
+                    docDialogName.textContent = documentName + " — uploaded by " + vehicle.courier;
+                    docDialogFile.textContent = "File: " + fileName;
                     docDialog.showModal();
                 }));
             } else {
                 badge = createBadge(alert.kind, alert.state.label);
-                actions.append(createButton("Notify", "btn-outline btn-notify", function () {
-                    showFeedback("Reminder sent to " + vehicle.courier + " to upload a new " +
-                        documentName.toLowerCase() + " for " + vehicle.plate + ".", false);
+                actions.append(createButton("Notify", "btn-outline", function () {
+                    showFeedback(
+                        "Reminder sent to " + vehicle.courier + " to upload a renewed " +
+                        documentName.toLowerCase() + " for " + vehicle.plate + ".",
+                        false
+                    );
                 }));
-                // Forum: Staff can disapprove a vehicle whose document has expired
                 if (alert.kind === "danger") {
-                    actions.append(createButton("Disapprove", "btn-danger btn-reject", function () {
-                        if (!confirm("Disapprove " + vehicle.plate + "? It can't be used until a new " +
+                    actions.append(createButton("Disapprove", "btn-danger", function () {
+                        if (!confirm("Disapprove " + vehicle.plate + "? It cannot be used until a valid " +
                                 documentName.toLowerCase() + " is approved.")) {
                             return;
                         }
-                        updateFleetVehicle(vehicle.plate, { approval: "denied" });   // vehicles.js
-                        showFeedback(vehicle.plate + " was disapproved. " + vehicle.courier + " has been told.", true);
+                        updateFleetVehicle(vehicle.plate, { approval: "denied" });
+                        showFeedback(vehicle.plate + " has been disapproved. " + vehicle.courier + " has been notified.", true);
                         renderTable();
                     }));
                 }
             }
 
             row.append(
-                createCell(plate),
+                plateCell,
                 createCell(vehicle.courier),
                 createCell(documentName),
                 createCell(date),
@@ -169,13 +215,30 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    /* ---------- 3. Review pop-up ---------- */
     btnValidateDoc.addEventListener("click", function () {
         if (alertBeingReviewed !== null) {
             const vehicle = alertBeingReviewed.vehicle;
-            updateFleetVehicle(vehicle.plate, { updatedDocument: null });   // reviewed
-            showFeedback("New " + DOCUMENT_NAMES[alertBeingReviewed.documentType].toLowerCase() +
-                " for " + vehicle.plate + " validated.", false);
+            updateFleetVehicle(vehicle.plate, { updatedDocument: null });
+            showFeedback(
+                "New " + DOCUMENT_NAMES[alertBeingReviewed.documentType].toLowerCase() +
+                " for " + vehicle.plate + " has been validated.",
+                false
+            );
+            alertBeingReviewed = null;
+            renderTable();
+        }
+        docDialog.close();
+    });
+
+    btnRejectDoc.addEventListener("click", function () {
+        if (alertBeingReviewed !== null) {
+            const vehicle = alertBeingReviewed.vehicle;
+            updateFleetVehicle(vehicle.plate, { updatedDocument: null });
+            showFeedback(
+                "Uploaded " + DOCUMENT_NAMES[alertBeingReviewed.documentType].toLowerCase() +
+                " for " + vehicle.plate + " was rejected. " + vehicle.courier + " has been asked to re-upload.",
+                true
+            );
             alertBeingReviewed = null;
             renderTable();
         }
@@ -183,6 +246,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     btnCloseDoc.addEventListener("click", function () {
+        docDialog.close();
+    });
+
+    btnCloseDocTop.addEventListener("click", function () {
         docDialog.close();
     });
 

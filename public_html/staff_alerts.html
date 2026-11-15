@@ -4,17 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CMS - Staff Panel | Document Alerts</title>
-    <!-- Estilos globais da equipa -->
+    <!-- Shared team styles -->
     <link rel="stylesheet" href="css/style.css">
-    <!-- Estilos complementares de Staff -->
+    <!-- Staff specific styles -->
     <link rel="stylesheet" href="css/staff.css">
 </head>
 <body>
 
     <div class="app-layout">
-        <!-- Sidebar oficial do projeto -->
-        <!-- ===== SIDEBAR (the same on every Staff page) =====
-             class="active" marks the page you are on. -->
+        <!-- ===== SIDEBAR (the same on every Staff page) ===== -->
         <nav class="sidebar" aria-label="Staff menu">
             <a href="index.html" class="sidebar-logo" aria-label="CMS – go to homepage">
                 <svg viewBox="0 0 64 40" aria-hidden="true">
@@ -33,22 +31,25 @@
             <a href="login.html" class="logout"><i class="ti ti-logout" aria-hidden="true"></i> Log out</a>
         </nav>
 
-        <!-- Área Principal de Conteúdo -->
+        <!-- Main Content -->
         <main class="app-content">
             <header class="page-header">
-                <h1>Document Alerts</h1>
+                <div>
+                    <h1>Document Alerts</h1>
+                    <p class="text-muted">Monitor expired certificates, documents expiring within 3 days, and newly uploaded files.</p>
+                </div>
             </header>
 
-            <!-- Caixa de Alerta Global (Secção 10 do style.css) -->
-            <div class="alert alert-warning">
-                <h2>Pending Document Reviews</h2>
-                <p id="alertsSummary">Vehicles with expired documents, documents expiring in the next 3 days, and new certificates uploaded by couriers.</p>
-            </div>
+            <!-- Yellow Warning Box (matching courier-vehicles.html) -->
+            <section class="alert alert-warning" id="documentAlerts" hidden>
+                <h2>⚠ Documents that need immediate attention</h2>
+                <ul id="documentAlertList"></ul>
+            </section>
 
-            <!-- Confirmation after an action (js/staff_alerts.js) -->
+            <!-- Confirmation feedback banner -->
             <div class="alert alert-success staff-feedback" id="staffFeedback" role="status" hidden></div>
 
-            <!-- Tabela de Alertas de Documentos -->
+            <!-- Document Alerts Table -->
             <div class="table-wrap">
                 <table>
                     <thead>
@@ -62,41 +63,50 @@
                         </tr>
                     </thead>
                     <tbody id="alertsTableBody">
-                        <!-- Filled by js/staff_alerts.js from js/vehicles.js (getFleet):
-                             expired / expiring documents of approved vehicles and
-                             new certificates the couriers uploaded. -->
+                        <!-- Filled by js/staff_alerts.js -->
                     </tbody>
                 </table>
             </div>
         </main>
     </div>
 
-    <!-- Pop-up de Pré-visualização do Documento (<dialog>) -->
+    <!-- Centered Document Audit Modal (<dialog>) -->
     <dialog id="docDialog">
-        <h3>Document Audit</h3>
-        <p id="docDialogDetails" class="text-muted"></p>
+        <div class="dialog-heading">
+            <div>
+                <h2>Document Audit & Review</h2>
+                <p id="docDialogDetails" class="text-muted"></p>
+            </div>
+            <button type="button" id="btnCloseDocTop" class="dialog-close" aria-label="Close">
+                <i class="ti ti-x"></i>
+            </button>
+        </div>
         
         <div class="doc-preview-container">
             <span class="doc-icon">📄</span>
             <p><strong id="docDialogName">Certificate uploaded by the courier</strong></p>
-            <small class="text-muted">(Simulated PDF/image preview. In Sprint 2 the real file will open here.)</small>
+            <small id="docDialogFile" class="text-muted"></small>
+            <small class="text-muted">(Simulated certificate preview. In Sprint 2 the uploaded PDF/image will render here.)</small>
         </div>
 
-        <div class="form-actions">
+        <div class="decision-actions">
             <button type="button" id="btnCloseDoc" class="btn btn-outline">Close</button>
-            <button type="button" id="btnValidateDoc" class="btn btn-success">Validate Document</button>
+            <button type="button" id="btnRejectDoc" class="btn btn-danger">
+                <i class="ti ti-x"></i> Reject Certificate
+            </button>
+            <button type="button" id="btnValidateDoc" class="btn btn-success">
+                <i class="ti ti-check"></i> Validate Certificate
+            </button>
         </div>
     </dialog>
 
     <script src="js/vehicles.js"></script>
     <script src="js/staff_alerts.js"></script>
-<!-- Top bar (notifications + user menu), built by js/topbar.js -->
-<!-- Shared data, so the top bar counts match the pages -->
-<script src="js/accounts.js"></script>
-<script src="js/topbar.js"
-        data-name="Rita Almeida"
-        data-role="Staff"
-        data-username="rita.almeida"
-        data-profile="staff_profile.html"></script>
+    <script src="js/accounts.js"></script>
+    <script src="js/topbar.js"
+            data-name="Rita Almeida"
+            data-role="Staff"
+            data-username="rita.almeida"
+            data-profile="staff_profile.html"></script>
 </body>
 </html>
