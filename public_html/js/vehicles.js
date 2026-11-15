@@ -253,6 +253,42 @@ function updateFleetVehicle(plate, changes) {
     }
 }
 
+/* ---------------------------------------------------------
+   DECISION ARCHIVE (Staff > Vehicle Approvals > history)
+   Every approve / reject / disapprove of a vehicle is written here,
+   whichever Staff page it was made on, so the archive is complete.
+   Same format as staff_vehicles.js uses ("cmsVehicleApprovalHistory").
+   --------------------------------------------------------- */
+function recordVehicleDecision(vehicle, decision, justification, consequence) {
+    let store = {};
+    try {
+        store = JSON.parse(localStorage.getItem("cmsVehicleApprovalHistory") || "{}");
+    } catch (error) {
+        store = {};
+    }
+    if (!store[vehicle.plate]) {
+        store[vehicle.plate] = { currentStatus: vehicle.approval, history: [] };
+    }
+    store[vehicle.plate].history.push({
+        previousStatus: vehicle.approval,
+        decision: decision,
+        // the Staff member who is logged in (session.js)
+        decidedBy: typeof getPageUser === "function" ? getPageUser("staff").name : "Staff",
+        date: new Date().toLocaleString("en-GB", {
+            day: "2-digit", month: "2-digit", year: "numeric",
+            hour: "2-digit", minute: "2-digit"
+        }),
+        justification: justification,
+        consequence: consequence
+    });
+    store[vehicle.plate].currentStatus = decision;
+    try {
+        localStorage.setItem("cmsVehicleApprovalHistory", JSON.stringify(store));
+    } catch (error) {
+        console.warn("Could not save the vehicle decision.", error);
+    }
+}
+
 // Can this vehicle be used for an order? Returns "" if yes,
 // otherwise the reason (shown next to it in the vehicle list).
 function vehicleProblem(vehicle, loadKg, loadM3) {

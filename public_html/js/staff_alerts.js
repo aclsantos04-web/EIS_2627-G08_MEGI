@@ -42,7 +42,9 @@ document.addEventListener("DOMContentLoaded", function () {
     function getAlerts() {
         const alerts = [];
         getFleet().forEach(function (vehicle) {
-            
+            if (vehicle.approval !== "approved") {
+                return;
+            }
             if (vehicle.updatedDocument) {
                 // The date of the NEW certificate (not active until validated)
                 const dateText = vehicle.pendingExpiry || vehicle[vehicle.updatedDocument + "Expiry"];
@@ -53,12 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     dateText: dateText
                 });
             }
-            
-            
-if (vehicle.approval !== "approved") {
-    return;
-}
-
             ["insurance", "inspection"].forEach(function (documentType) {
                 const dateText = vehicle[documentType + "Expiry"];
                 const state = getDocumentState(dateText);
@@ -201,6 +197,15 @@ if (vehicle.approval !== "approved") {
                                 documentName.toLowerCase() + " is approved.")) {
                             return;
                         }
+                        // Written in the Vehicle Approvals archive too (vehicles.js)
+                        recordVehicleDecision(
+                            vehicle,
+                            "denied",
+                            documentName + " expired on " + formatDate(alert.dateText) +
+                                " (disapproved from Document Alerts).",
+                            "Vehicle denied; courier cannot select it for deliveries until a valid " +
+                                documentName.toLowerCase() + " is approved."
+                        );
                         updateFleetVehicle(vehicle.plate, { approval: "denied" });
                         showFeedback(vehicle.plate + " has been disapproved. " + vehicle.courier + " has been notified.", true);
                         renderTable();
@@ -224,11 +229,10 @@ if (vehicle.approval !== "approved") {
         if (alertBeingReviewed !== null) {
             const vehicle = alertBeingReviewed.vehicle;
             // Validated: the new date becomes the real expiry date
-            const changes = { updatedDocument: null, pendingExpiry: null, resubmissionFromDenied: false };
+            const changes = { updatedDocument: null, pendingExpiry: null };
             if (vehicle.pendingExpiry) {
                 changes[alertBeingReviewed.documentType + "Expiry"] = vehicle.pendingExpiry;
             }
-            
             updateFleetVehicle(vehicle.plate, changes);                    // vehicles.js
             showFeedback(
                 "New " + DOCUMENT_NAMES[alertBeingReviewed.documentType].toLowerCase() +
@@ -245,19 +249,8 @@ if (vehicle.approval !== "approved") {
         if (alertBeingReviewed !== null) {
             const vehicle = alertBeingReviewed.vehicle;
             // Rejected: the new date is thrown away and the old one stays.
-            // If this was a resubmission from a denied vehicle, it returns to denied.
-            const changes = {
-                updatedDocument: null,
-                pendingExpiry: null,
-                resubmissionFromDenied: false
-            };
-
-            if (vehicle.resubmissionFromDenied) {
-                changes.approval = "denied";
-            }
-
-            updateFleetVehicle(vehicle.plate, changes);
-        
+            // If the old one is expired, the alert comes back in the table.
+            updateFleetVehicle(vehicle.plate, { updatedDocument: null, pendingExpiry: null });
             showFeedback(
                 "Uploaded " + DOCUMENT_NAMES[alertBeingReviewed.documentType].toLowerCase() +
                 " for " + vehicle.plate + " was rejected, so the previous expiry date still counts. " +
