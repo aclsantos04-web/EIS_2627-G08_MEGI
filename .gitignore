@@ -1,0 +1,5 @@
+# Each computer's own database settings (see php/dal/Database.php)
+php/dal/config.local.php
+
+# macOS Finder files
+.DS_Store
