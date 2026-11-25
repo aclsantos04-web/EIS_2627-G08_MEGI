@@ -1,9 +1,6 @@
 <?php
 
-/*
- * ProductDAO
- * Responsável pelo acesso aos produtos na base de dados.
- */
+/* Página responsável pelo acesso aos produtos na base de dados.*/
 
 require_once __DIR__ . '/Database.php';
 
@@ -34,7 +31,7 @@ class ProductDAO
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Procura um produto específico de um cliente
+    // procura um produto específico de um cliente
     public function getById(int $productId, int $clientId): ?array
     {
         $sql = "
