@@ -1,0 +1,2 @@
+# Keeps this folder in Git until the first endpoint is added.
+# REST endpoints called by the pages with fetch(), e.g. orders.php
